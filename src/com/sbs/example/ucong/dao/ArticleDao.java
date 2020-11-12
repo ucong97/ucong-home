@@ -76,4 +76,106 @@ public class ArticleDao {
 		return articles;
 	}
 
+	public boolean getArticleById(int id) {
+		Connection con = null;
+		try {
+
+
+			String url = "jdbc:mysql://192.168.0.103:3306/textBoard?useUnicode=true&characterEncoding=utf8&autoReconnect=true&serverTimezone=Asia/Seoul&useOldAliasMetadataBehavior=true&zeroDateTimeNehavior=convertToNull&connectTimeout=60000&socketTimeout=60000";
+			String user = "sbsst";
+			String pass = "sbs123414";
+
+			// 기사등록
+			try {
+				Class.forName("com.mysql.cj.jdbc.Driver");
+			} catch (ClassNotFoundException e1) {
+				e1.printStackTrace();
+			}
+			// 연결 생성
+			try {
+				con = DriverManager.getConnection(url, user, pass);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			
+			String sql = "DELETE FROM article WHERE id=?";
+			
+			try {
+				PreparedStatement ps = con.prepareStatement(sql);
+				ps.setInt(1, id);
+				
+				ps.execute();
+				
+				return true;
+				
+			} catch (SQLException e) {
+				return false;
+			}
+			
+			
+		} finally {
+
+			try {
+				if (con != null) {
+					con.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		
+	}
+
+	public boolean modify(int modifyId, String title, String body) {
+		Connection con = null;
+		try {
+
+
+			String url = "jdbc:mysql://192.168.0.103:3306/textBoard?useUnicode=true&characterEncoding=utf8&autoReconnect=true&serverTimezone=Asia/Seoul&useOldAliasMetadataBehavior=true&zeroDateTimeNehavior=convertToNull&connectTimeout=60000&socketTimeout=60000";
+			String user = "sbsst";
+			String pass = "sbs123414";
+
+			// 기사등록
+			try {
+				Class.forName("com.mysql.cj.jdbc.Driver");
+			} catch (ClassNotFoundException e1) {
+				e1.printStackTrace();
+			}
+			// 연결 생성
+			try {
+				con = DriverManager.getConnection(url, user, pass);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			
+			String sql = "UPDATE article SET title=?,`body`=?,updateDate = NOW() WHERE id = ?";
+			
+			try {
+				PreparedStatement ps = con.prepareStatement(sql);
+				
+				ps.setString(1, title);
+				ps.setString(2, body);
+				ps.setInt(3, modifyId);
+				
+				ps.executeUpdate();
+				
+				return true;
+				
+			} catch (SQLException e) {
+				return false;
+			}
+			
+			
+		} finally {
+
+			try {
+				if (con != null) {
+					con.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
 }
