@@ -3,6 +3,7 @@ package com.sbs.example.ucong.dao;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,11 +35,25 @@ public class ArticleDao {
 				e.printStackTrace();
 			}
 			
-			String sql = "UPDATE article SET updateDate = NOW() WHERE id= 3";
+			String sql = "SELECT * FROM article ORDER BY id DESC";
 			
 			try {
 				PreparedStatement ps = con.prepareStatement(sql);
-				ps.execute();
+				ResultSet rs=ps.executeQuery();
+				
+				while(rs.next()) {
+					int id = rs.getInt("id");
+					String regDate= rs.getString("regDate");
+					String updateDate =rs.getString("updateDate");
+					String title=rs.getString("title");
+					String body=rs.getString("body");
+					int memberId = rs.getInt("memberId");
+					int boardId= rs.getInt("boardId");
+					
+					Article article = new Article(id,regDate,updateDate,title,body,memberId,boardId);
+					articles.add(article);
+				}
+				
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
