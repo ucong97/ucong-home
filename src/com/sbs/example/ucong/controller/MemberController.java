@@ -20,7 +20,18 @@ public class MemberController extends Controller {
 			doJoin(cmd);
 		}else if (cmd.equals("member login")) {
 			doLogin(cmd);
+		}else if (cmd.equals("member logout")) {
+		doLogout(cmd);
+	}
+	}
+
+	private void doLogout(String cmd) {
+		if(Container.session.logouted()) {
+			System.out.println("로그인 되어있지않습니다.");
+			return;
 		}
+		System.out.println("== 로그아웃 ==");
+		Container.session.logout();
 	}
 
 	private void doLogin(String cmd) {
