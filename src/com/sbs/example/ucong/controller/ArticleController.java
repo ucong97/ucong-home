@@ -5,15 +5,19 @@ import java.util.Scanner;
 
 import com.sbs.example.ucong.container.Container;
 import com.sbs.example.ucong.dto.Article;
+import com.sbs.example.ucong.dto.Member;
 import com.sbs.example.ucong.service.ArticleService;
+import com.sbs.example.ucong.service.MemberService;
 
 public class ArticleController extends Controller {
 	private Scanner sc;
 	private ArticleService articleService;
+	private MemberService memberService;
 
 	public ArticleController() {
 		sc = Container.scanner;
 		articleService = Container.articleService;
+		memberService = Container.memberService;
 	}
 
 	public void doCommand(String cmd) {
@@ -31,13 +35,17 @@ public class ArticleController extends Controller {
 	}
 
 	private void doWrite(String cmd) {
+		if(Container.session.logouted()) {
+			System.out.println("로그인하고 이용해주세요.");
+			return;
+		}
 		System.out.println("== 게시물 작성 ==");
 		System.out.printf("제목 : ");
 		String title = sc.nextLine();
 		System.out.printf("내용 : ");
 		String body = sc.nextLine();
 		
-		int memberId= 1;//임시
+		int memberId= Container.session.loginedMemberId;
 		int boardId=1;//임시
 		
 		int id = articleService.write(memberId,boardId,title, body);
@@ -45,7 +53,7 @@ public class ArticleController extends Controller {
 	}
 
 	private void doModify(String cmd) {
-		System.out.println("== 게시물 삭제 ==");
+		System.out.println("== 게시물 수정 ==");
 		String[] cmdBits = cmd.split(" ");
 		if (cmdBits.length <= 2) {
 			System.out.println("게시물 번호를 입력해주세요.");
@@ -68,6 +76,10 @@ public class ArticleController extends Controller {
 	}
 
 	private void doDelete(String cmd) {
+		if(Container.session.logouted()) {
+			System.out.println("로그인하고 이용해주세요.");
+			return;
+		}
 		System.out.println("== 게시물 삭제 ==");
 		String[] cmdBits = cmd.split(" ");
 		if (cmdBits.length <= 2) {
@@ -117,8 +129,9 @@ public class ArticleController extends Controller {
 		List<Article> articles = articleService.getArticles();
 
 		for (Article article : articles) {
-			System.out.printf("%d / %s / %s / %d / %s\n", article.id, article.regDate, article.updateDate,
-					article.memberId, article.title);
+			Member member = memberService.getMemberById(article.memberId);
+			System.out.printf("%d / %s / %s / %s / %s\n", article.id, article.regDate, article.updateDate,
+					member.name, article.title);
 		}
 	}
 }

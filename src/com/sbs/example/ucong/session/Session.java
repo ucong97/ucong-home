@@ -12,5 +12,8 @@ public class Session {
 	public boolean logined() {
 		return loginedMemberId>0;
 	}
+	public boolean logouted() {
+		return loginedMemberId==0;
+	}
 
 }

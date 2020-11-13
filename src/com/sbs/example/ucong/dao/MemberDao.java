@@ -120,4 +120,60 @@ public class MemberDao {
 		return member;
 	}
 
+	public Member getMemberById(int memberId) {
+		Connection con = null;
+		Member member=null;
+		try {
+			String url = "jdbc:mysql://localhost:3306/textBoard?useUnicode=true&characterEncoding=utf8&autoReconnect=true&serverTimezone=Asia/Seoul&useOldAliasMetadataBehavior=true&zeroDateTimeNehavior=convertToNull&connectTimeout=60000&socketTimeout=60000";
+			String user = "sbsst";
+			String pass = "sbs123414";
+			// 드라이버 등록
+			try {
+				Class.forName("com.mysql.cj.jdbc.Driver");
+			} catch (ClassNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			// 연결생성
+			try {
+				con = DriverManager.getConnection(url, user, pass);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			
+			String sql = "SELECT * FROM member WHERE Id = ?";
+			
+			try {
+				PreparedStatement ps = con.prepareStatement(sql);
+				
+				ps.setInt(1,memberId);
+				
+				ResultSet rs = ps.executeQuery();
+				
+				if(rs.next()) {
+					int id= rs.getInt("id");
+					String memberLoginId=rs.getString("loginId");
+					String memberLoginPw=rs.getString("loginPw");
+					String memberName=rs.getString("name");
+					
+					member = new Member(id,memberLoginId,memberLoginPw,memberName);
+				}
+				
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			
+		} finally {
+			try {
+				if (con != null) {
+					con.close();
+				}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		return member;
+	}
+
 }
