@@ -5,6 +5,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -232,8 +233,9 @@ public class ArticleDao {
 		
 	}
 
-	public void write(String title, String body) {
+	public int write(int memberId,int boardId,String title, String body) {
 		Connection con = null;
+		int id=0;
 		try {
 
 			String url = "jdbc:mysql://localhost:3306/textBoard?useUnicode=true&characterEncoding=utf8&autoReconnect=true&serverTimezone=Asia/Seoul&useOldAliasMetadataBehavior=true&zeroDateTimeNehavior=convertToNull&connectTimeout=60000&socketTimeout=60000";
@@ -253,16 +255,20 @@ public class ArticleDao {
 				e.printStackTrace();
 			}
 
-			String sql = "INSERT INTO article SET id=?,regDate=NOW(),updateDate=NOW(),title=?,`body`=?,memberId=1,boardId=1";
+			String sql = "INSERT INTO article SET regDate=NOW(),updateDate=NOW(),title=?,`body`=?,memberId=?,boardId=?";
 
 			try {
-				PreparedStatement ps = con.prepareStatement(sql);
-				ps.setInt(1,0);
-				ps.setString(2,title);
-				ps.setString(3,body);
+				PreparedStatement ps = con.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS);
+				ps.setString(1,title);
+				ps.setString(2,body);
+				ps.setInt(3,memberId);
+				ps.setInt(4,boardId);
 
 				ps.executeUpdate();
 				
+				ResultSet rs = ps.getGeneratedKeys();
+				rs.next();
+				id = rs.getInt(1);
 			
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
@@ -280,7 +286,8 @@ public class ArticleDao {
 			}
 		}
 
-		
+
+		return id;
 	}
 
 }

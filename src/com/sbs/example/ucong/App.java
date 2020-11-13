@@ -5,19 +5,22 @@ import java.util.Scanner;
 import com.sbs.example.ucong.container.Container;
 import com.sbs.example.ucong.controller.ArticleController;
 import com.sbs.example.ucong.controller.Controller;
+import com.sbs.example.ucong.controller.MemberController;
 
 public class App {
 	private ArticleController articleController;
+	private MemberController memberController;
 	
 	public App() {
 		articleController = Container.articleController;
+		memberController = Container.memberController;
 	}
 
 	public void run() {
 		Scanner sc = Container.scanner;
 		
 		while(true) {
-			System.out.printf("명령어 ) ");
+			System.out.printf("명령어) ");
 			String cmd = sc.nextLine();
 			
 			if(cmd.equals("system eixt")) {
@@ -37,6 +40,8 @@ public class App {
 	private Controller getControllerByCmd(String cmd) {
 		if(cmd.startsWith("article")) {
 			return articleController;
+		}else if(cmd.startsWith("member")) {
+			return memberController;
 		}
 		return null;
 	}

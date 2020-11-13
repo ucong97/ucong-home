@@ -8,7 +8,7 @@ import com.sbs.example.ucong.dto.Article;
 
 public class ArticleService {
 	private ArticleDao articleDao;
-	
+
 	public ArticleService() {
 		articleDao = Container.articleDao;
 	}
@@ -26,15 +26,11 @@ public class ArticleService {
 	}
 
 	public void modify(int id, String title, String body) {
-		articleDao.modify(id,title,body);
+		articleDao.modify(id, title, body);
 	}
 
-	public void write(String title, String body) {
-		articleDao.write(title,body);
+	public int write(int memberId, int boardId, String title, String body) {
+		return articleDao.write(memberId,boardId,title, body);
 	}
-
-	
-
-	
 
 }

@@ -1,15 +1,18 @@
 package com.sbs.example.ucong.controller;
 
 import java.util.List;
+import java.util.Scanner;
 
 import com.sbs.example.ucong.container.Container;
 import com.sbs.example.ucong.dto.Article;
 import com.sbs.example.ucong.service.ArticleService;
 
 public class ArticleController extends Controller {
+	private Scanner sc;
 	private ArticleService articleService;
 
 	public ArticleController() {
+		sc = Container.scanner;
 		articleService = Container.articleService;
 	}
 
@@ -20,21 +23,25 @@ public class ArticleController extends Controller {
 			showDetail(cmd);
 		} else if (cmd.startsWith("article delete")) {
 			doDelete(cmd);
-		}else if (cmd.startsWith("article modify")) {
+		} else if (cmd.startsWith("article modify")) {
 			doModify(cmd);
-		}else if (cmd.equals("article write")) {
-		doWrite(cmd);
-	}
+		} else if (cmd.equals("article write")) {
+			doWrite(cmd);
+		}
 	}
 
 	private void doWrite(String cmd) {
 		System.out.println("== 게시물 작성 ==");
 		System.out.printf("제목 : ");
-		String title= Container.scanner.nextLine();
+		String title = sc.nextLine();
 		System.out.printf("내용 : ");
-		String body= Container.scanner.nextLine();
+		String body = sc.nextLine();
 		
-		articleService.write(title,body);
+		int memberId= 1;//임시
+		int boardId=1;//임시
+		
+		int id = articleService.write(memberId,boardId,title, body);
+		System.out.printf("%d번 게시물이 생성되었습니다.\n",id);
 	}
 
 	private void doModify(String cmd) {
@@ -52,13 +59,12 @@ public class ArticleController extends Controller {
 			return;
 		}
 		System.out.printf("제목 : ");
-		String title = Container.scanner.nextLine();
+		String title = sc.nextLine();
 		System.out.printf("내용 : ");
-		String body = Container.scanner.nextLine();
-		
-		
-		articleService.modify(inputedId,title,body);
-		System.out.printf("%d번 게시물이 수정되었습니다.\n",inputedId);
+		String body = sc.nextLine();
+
+		articleService.modify(inputedId, title, body);
+		System.out.printf("%d번 게시물이 수정되었습니다.\n", inputedId);
 	}
 
 	private void doDelete(String cmd) {
@@ -75,10 +81,10 @@ public class ArticleController extends Controller {
 			System.out.println("게시물이 존재하지 않습니다.");
 			return;
 		}
-		
+
 		articleService.delete(inputedId);
-		
-		System.out.printf("%d번 게시물이 삭제되었습니다.\n",inputedId);
+
+		System.out.printf("%d번 게시물이 삭제되었습니다.\n", inputedId);
 	}
 
 	private void showDetail(String cmd) {
