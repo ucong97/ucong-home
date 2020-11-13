@@ -20,9 +20,21 @@ public class ArticleController extends Controller {
 			showDetail(cmd);
 		} else if (cmd.startsWith("article delete")) {
 			doDelete(cmd);
-		} else if (cmd.startsWith("article modify")) {
+		}else if (cmd.startsWith("article modify")) {
 			doModify(cmd);
-		}
+		}else if (cmd.equals("article write")) {
+		doWrite(cmd);
+	}
+	}
+
+	private void doWrite(String cmd) {
+		System.out.println("== 게시물 작성 ==");
+		System.out.printf("제목 : ");
+		String title= Container.scanner.nextLine();
+		System.out.printf("내용 : ");
+		String body= Container.scanner.nextLine();
+		
+		articleService.write(title,body);
 	}
 
 	private void doModify(String cmd) {
@@ -43,9 +55,10 @@ public class ArticleController extends Controller {
 		String title = Container.scanner.nextLine();
 		System.out.printf("내용 : ");
 		String body = Container.scanner.nextLine();
-
-		articleService.modify(inputedId, title, body);
-		System.out.printf("%d번 게시물이 수정되었습니다.\n", inputedId);
+		
+		
+		articleService.modify(inputedId,title,body);
+		System.out.printf("%d번 게시물이 수정되었습니다.\n",inputedId);
 	}
 
 	private void doDelete(String cmd) {
@@ -62,10 +75,10 @@ public class ArticleController extends Controller {
 			System.out.println("게시물이 존재하지 않습니다.");
 			return;
 		}
-
+		
 		articleService.delete(inputedId);
-
-		System.out.printf("%d번 게시물이 삭제되었습니다.\n", inputedId);
+		
+		System.out.printf("%d번 게시물이 삭제되었습니다.\n",inputedId);
 	}
 
 	private void showDetail(String cmd) {
