@@ -21,6 +21,10 @@ public class ArticleService {
 		return articleDao.getArticle(inputedId);
 	}
 
+	public void delete(int inputedId) {
+		articleDao.delete(inputedId);
+	}
+
 	
 
 	

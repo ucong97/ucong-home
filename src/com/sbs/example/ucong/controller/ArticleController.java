@@ -16,25 +16,45 @@ public class ArticleController extends Controller {
 	public void doCommand(String cmd) {
 		if (cmd.equals("article list")) {
 			showList(cmd);
-		}else if(cmd.startsWith("article detail")) {
+		} else if (cmd.startsWith("article detail")) {
 			showDetail(cmd);
+		} else if (cmd.startsWith("article delete")) {
+			doDelete(cmd);
 		}
 	}
 
-	
-
-	private void showDetail(String cmd) {
-		System.out.println("== 게시물 상세보기 ==");
+	private void doDelete(String cmd) {
+		System.out.println("== 게시물 삭제 ==");
 		String[] cmdBits = cmd.split(" ");
-		if(cmdBits.length<=2) {
+		if (cmdBits.length <= 2) {
 			System.out.println("게시물 번호를 입력해주세요.");
 			return;
 		}
 		int inputedId = Integer.parseInt(cmdBits[2]);
-		
+
 		Article article = articleService.getArticle(inputedId);
+		if (article == null) {
+			System.out.println("게시물이 존재하지 않습니다.");
+			return;
+		}
 		
-		if(article==null) {
+		articleService.delete(inputedId);
+		
+		System.out.printf("%d번 게시물이 삭제되었습니다.\n",inputedId);
+	}
+
+	private void showDetail(String cmd) {
+		System.out.println("== 게시물 상세보기 ==");
+		String[] cmdBits = cmd.split(" ");
+		if (cmdBits.length <= 2) {
+			System.out.println("게시물 번호를 입력해주세요.");
+			return;
+		}
+		int inputedId = Integer.parseInt(cmdBits[2]);
+
+		Article article = articleService.getArticle(inputedId);
+
+		if (article == null) {
 			System.out.println("게시물이 존재하지 않습니다.");
 			return;
 		}
