@@ -38,3 +38,10 @@ SET regDate = NOW(),
     `body` = '내용3',
     memberId = 1,
     boardId =1;
+
+CREATE TABLE `member`(
+    id INT(10) UNSIGNED PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    loginId CHAR(100) NOT NULL,
+    loginPw CHAR(100) NOT NULL,
+    `name` CHAR(100) NOT NULL
+);

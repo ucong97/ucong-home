@@ -3,6 +3,7 @@ package com.sbs.example.ucong.controller;
 import java.util.Scanner;
 
 import com.sbs.example.ucong.container.Container;
+import com.sbs.example.ucong.dto.Member;
 import com.sbs.example.ucong.service.MemberService;
 
 public class MemberController extends Controller {
@@ -27,6 +28,12 @@ public class MemberController extends Controller {
 		String name = "";
 		System.out.printf("아이디 입력: ");
 		loginId = sc.nextLine().trim();
+		
+		Member member = memberService.getMemberByLoginId(loginId);
+		if(member!=null) {
+			System.out.println("이미  존재하는 아이디 입니다.");
+			return;
+		}
 		System.out.printf("비밀번호 입력: ");
 		loginPw = sc.nextLine().trim();
 		System.out.printf("이름 입력: ");
