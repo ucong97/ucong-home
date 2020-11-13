@@ -17,12 +17,16 @@ public class ArticleService {
 		return articleDao.getArticles();
 	}
 
-	public Article getArticle(int inputedId) {
-		return articleDao.getArticle(inputedId);
+	public Article getArticle(int id) {
+		return articleDao.getArticle(id);
 	}
 
-	public void delete(int inputedId) {
-		articleDao.delete(inputedId);
+	public void delete(int id) {
+		articleDao.delete(id);
+	}
+
+	public void modify(int id, String title, String body) {
+		articleDao.modify(id,title,body);
 	}
 
 	
