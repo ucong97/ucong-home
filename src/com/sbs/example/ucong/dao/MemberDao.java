@@ -5,13 +5,15 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 import com.sbs.example.ucong.dto.Member;
 
 public class MemberDao {
 
-	public void join(String loginId, String loginPw, String name) {
+	public int join(String loginId, String loginPw, String name) {
 		Connection con = null;
+		int id=0;
 		try {
 			String url = "jdbc:mysql://localhost:3306/textBoard?useUnicode=true&characterEncoding=utf8&autoReconnect=true&serverTimezone=Asia/Seoul&useOldAliasMetadataBehavior=true&zeroDateTimeNehavior=convertToNull&connectTimeout=60000&socketTimeout=60000";
 			String user = "sbsst";
@@ -33,13 +35,17 @@ public class MemberDao {
 			String sql = "INSERT INTO member SET loginId=?,loginPw=?,name=?";
 			
 			try {
-				PreparedStatement ps = con.prepareStatement(sql);
+				PreparedStatement ps = con.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS);
 				
 				ps.setString(1,loginId);
 				ps.setString(2,loginPw);
 				ps.setString(3,name);
 				
 				ps.executeUpdate();
+				
+				ResultSet rs = ps.getGeneratedKeys();
+				rs.next();
+				id = rs.getInt(1);
 				
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -55,6 +61,7 @@ public class MemberDao {
 				e.printStackTrace();
 			}
 		}
+		return id;
 	}
 
 	public Member getMemberByLoginId(String loginId) {

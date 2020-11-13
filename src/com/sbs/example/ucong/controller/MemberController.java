@@ -68,9 +68,9 @@ public class MemberController extends Controller {
 		System.out.printf("이름 입력: ");
 		name = sc.nextLine().trim();
 		
-		memberService.join(loginId,loginPw,name);
+		int id =memberService.join(loginId,loginPw,name);
 		
-		System.out.printf("%s 회원님, 회원가입성공!\n",name);
+		System.out.printf("%d 회원님, 회원가입성공!\n",id);
 	}
 
 }

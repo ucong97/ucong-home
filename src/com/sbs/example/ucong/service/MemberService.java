@@ -11,8 +11,8 @@ public class MemberService {
 		memberDao= Container.memberDao;
 	}
 
-	public void join(String loginId, String loginPw, String name) {
-		memberDao.join(loginId,loginPw,name);
+	public int join(String loginId, String loginPw, String name) {
+		return memberDao.join(loginId,loginPw,name);
 		
 	}
 
