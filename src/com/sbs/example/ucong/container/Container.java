@@ -8,6 +8,7 @@ import com.sbs.example.ucong.dao.ArticleDao;
 import com.sbs.example.ucong.dao.MemberDao;
 import com.sbs.example.ucong.service.ArticleService;
 import com.sbs.example.ucong.service.MemberService;
+import com.sbs.example.ucong.session.Session;
 
 public class Container {
 
@@ -18,9 +19,11 @@ public class Container {
 	public static MemberController memberController;
 	public static MemberService memberService;
 	public static MemberDao memberDao;
+	public static Session session;
 	
 	static {
 		scanner = new Scanner(System.in);
+		session = new Session();
 		articleDao = new ArticleDao();
 		memberDao = new MemberDao();
 		articleService = new ArticleService();
