@@ -16,52 +16,34 @@ public class ArticleController extends Controller {
 	public void doCommand(String cmd) {
 		if (cmd.equals("article list")) {
 			showList(cmd);
-		} else if (cmd.startsWith("article delete")) {
-			delete(cmd);
-		} else if (cmd.startsWith("article modify")) {
-			modify(cmd);
+		}else if(cmd.startsWith("article detail")) {
+			showDetail(cmd);
 		}
 	}
 
-	private void modify(String cmd) {
-		System.out.println("== 게시물 수정 ==");
+	
+
+	private void showDetail(String cmd) {
+		System.out.println("== 게시물 상세보기 ==");
 		String[] cmdBits = cmd.split(" ");
-		if (cmdBits.length <= 2) {
-			System.out.println("수정할 게시물 번호를 선택해주세요.");
+		if(cmdBits.length<=2) {
+			System.out.println("게시물 번호를 입력해주세요.");
 			return;
 		}
-		int modifyId = Integer.parseInt(cmdBits[2]);
-		System.out.printf("수정할 제목 : ");
-		String title = Container.scanner.nextLine();
-		System.out.printf("수정할 내용 : ");
-		String body = Container.scanner.nextLine();
-
-		boolean existsId=articleService.modify(modifyId,title,body);
-		if (existsId == false) {
-			System.out.printf("%d번 게시물은 존재하지 않습니다.\n", modifyId);
+		int inputedId = Integer.parseInt(cmdBits[2]);
+		
+		Article article = articleService.getArticle(inputedId);
+		
+		if(article==null) {
+			System.out.println("게시물이 존재하지 않습니다.");
 			return;
 		}
-		System.out.printf("%d번 게시물이 수정되었습니다.\n",modifyId);
-	}
-
-	private void delete(String cmd) {
-		System.out.println("== 게시물 삭제 ==");
-		String[] cmdBits = cmd.split(" ");
-		if (cmdBits.length <= 2) {
-			System.out.println("삭제할 게시물 번호를 선택해주세요.");
-			return;
-		}
-		int delectId = Integer.parseInt(cmdBits[2]);
-
-		boolean existsId = articleService.getArticleById(delectId);
-
-		if (existsId == false) {
-			System.out.printf("%d번 게시물은 존재하지 않습니다.\n", delectId);
-			return;
-		}
-
-		System.out.printf("%d번 게시물이 삭제되었습니다.\n", delectId);
-
+		System.out.printf("번호 : %d\n", article.id);
+		System.out.printf("작성날짜 : %s\n", article.regDate);
+		System.out.printf("수정날짜 : %s\n", article.updateDate);
+		System.out.printf("작성자 : %s\n", article.memberId);
+		System.out.printf("제목 : %s\n", article.title);
+		System.out.printf("내용 : %s\n", article.body);
 	}
 
 	private void showList(String cmd) {

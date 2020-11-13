@@ -17,13 +17,12 @@ public class ArticleService {
 		return articleDao.getArticles();
 	}
 
-	public boolean getArticleById(int id) {
-		return articleDao.getArticleById(id);
+	public Article getArticle(int inputedId) {
+		return articleDao.getArticle(inputedId);
 	}
 
-	public boolean modify(int modifyId, String title, String body) {
-		return articleDao.modify(modifyId,title,body);
-		
-	}
+	
+
+	
 
 }
