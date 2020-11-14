@@ -49,3 +49,10 @@ INSERT INTO `member`
 SET loginId = 'ucong',
     loginPw = 'ucong',
     `name`= '김유경';
+
+CREATE TABLE board(
+    id INT(10) UNSIGNED PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    `name` CHAR(100) NOT NULL
+);
+INSERT INTO board
+SET `name` = '공지사항';
