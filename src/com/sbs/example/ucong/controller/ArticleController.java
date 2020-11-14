@@ -53,6 +53,10 @@ public class ArticleController extends Controller {
 	}
 
 	private void doModify(String cmd) {
+		if(Container.session.logouted()) {
+			System.out.println("로그인하고 이용해주세요.");
+			return;
+		}
 		System.out.println("== 게시물 수정 ==");
 		String[] cmdBits = cmd.split(" ");
 		if (cmdBits.length <= 2) {
@@ -62,8 +66,13 @@ public class ArticleController extends Controller {
 		int inputedId = Integer.parseInt(cmdBits[2]);
 
 		Article article = articleService.getArticle(inputedId);
+		int memberId = Container.session.loginedMemberId;
 		if (article == null) {
 			System.out.println("게시물이 존재하지 않습니다.");
+			return;
+		}
+		if(article.memberId!=memberId) {
+			System.out.println("게시물 수정 권한이 없습니다.");
 			return;
 		}
 		System.out.printf("제목 : ");
