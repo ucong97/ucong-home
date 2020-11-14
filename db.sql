@@ -45,3 +45,7 @@ CREATE TABLE `member`(
     loginPw CHAR(100) NOT NULL,
     `name` CHAR(100) NOT NULL
 );
+INSERT INTO `member`
+SET loginId = 'ucong',
+    loginPw = 'ucong',
+    `name`= '김유경';
