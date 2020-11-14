@@ -80,19 +80,25 @@ public class ArticleController extends Controller {
 			System.out.println("로그인하고 이용해주세요.");
 			return;
 		}
-		System.out.println("== 게시물 삭제 ==");
 		String[] cmdBits = cmd.split(" ");
 		if (cmdBits.length <= 2) {
 			System.out.println("게시물 번호를 입력해주세요.");
 			return;
 		}
 		int inputedId = Integer.parseInt(cmdBits[2]);
-
 		Article article = articleService.getArticle(inputedId);
+		int memberId = Container.session.loginedMemberId;
 		if (article == null) {
 			System.out.println("게시물이 존재하지 않습니다.");
 			return;
 		}
+		if(article.memberId!=memberId) {
+			System.out.println("게시물 삭제 권한이 없습니다.");
+			return;
+		}
+		
+
+		System.out.println("== 게시물 삭제 ==");
 
 		articleService.delete(inputedId);
 
