@@ -42,17 +42,61 @@ public class MemberController extends Controller {
 		System.out.println("== 로그인 ==");
 		String loginId = "";
 		String loginPw = "";
-		System.out.printf("아이디 입력: ");
-		loginId = sc.nextLine().trim();
-		Member member = memberService.getMemberByLoginId(loginId);
-		if(member==null) {
-			System.out.println("존재하지 않는 아이디입니다.");
+		Member member = null;
+		int loginIdFalseCount=0;
+		int loginIdFalseMaxCount=3;
+		boolean loginIdIsValid=false;
+		while(true) {
+			if(loginIdFalseCount>=loginIdFalseMaxCount) {
+				System.out.println("아이디 입력을 3번 실패하셨습니다.");
+				break;
+			}
+			System.out.printf("아이디 입력: ");
+			loginId = sc.nextLine().trim();
+			member = memberService.getMemberByLoginId(loginId);
+			if(loginId.length()==0) {
+				System.out.println("아이디를 입력해주세요.");
+				loginIdFalseCount++;
+				continue;
+			}
+			if(member==null) {
+				System.out.println("존재하지 않는 아이디입니다.");
+				loginIdFalseCount++;
+				continue;
+			}
+			
+			loginIdIsValid=true;
+			break;
+		}
+		if(loginIdIsValid==false) {
 			return;
 		}
-		System.out.printf("비밀번호 입력: ");
-		loginPw = sc.nextLine().trim();
-		if(member.loginPw.equals(loginPw)==false) {
-			System.out.println("비밀번호가 일치하지 않습니다.");
+		
+		int loginPwFalseCount=0;
+		int loginPwFalseMaxCount=3;
+		boolean loginPwIsValid=false;
+		while(true) {
+			if(loginPwFalseCount>=loginPwFalseMaxCount) {
+				System.out.println("비밀번호 입력을 3번 실패하셨습니다.");
+				break;
+			}
+			System.out.printf("비밀번호 입력: ");
+			loginPw = sc.nextLine().trim();
+			if(loginPw.length()==0) {
+				System.out.println("비밀번호를 입력해주세요.");
+				loginPwFalseCount++;
+				continue;
+			}
+			
+			if(member.loginPw.equals(loginPw)==false) {
+				System.out.println("비밀번호가 일치하지 않습니다.");
+				loginPwFalseCount++;
+				continue;
+			}
+			loginPwIsValid=true;
+			break;
+		}
+		if(loginPwIsValid==false) {
 			return;
 		}
 		
@@ -66,19 +110,81 @@ public class MemberController extends Controller {
 		String loginId = "";
 		String loginPw = "";
 		String name = "";
-		System.out.printf("아이디 입력: ");
-		loginId = sc.nextLine().trim();
+		int loginIdFalseCount=0;
+		int loginIdFalseMaxCount=3;
+		boolean loginIdIsValid=false;
 		
-		Member member = memberService.getMemberByLoginId(loginId);
-		if(member!=null) {
-			System.out.println("이미  존재하는 아이디 입니다.");
+		while(true) {
+			if(loginIdFalseCount>=loginIdFalseMaxCount) {
+				System.out.println("아이디 입력을 3번 실패하셨습니다.");
+				break;
+			}
+			System.out.printf("아이디 입력: ");
+			loginId = sc.nextLine().trim();
+			
+			Member member = memberService.getMemberByLoginId(loginId);
+			if(member!=null) {
+				System.out.println("이미  존재하는 아이디 입니다.");
+				loginIdFalseCount++;
+				continue;
+			}
+			if(loginId.length()==0) {
+				System.out.println("회원가입할 아이디를 입력해주세요.");
+				loginIdFalseCount++;
+				continue;
+			}
+			
+			loginIdIsValid=true;
+			break;
+		}
+		
+		if(loginIdIsValid==false) {
 			return;
 		}
-		System.out.printf("비밀번호 입력: ");
-		loginPw = sc.nextLine().trim();
-		System.out.printf("이름 입력: ");
-		name = sc.nextLine().trim();
-		
+		int loginPwFalseCount=0;
+		int loginPwFalseMaxCount=3;
+		boolean loginPwIsValid=false;
+		while(true) {
+			if(loginPwFalseCount>=loginPwFalseMaxCount) {
+				System.out.println("비밀번호 입력을 3번 실패하셨습니다.");
+				break;
+			}
+			System.out.printf("비밀번호 입력: ");
+			loginPw = sc.nextLine().trim();
+			if(loginPw.length()==0) {
+				System.out.println("회원가입할 비밀번호를 입력해주세요.");
+				loginPwFalseCount++;
+				continue;
+			}
+			
+			loginPwIsValid=true;
+			break;
+		}
+		if(loginPwIsValid==false) {
+			return;
+		}
+		int loginNameFalseCount=0;
+		int loginNameFalseMaxCount=3;
+		boolean loginNameIsValid=false;
+		while(true) {
+			if(loginNameFalseCount>=loginNameFalseMaxCount) {
+				System.out.println("이름 입력을 3번 실패하셨습니다.");
+				break;
+			}
+			System.out.printf("이름 입력: ");
+			name = sc.nextLine().trim();
+			if(name.length()==0) {
+				System.out.println("이름을 입력해주세요.");
+				loginNameFalseCount++;
+				continue;
+			}
+			
+			loginNameIsValid=true;
+			break;
+		}
+		if(loginNameIsValid==false) {
+			return;
+		}
 		int id =memberService.join(loginId,loginPw,name);
 		
 		System.out.printf("%d 회원님, 회원가입성공!\n",id);
