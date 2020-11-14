@@ -109,15 +109,15 @@ public class ArticleController extends Controller {
 		int inputedId = Integer.parseInt(cmdBits[2]);
 
 		Article article = articleService.getArticle(inputedId);
-
 		if (article == null) {
 			System.out.println("게시물이 존재하지 않습니다.");
 			return;
 		}
+		Member member = memberService.getMemberById(article.memberId);
 		System.out.printf("번호 : %d\n", article.id);
 		System.out.printf("작성날짜 : %s\n", article.regDate);
 		System.out.printf("수정날짜 : %s\n", article.updateDate);
-		System.out.printf("작성자 : %s\n", article.memberId);
+		System.out.printf("작성자 : %s\n", member.name);
 		System.out.printf("제목 : %s\n", article.title);
 		System.out.printf("내용 : %s\n", article.body);
 	}
