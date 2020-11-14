@@ -33,4 +33,8 @@ public class ArticleService {
 		return articleDao.write(memberId,boardId,title, body);
 	}
 
+	public int makeBoard(String name) {
+		return articleDao.makeBoard(name);
+	}
+
 }

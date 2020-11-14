@@ -99,7 +99,7 @@ public class ArticleDao {
 
 			try {
 				PreparedStatement ps = con.prepareStatement(sql);
-				ps.setInt(1,inputedId);
+				ps.setInt(1, inputedId);
 				ResultSet rs = ps.executeQuery();
 
 				while (rs.next()) {
@@ -112,7 +112,7 @@ public class ArticleDao {
 					int boardId = rs.getInt("boardId");
 
 					article = new Article(id, regDate, updateDate, title, body, memberId, boardId);
-					
+
 				}
 
 			} catch (SQLException e) {
@@ -159,11 +159,10 @@ public class ArticleDao {
 
 			try {
 				PreparedStatement ps = con.prepareStatement(sql);
-				ps.setInt(1,inputedId);
-				
+				ps.setInt(1, inputedId);
+
 				ps.executeUpdate();
-				
-			
+
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -182,7 +181,7 @@ public class ArticleDao {
 
 	}
 
-	public void modify(int id,String title, String body) {
+	public void modify(int id, String title, String body) {
 		Connection con = null;
 		try {
 
@@ -207,13 +206,12 @@ public class ArticleDao {
 
 			try {
 				PreparedStatement ps = con.prepareStatement(sql);
-				ps.setString(1,title);
-				ps.setString(2,body);
-				ps.setInt(3,id);
-				
+				ps.setString(1, title);
+				ps.setString(2, body);
+				ps.setInt(3, id);
+
 				ps.executeUpdate();
-				
-			
+
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -230,12 +228,11 @@ public class ArticleDao {
 			}
 		}
 
-		
 	}
 
-	public int write(int memberId,int boardId,String title, String body) {
+	public int write(int memberId, int boardId, String title, String body) {
 		Connection con = null;
-		int id=0;
+		int id = 0;
 		try {
 
 			String url = "jdbc:mysql://localhost:3306/textBoard?useUnicode=true&characterEncoding=utf8&autoReconnect=true&serverTimezone=Asia/Seoul&useOldAliasMetadataBehavior=true&zeroDateTimeNehavior=convertToNull&connectTimeout=60000&socketTimeout=60000";
@@ -258,18 +255,18 @@ public class ArticleDao {
 			String sql = "INSERT INTO article SET regDate=NOW(),updateDate=NOW(),title=?,`body`=?,memberId=?,boardId=?";
 
 			try {
-				PreparedStatement ps = con.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS);
-				ps.setString(1,title);
-				ps.setString(2,body);
-				ps.setInt(3,memberId);
-				ps.setInt(4,boardId);
+				PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+				ps.setString(1, title);
+				ps.setString(2, body);
+				ps.setInt(3, memberId);
+				ps.setInt(4, boardId);
 
 				ps.executeUpdate();
-				
+
 				ResultSet rs = ps.getGeneratedKeys();
 				rs.next();
 				id = rs.getInt(1);
-			
+
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -286,6 +283,53 @@ public class ArticleDao {
 			}
 		}
 
+		return id;
+	}
+
+	public int makeBoard(String name) {
+		Connection con = null;
+		int id=0;
+		try {
+			try {
+				Class.forName("com.mysql.cj.jdbc.Driver");
+			} catch (ClassNotFoundException e) {
+				e.printStackTrace();
+			}
+			String url = "jdbc:mysql://localhost:3306/textBoard?useUnicode=true&characterEncoding=utf8&autoReconnect=true&serverTimezone=Asia/Seoul&useOldAliasMetadataBehavior=true&zeroDateTimeNehavior=convertToNull&connectTimeout=60000&socketTimeout=60000";
+			String user = "sbsst";
+			String pass = "sbs123414";
+
+			try {
+				con = DriverManager.getConnection(url, user, pass);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			String sql = "INSERT INTO board SET `name`= ?";
+
+			try {
+				PreparedStatement ps = con.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS);
+				ps.setString(1, name);
+				
+				ps.executeUpdate();
+				ResultSet rs = ps.getGeneratedKeys();
+				rs.next();
+				id = rs.getInt(1);
+
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+
+		} finally {
+			try {
+				if (con != null) {
+					con.close();
+
+				}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 
 		return id;
 	}

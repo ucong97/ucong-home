@@ -31,11 +31,22 @@ public class ArticleController extends Controller {
 			doModify(cmd);
 		} else if (cmd.equals("article write")) {
 			doWrite(cmd);
+		} else if (cmd.equals("article board")) {
+			doMakeBoard(cmd);
 		}
 	}
 
+	private void doMakeBoard(String cmd) {
+		System.out.println("== 게시판 생성 ==");
+		System.out.printf("게시판 이름 : ");
+		String name = sc.nextLine();
+		
+		int id = articleService.makeBoard(name);
+		System.out.printf("%s(%d번) 게시물이 생성되었습니다.\n",name, id);
+	}
+
 	private void doWrite(String cmd) {
-		if(Container.session.logouted()) {
+		if (Container.session.logouted()) {
 			System.out.println("로그인하고 이용해주세요.");
 			return;
 		}
@@ -44,16 +55,16 @@ public class ArticleController extends Controller {
 		String title = sc.nextLine();
 		System.out.printf("내용 : ");
 		String body = sc.nextLine();
-		
-		int memberId= Container.session.loginedMemberId;
-		int boardId=1;//임시
-		
-		int id = articleService.write(memberId,boardId,title, body);
-		System.out.printf("%d번 게시물이 생성되었습니다.\n",id);
+
+		int memberId = Container.session.loginedMemberId;
+		int boardId = 1;// 임시
+
+		int id = articleService.write(memberId, boardId, title, body);
+		System.out.printf("%d번 게시물이 생성되었습니다.\n", id);
 	}
 
 	private void doModify(String cmd) {
-		if(Container.session.logouted()) {
+		if (Container.session.logouted()) {
 			System.out.println("로그인하고 이용해주세요.");
 			return;
 		}
@@ -71,7 +82,7 @@ public class ArticleController extends Controller {
 			System.out.println("게시물이 존재하지 않습니다.");
 			return;
 		}
-		if(article.memberId!=memberId) {
+		if (article.memberId != memberId) {
 			System.out.println("게시물 수정 권한이 없습니다.");
 			return;
 		}
@@ -85,7 +96,7 @@ public class ArticleController extends Controller {
 	}
 
 	private void doDelete(String cmd) {
-		if(Container.session.logouted()) {
+		if (Container.session.logouted()) {
 			System.out.println("로그인하고 이용해주세요.");
 			return;
 		}
@@ -101,11 +112,10 @@ public class ArticleController extends Controller {
 			System.out.println("게시물이 존재하지 않습니다.");
 			return;
 		}
-		if(article.memberId!=memberId) {
+		if (article.memberId != memberId) {
 			System.out.println("게시물 삭제 권한이 없습니다.");
 			return;
 		}
-		
 
 		System.out.println("== 게시물 삭제 ==");
 
@@ -145,8 +155,8 @@ public class ArticleController extends Controller {
 
 		for (Article article : articles) {
 			Member member = memberService.getMemberById(article.memberId);
-			System.out.printf("%d / %s / %s / %s / %s\n", article.id, article.regDate, article.updateDate,
-					member.name, article.title);
+			System.out.printf("%d / %s / %s / %s / %s\n", article.id, article.regDate, article.updateDate, member.name,
+					article.title);
 		}
 	}
 }
