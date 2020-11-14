@@ -5,6 +5,7 @@ import java.util.Scanner;
 
 import com.sbs.example.ucong.container.Container;
 import com.sbs.example.ucong.dto.Article;
+import com.sbs.example.ucong.dto.Board;
 import com.sbs.example.ucong.dto.Member;
 import com.sbs.example.ucong.service.ArticleService;
 import com.sbs.example.ucong.service.MemberService;
@@ -31,18 +32,38 @@ public class ArticleController extends Controller {
 			doModify(cmd);
 		} else if (cmd.equals("article write")) {
 			doWrite(cmd);
-		} else if (cmd.equals("article board")) {
+		} else if (cmd.equals("article makeBoard")) {
 			doMakeBoard(cmd);
+		} else if (cmd.startsWith("article selectBoard")) {
+			doSelectBoard(cmd);
 		}
+	}
+
+	private void doSelectBoard(String cmd) {
+		System.out.println("== 게시판 선택 ==");
+		String[] cmdBits = cmd.split(" ");
+		if (cmdBits.length <= 2) {
+			System.out.println("게시판 번호를 입력해주세요.");
+			return;
+		}
+		int inputedId = Integer.parseInt(cmdBits[2]);
+		
+		Board board = articleService.getBoardById(inputedId);
+		if(board==null) {
+			System.out.printf("%d번 게시판은 존재하지 않는 게시판입니다.\n", inputedId);
+			return;
+		}
+		Container.session.selectBoard(inputedId);
+		System.out.printf("%s(%d번)게시판이 선택되었습니다.\n",board.name,board.id);
 	}
 
 	private void doMakeBoard(String cmd) {
 		System.out.println("== 게시판 생성 ==");
 		System.out.printf("게시판 이름 : ");
 		String name = sc.nextLine();
-		
+
 		int id = articleService.makeBoard(name);
-		System.out.printf("%s(%d번) 게시물이 생성되었습니다.\n",name, id);
+		System.out.printf("%s(%d번) 게시물이 생성되었습니다.\n", name, id);
 	}
 
 	private void doWrite(String cmd) {
@@ -57,7 +78,7 @@ public class ArticleController extends Controller {
 		String body = sc.nextLine();
 
 		int memberId = Container.session.loginedMemberId;
-		int boardId = 1;// 임시
+		int boardId = Container.session.selectedBoardId;
 
 		int id = articleService.write(memberId, boardId, title, body);
 		System.out.printf("%d번 게시물이 생성되었습니다.\n", id);
@@ -149,13 +170,14 @@ public class ArticleController extends Controller {
 
 	private void showList(String cmd) {
 		System.out.println("== 게시물 리스트 ==");
-		System.out.println("번호 / 작성 / 수정 / 작성자 / 제목");
+		System.out.println("번호 / 게시판 이름 /  작성 / 수정 / 작성자 / 제목 ");
 
 		List<Article> articles = articleService.getArticles();
 
 		for (Article article : articles) {
 			Member member = memberService.getMemberById(article.memberId);
-			System.out.printf("%d / %s / %s / %s / %s\n", article.id, article.regDate, article.updateDate, member.name,
+			Board board = articleService.getBoardById(article.boardId);
+			System.out.printf("%d / %s / %s / %s / %s / %s\n", article.id,board.name, article.regDate,article.updateDate, member.name,
 					article.title);
 		}
 	}

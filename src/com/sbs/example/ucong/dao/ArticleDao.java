@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.sbs.example.ucong.dto.Article;
+import com.sbs.example.ucong.dto.Board;
 
 public class ArticleDao {
 
@@ -332,6 +333,60 @@ public class ArticleDao {
 		}
 
 		return id;
+	}
+
+	public Board getBoardById(int inputedId) {
+		Board board = null;
+		Connection con=null;
+		try {
+			try {
+				Class.forName("com.mysql.cj.jdbc.Driver");
+			} catch (ClassNotFoundException e) {
+				e.printStackTrace();
+			}
+			String url = "jdbc:mysql://localhost:3306/textBoard?useUnicode=true&characterEncoding=utf8&autoReconnect=true&serverTimezone=Asia/Seoul&useOldAliasMetadataBehavior=true&zeroDateTimeNehavior=convertToNull&connectTimeout=60000&socketTimeout=60000";
+			String user = "sbsst";
+			String pass = "sbs123414";
+
+			try {
+				con = DriverManager.getConnection(url, user, pass);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			String sql = "SELECT * FROM board WHERE id = ?";
+
+			try {
+				PreparedStatement ps = con.prepareStatement(sql);
+				ps.setInt(1, inputedId);
+				
+				ResultSet rs = ps.executeQuery();
+				
+				if(rs.next()) {
+					int id = rs.getInt("id");
+					String name = rs.getString("name");
+					
+					board = new Board(id,name);
+				}
+				
+				
+
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+
+		} finally {
+			try {
+				if (con != null) {
+					con.close();
+
+				}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+
+		return board;
 	}
 
 }

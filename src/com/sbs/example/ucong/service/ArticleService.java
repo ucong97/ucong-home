@@ -5,6 +5,7 @@ import java.util.List;
 import com.sbs.example.ucong.container.Container;
 import com.sbs.example.ucong.dao.ArticleDao;
 import com.sbs.example.ucong.dto.Article;
+import com.sbs.example.ucong.dto.Board;
 
 public class ArticleService {
 	private ArticleDao articleDao;
@@ -35,6 +36,10 @@ public class ArticleService {
 
 	public int makeBoard(String name) {
 		return articleDao.makeBoard(name);
+	}
+
+	public Board getBoardById(int inputedId) {
+		return articleDao.getBoardById(inputedId);
 	}
 
 }
