@@ -44,50 +44,12 @@ public class ArticleDao {
 		return new Article(articleMap);
 	}
 
-	public void delete(int inputedId) {
-		Connection con = null;
-		try {
-
-			String url = "jdbc:mysql://localhost:3306/textBoard?useUnicode=true&characterEncoding=utf8&autoReconnect=true&serverTimezone=Asia/Seoul&useOldAliasMetadataBehavior=true&zeroDateTimeNehavior=convertToNull&connectTimeout=60000&socketTimeout=60000";
-			String user = "sbsst";
-			String pass = "sbs123414";
-
-			// 기사등록
-			try {
-				Class.forName("com.mysql.cj.jdbc.Driver");
-			} catch (ClassNotFoundException e1) {
-				e1.printStackTrace();
-			}
-			// 연결 생성
-			try {
-				con = DriverManager.getConnection(url, user, pass);
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-
-			String sql = "DELETE FROM article WHERE id = ?";
-
-			try {
-				PreparedStatement ps = con.prepareStatement(sql);
-				ps.setInt(1, inputedId);
-
-				ps.executeUpdate();
-
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-
-		} finally {
-
-			try {
-				if (con != null) {
-					con.close();
-				}
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
+	public int delete(int inputedId) {
+		SecSql sql = new SecSql();
+		sql.append("DELETE FROM article");
+		sql.append("WHERE id = ?",inputedId);
+		
+		return MysqlUtil.delete(sql);
 
 	}
 

@@ -22,8 +22,8 @@ public class ArticleService {
 		return articleDao.getArticle(id);
 	}
 
-	public void delete(int id) {
-		articleDao.delete(id);
+	public int delete(int id) {
+		return articleDao.delete(id);
 	}
 
 	public void modify(int id, String title, String body) {
