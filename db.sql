@@ -41,12 +41,16 @@ SET regDate = NOW(),
 
 CREATE TABLE `member`(
     id INT(10) UNSIGNED PRIMARY KEY NOT NULL AUTO_INCREMENT,
-    loginId CHAR(100) NOT NULL,
-    loginPw CHAR(100) NOT NULL,
-    `name` CHAR(100) NOT NULL
+    regDate DATETIME NOT NULL,
+    updateDate DATETIME NOT NULL,
+    loginId CHAR(30) NOT NULL,
+    loginPw VARCHAR(50) NOT NULL,
+    `name` CHAR(30) NOT NULL
 );
 INSERT INTO `member`
-SET loginId = 'ucong',
+SET regDate = NOW(),
+    updateDate = NOW(),
+    loginId = 'ucong',
     loginPw = 'ucong',
     `name`= '김유경';
 
