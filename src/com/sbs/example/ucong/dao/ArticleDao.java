@@ -41,6 +41,11 @@ public class ArticleDao {
 		sql.append("WHERE id = ?",inputedId);
 		
 		Map<String,Object> articleMap = MysqlUtil.selectRow(sql);
+		
+		if(articleMap.isEmpty()) {
+			return null;
+		}
+		
 		return new Article(articleMap);
 	}
 
@@ -53,53 +58,15 @@ public class ArticleDao {
 
 	}
 
-	public void modify(int id, String title, String body) {
-		Connection con = null;
-		try {
-
-			String url = "jdbc:mysql://localhost:3306/textBoard?useUnicode=true&characterEncoding=utf8&autoReconnect=true&serverTimezone=Asia/Seoul&useOldAliasMetadataBehavior=true&zeroDateTimeNehavior=convertToNull&connectTimeout=60000&socketTimeout=60000";
-			String user = "sbsst";
-			String pass = "sbs123414";
-
-			// 기사등록
-			try {
-				Class.forName("com.mysql.cj.jdbc.Driver");
-			} catch (ClassNotFoundException e1) {
-				e1.printStackTrace();
-			}
-			// 연결 생성
-			try {
-				con = DriverManager.getConnection(url, user, pass);
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-
-			String sql = "UPDATE article SET title=?,`body`=?, updateDate=NOW() WHERE id=?";
-
-			try {
-				PreparedStatement ps = con.prepareStatement(sql);
-				ps.setString(1, title);
-				ps.setString(2, body);
-				ps.setInt(3, id);
-
-				ps.executeUpdate();
-
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-
-		} finally {
-
-			try {
-				if (con != null) {
-					con.close();
-				}
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
-
+	public int modify(int id, String title, String body) {
+		SecSql sql = new SecSql();
+		sql.append("UPDATE article");
+		sql.append("SET title=?,",title);
+		sql.append("`body`=?,",body);
+		sql.append("updateDate=NOW()");
+		sql.append("WHERE id=?",id);
+		
+		return MysqlUtil.update(sql);
 	}
 
 	public int write(int memberId, int boardId, String title, String body) {

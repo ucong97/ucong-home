@@ -26,8 +26,8 @@ public class ArticleService {
 		return articleDao.delete(id);
 	}
 
-	public void modify(int id, String title, String body) {
-		articleDao.modify(id, title, body);
+	public int modify(int id, String title, String body) {
+		return articleDao.modify(id, title, body);
 	}
 
 	public int write(int memberId, int boardId, String title, String body) {
