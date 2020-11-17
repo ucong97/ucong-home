@@ -121,10 +121,15 @@ public class MemberController extends Controller {
 	}
 
 	private void doJoin(String cmd) {
+		if (Container.session.logined()) {
+			System.out.println("로그아웃하고 이용해주세요.");
+			return;
+		}
 		System.out.println("== 회원가입 ==");
 		String loginId = "";
 		String loginPw = "";
 		String name = "";
+		String loginPwConfirm = "";
 		int loginIdFalseCount = 0;
 		int loginIdFalseMaxCount = 3;
 		boolean loginIdIsValid = false;
@@ -171,11 +176,37 @@ public class MemberController extends Controller {
 				loginPwFalseCount++;
 				continue;
 			}
-
+			
 			loginPwIsValid = true;
 			break;
 		}
 		if (loginPwIsValid == false) {
+			return;
+		}
+		int loginPwCfFalseCount = 0;
+		int loginPwCfFalseMaxCount = 3;
+		boolean loginPwCfIsValid = false;
+		while (true) {
+			if (loginPwCfFalseCount >= loginPwCfFalseMaxCount) {
+				System.out.println("비밀번호 확인을 3번 실패하셨습니다.");
+				break;
+			}
+			System.out.printf("2차확인 비밀번호 입력: ");
+			loginPwConfirm = sc.nextLine().trim();
+			if (loginPwConfirm.length() == 0) {
+				System.out.println("1차때 입력한 비밀번호를 입력해주세요.");
+				loginPwCfFalseCount++;
+				continue;
+			}
+			if(loginPw.equals(loginPwConfirm)==false) {
+				System.out.println("1차때 입력한 비밀번호를 입력해주세요.");
+				loginPwCfFalseCount++;
+				continue;
+			}
+			loginPwCfIsValid = true;
+			break;
+		}
+		if (loginPwCfIsValid == false) {
 			return;
 		}
 		int loginNameFalseCount = 0;
@@ -202,7 +233,7 @@ public class MemberController extends Controller {
 		}
 		int id = memberService.join(loginId, loginPw, name);
 
-		System.out.printf("%d 회원님, 회원가입성공!\n", id);
+		System.out.printf("%d번 회원님, 회원가입성공!\n", id);
 	}
 
 }
