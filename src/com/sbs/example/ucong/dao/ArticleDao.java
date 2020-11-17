@@ -69,7 +69,7 @@ public class ArticleDao {
 		return MysqlUtil.update(sql);
 	}
 
-	public int write(int memberId, int boardId, String title, String body) {
+	public int add(int memberId, int boardId, String title, String body) {
 		
 		SecSql sql = new SecSql();
 		sql.append("INSERT INTO article");

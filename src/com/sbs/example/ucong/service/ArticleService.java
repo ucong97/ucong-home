@@ -31,7 +31,7 @@ public class ArticleService {
 	}
 
 	public int write(int memberId, int boardId, String title, String body) {
-		return articleDao.write(memberId,boardId,title, body);
+		return articleDao.add(memberId,boardId,title, body);
 	}
 
 	public int makeBoard(String name) {
