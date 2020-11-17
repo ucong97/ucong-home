@@ -70,59 +70,18 @@ public class ArticleDao {
 	}
 
 	public int write(int memberId, int boardId, String title, String body) {
-		Connection con = null;
-		int id = 0;
-		try {
-
-			String url = "jdbc:mysql://localhost:3306/textBoard?useUnicode=true&characterEncoding=utf8&autoReconnect=true&serverTimezone=Asia/Seoul&useOldAliasMetadataBehavior=true&zeroDateTimeNehavior=convertToNull&connectTimeout=60000&socketTimeout=60000";
-			String user = "sbsst";
-			String pass = "sbs123414";
-
-			// 기사등록
-			try {
-				Class.forName("com.mysql.cj.jdbc.Driver");
-			} catch (ClassNotFoundException e1) {
-				e1.printStackTrace();
-			}
-			// 연결 생성
-			try {
-				con = DriverManager.getConnection(url, user, pass);
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-
-			String sql = "INSERT INTO article SET regDate=NOW(),updateDate=NOW(),title=?,`body`=?,memberId=?,boardId=?";
-
-			try {
-				PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-				ps.setString(1, title);
-				ps.setString(2, body);
-				ps.setInt(3, memberId);
-				ps.setInt(4, boardId);
-
-				ps.executeUpdate();
-
-				ResultSet rs = ps.getGeneratedKeys();
-				rs.next();
-				id = rs.getInt(1);
-
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-
-		} finally {
-
-			try {
-				if (con != null) {
-					con.close();
-				}
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
-
-		return id;
+		
+		SecSql sql = new SecSql();
+		sql.append("INSERT INTO article");
+		sql.append("SET regDate=NOW(),");
+		sql.append("updateDate=NOW(),");
+		sql.append("title=?,",title);
+		sql.append("`body`=?,",body);
+		sql.append("memberId=?,",memberId);
+		sql.append("boardId=?",boardId);
+		
+		return MysqlUtil.insert(sql);
+		
 	}
 
 	public int makeBoard(String name) {
