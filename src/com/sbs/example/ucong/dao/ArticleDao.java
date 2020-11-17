@@ -21,7 +21,7 @@ public class ArticleDao {
 		List<Article> articles = new ArrayList<>();
 
 		SecSql sql = new SecSql();
-		sql.append("SELECT * ");
+		sql.append("SELECT *");
 		sql.append("FROM article");
 		sql.append("ORDER BY id DESC");
 
@@ -34,64 +34,14 @@ public class ArticleDao {
 	}
 
 	public Article getArticle(int inputedId) {
-		Article article = null;
-		Connection con = null;
-		try {
-
-			String url = "jdbc:mysql://localhost:3306/textBoard?useUnicode=true&characterEncoding=utf8&autoReconnect=true&serverTimezone=Asia/Seoul&useOldAliasMetadataBehavior=true&zeroDateTimeNehavior=convertToNull&connectTimeout=60000&socketTimeout=60000";
-			String user = "sbsst";
-			String pass = "sbs123414";
-
-			// 기사등록
-			try {
-				Class.forName("com.mysql.cj.jdbc.Driver");
-			} catch (ClassNotFoundException e1) {
-				e1.printStackTrace();
-			}
-			// 연결 생성
-			try {
-				con = DriverManager.getConnection(url, user, pass);
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-
-			String sql = "SELECT * FROM article WHERE id = ?";
-
-			try {
-				PreparedStatement ps = con.prepareStatement(sql);
-				ps.setInt(1, inputedId);
-				ResultSet rs = ps.executeQuery();
-
-				while (rs.next()) {
-					int id = rs.getInt("id");
-					String regDate = rs.getString("regDate");
-					String updateDate = rs.getString("updateDate");
-					String title = rs.getString("title");
-					String body = rs.getString("body");
-					int memberId = rs.getInt("memberId");
-					int boardId = rs.getInt("boardId");
-
-					article = new Article(id, regDate, updateDate, title, body, memberId, boardId);
-
-				}
-
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-
-		} finally {
-
-			try {
-				if (con != null) {
-					con.close();
-				}
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
-
-		return article;
+		
+		SecSql sql = new SecSql();
+		sql.append("SELECT *");
+		sql.append("FROM article");
+		sql.append("WHERE id = ?",inputedId);
+		
+		Map<String,Object> articleMap = MysqlUtil.selectRow(sql);
+		return new Article(articleMap);
 	}
 
 	public void delete(int inputedId) {
