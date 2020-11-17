@@ -2,6 +2,7 @@ package com.sbs.example.ucong;
 
 import java.util.Scanner;
 
+import com.sbs.example.mysqlutil.MysqlUtil;
 import com.sbs.example.ucong.container.Container;
 import com.sbs.example.ucong.controller.ArticleController;
 import com.sbs.example.ucong.controller.Controller;
@@ -23,16 +24,23 @@ public class App {
 			System.out.printf("명령어) ");
 			String cmd = sc.nextLine();
 			
+			MysqlUtil.setDBInfo("localhost", "sbsst", "sbs123414", "textBoard");
+			MysqlUtil.setDevMode(true);
+			
+			boolean needToExit = false;
 			if(cmd.equals("system eixt")) {
 				System.out.println("== 프로그램 종료 ==");
-				break;
+				needToExit = true;
 			}
 			
 			Controller controller = getControllerByCmd(cmd);
 			if(controller != null) {
 				controller.doCommand(cmd);
 			}
-			
+			MysqlUtil.closeConnection();
+			if(needToExit == true) {
+				break;
+			}
 			
 		}
 	}
