@@ -39,7 +39,40 @@ public class ArticleController extends Controller {
 			doSelectBoard(cmd);
 		} else if (cmd.startsWith("article writeReply")) {
 			doWriteReply(cmd);
+		} else if (cmd.startsWith("article replyModify")) {
+			doReplyModify(cmd);
 		}
+	}
+
+	private void doReplyModify(String cmd) {
+		if (Container.session.logouted()) {
+			System.out.println("로그인하고 이용해주세요.");
+			return;
+		}
+		System.out.println("== 댓글 수정 ==");
+		String[] cmdBits = cmd.split(" ");
+		if (cmdBits.length <= 2) {
+			System.out.println("댓글 번호를 입력해주세요.");
+			return;
+		}
+		int inputedId = Integer.parseInt(cmdBits[2]);
+
+		ArticleReply articleReply = articleService.getArticleReply(inputedId);
+		int memberId = Container.session.loginedMemberId;
+		if (articleReply == null) {
+			System.out.println("해당 댓글이 존재하지 않습니다.");
+			return;
+		}
+		if (articleReply.memberId != memberId) {
+			System.out.println("게시물 수정 권한이 없습니다.");
+			return;
+		}
+		
+		System.out.printf("내용 : ");
+		String body = sc.nextLine();
+
+		articleService.replyModify(inputedId, body);
+		System.out.printf("%d번 댓글이 수정되었습니다.\n", inputedId);
 	}
 
 	private void doWriteReply(String cmd) {

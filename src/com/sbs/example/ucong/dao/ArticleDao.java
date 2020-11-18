@@ -129,4 +129,29 @@ public class ArticleDao {
 		return articleReplys;
 	}
 
+	public ArticleReply getArticleReply(int id) {
+		SecSql sql = new SecSql();
+		sql.append("SELECT *");
+		sql.append("FROM articleReply");
+		sql.append("WHERE id = ?",id);
+		
+		Map<String,Object> articleReplyMap = MysqlUtil.selectRow(sql);
+		
+		if(articleReplyMap.isEmpty()) {
+			return null;
+		}
+		
+		return new ArticleReply(articleReplyMap);
+	}
+
+	public int replyModify(int id, String body) {
+		SecSql sql = new SecSql();
+		sql.append("UPDATE articleReply");
+		sql.append("SET `body`=?,",body);
+		sql.append("regDate=NOW()");
+		sql.append("WHERE id=?",id);
+		
+		return MysqlUtil.update(sql);
+	}
+
 }
