@@ -1,11 +1,5 @@
 package com.sbs.example.ucong.dao;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -93,55 +87,18 @@ public class ArticleDao {
 	}
 
 	public Board getBoardById(int inputedId) {
-		Board board = null;
-		Connection con = null;
-		try {
-			try {
-				Class.forName("com.mysql.cj.jdbc.Driver");
-			} catch (ClassNotFoundException e) {
-				e.printStackTrace();
-			}
-			String url = "jdbc:mysql://localhost:3306/textBoard?useUnicode=true&characterEncoding=utf8&autoReconnect=true&serverTimezone=Asia/Seoul&useOldAliasMetadataBehavior=true&zeroDateTimeNehavior=convertToNull&connectTimeout=60000&socketTimeout=60000";
-			String user = "sbsst";
-			String pass = "sbs123414";
-
-			try {
-				con = DriverManager.getConnection(url, user, pass);
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-			String sql = "SELECT * FROM board WHERE id = ?";
-
-			try {
-				PreparedStatement ps = con.prepareStatement(sql);
-				ps.setInt(1, inputedId);
-
-				ResultSet rs = ps.executeQuery();
-
-				if (rs.next()) {
-					int id = rs.getInt("id");
-					String name = rs.getString("name");
-
-					board = new Board(id, name);
-				}
-
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-
-		} finally {
-			try {
-				if (con != null) {
-					con.close();
-
-				}
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+		
+		SecSql sql = new SecSql();
+		sql.append("SELECT *");
+		sql.append("FROM board");
+		sql.append("WHERE id = ?",inputedId);
+		Map<String,Object> boardMap = MysqlUtil.selectRow(sql);
+		
+		if(boardMap.isEmpty()) {
+			return null;
 		}
-
-		return board;
+	
+		return new Board(boardMap);
 	}
 
 }
