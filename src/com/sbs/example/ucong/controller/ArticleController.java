@@ -5,6 +5,7 @@ import java.util.Scanner;
 
 import com.sbs.example.ucong.container.Container;
 import com.sbs.example.ucong.dto.Article;
+import com.sbs.example.ucong.dto.ArticleReply;
 import com.sbs.example.ucong.dto.Board;
 import com.sbs.example.ucong.dto.Member;
 import com.sbs.example.ucong.service.ArticleService;
@@ -194,6 +195,18 @@ public class ArticleController extends Controller {
 		System.out.printf("작성자 : %s\n", member.name);
 		System.out.printf("제목 : %s\n", article.title);
 		System.out.printf("내용 : %s\n", article.body);
+		
+		System.out.println("===============댓글리스트===============");
+		List<ArticleReply> articleReplys = articleService.getArticleReplysByArticleId(inputedId);
+		if(articleReplys.size()==0) {
+			System.out.println("등록된 댓글이 없습니다.");
+			return;
+		}
+		for(ArticleReply articleReply: articleReplys) {
+			Member replyMember = memberService.getMemberById(articleReply.memberId);
+			System.out.printf("%s 회원님 : %s\n",replyMember.name, articleReply.body);
+		}
+		
 	}
 
 	private void showList(String cmd) {
@@ -208,5 +221,6 @@ public class ArticleController extends Controller {
 			System.out.printf("%d / %s / %s / %s / %s / %s\n", article.id, board.name, article.regDate,
 					article.updateDate, member.name, article.title);
 		}
+		
 	}
 }

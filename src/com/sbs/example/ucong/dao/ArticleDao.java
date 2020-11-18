@@ -7,6 +7,7 @@ import java.util.Map;
 import com.sbs.example.mysqlutil.MysqlUtil;
 import com.sbs.example.mysqlutil.SecSql;
 import com.sbs.example.ucong.dto.Article;
+import com.sbs.example.ucong.dto.ArticleReply;
 import com.sbs.example.ucong.dto.Board;
 
 public class ArticleDao {
@@ -110,6 +111,22 @@ public class ArticleDao {
 		sql.append("articleId=?",articleId);
 		
 		return MysqlUtil.insert(sql);
+	}
+
+	public List<ArticleReply> getArticleReplysByArticleId(int articleId) {
+		List<ArticleReply> articleReplys = new ArrayList<>();
+
+		SecSql sql = new SecSql();
+		sql.append("SELECT *");
+		sql.append("FROM articleReply");
+		sql.append("WHERE articleId = ? ",articleId);
+
+		List<Map<String, Object>> articleReplyMapList = MysqlUtil.selectRows(sql);
+		for (Map<String, Object> articleReplyMap : articleReplyMapList) {
+			articleReplys.add(new ArticleReply(articleReplyMap));
+
+		}
+		return articleReplys;
 	}
 
 }
