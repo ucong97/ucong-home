@@ -64,5 +64,8 @@ public class ArticleService {
 		return articleDao.replyDelete(id);
 		
 	}
+	public List<Article> getForPrintArticles() {
+		return articleDao.getForPrintArticles();
+	}
 
 }

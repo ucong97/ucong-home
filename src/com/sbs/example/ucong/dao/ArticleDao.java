@@ -162,4 +162,23 @@ public class ArticleDao {
 		return MysqlUtil.delete(sql);
 	}
 
+	public List<Article> getForPrintArticles() {
+		List<Article> articles = new ArrayList<>();
+
+		SecSql sql = new SecSql();
+		sql.append("SELECT a.*, m.name AS extra__memberName,b.name AS extra__boardName");
+		sql.append("FROM article AS a");
+		sql.append("INNER JOIN `member` AS m");
+		sql.append("ON a.memberId=m.id");
+		sql.append("INNER JOIN board AS b");
+		sql.append("ON a.memberId=b.id");
+
+		List<Map<String, Object>> articleMapList = MysqlUtil.selectRows(sql);
+		for (Map<String, Object> articleMap : articleMapList) {
+			articles.add(new Article(articleMap));
+
+		}
+		return articles;
+	}
+
 }

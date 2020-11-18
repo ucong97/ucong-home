@@ -10,14 +10,24 @@ public class Article {
 	public String body;
 	public int memberId;
 	public int boardId;
+	public String extra__memberName;
+	public String extra__boardName;
+	
 
-	public Article(Map<String, Object> articleMap) {
-		this.id=(int)articleMap.get("id");
-		this.regDate=(String)articleMap.get("regDate");
-		this.updateDate=(String)articleMap.get("updateDate");
-		this.title=(String)articleMap.get("title");
-		this.body=(String)articleMap.get("body");
-		this.memberId=(int)articleMap.get("memberId");
-		this.boardId=(int)articleMap.get("boardId");
+	public Article(Map<String, Object> map) {
+		this.id=(int)map.get("id");
+		this.regDate=(String)map.get("regDate");
+		this.updateDate=(String)map.get("updateDate");
+		this.title=(String)map.get("title");
+		this.body=(String)map.get("body");
+		this.memberId=(int)map.get("memberId");
+		this.boardId=(int)map.get("boardId");
+		if(map.containsKey("extra__memberName")) {
+			this.extra__memberName = (String)map.get("extra__memberName");
+		}
+		if(map.containsKey("extra__boardName")) {
+			this.extra__boardName = (String)map.get("extra__boardName");
+		}
+		
 	}
 }

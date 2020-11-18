@@ -278,13 +278,12 @@ public class ArticleController extends Controller {
 		System.out.println("== 게시물 리스트 ==");
 		System.out.println("번호 / 게시판 이름 /  작성 / 수정 / 작성자 / 제목 ");
 
-		List<Article> articles = articleService.getArticles();
+		List<Article> articles = articleService.getForPrintArticles();
 
 		for (Article article : articles) {
-			Member member = memberService.getMemberById(article.memberId);
-			Board board = articleService.getBoardById(article.boardId);
-			System.out.printf("%d / %s / %s / %s / %s / %s\n", article.id, board.name, article.regDate,
-					article.updateDate, member.name, article.title);
+			
+			System.out.printf("%d / %s / %s / %s / %s / %s\n", article.id, article.extra__boardName, article.regDate,
+					article.updateDate, article.extra__memberName, article.title);
 		}
 		
 	}
