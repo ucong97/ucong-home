@@ -7,16 +7,15 @@ public class Member {
 	public String loginId;
 	public String loginPw;
 	public String name;
-	public Member(int id,String memberLoginId, String memberLoginPw, String memberName) {
-		this.id = id;
-		this.loginId=memberLoginId;
-		this.loginPw=memberLoginPw;
-		this.name=memberName;
-	}
+	public String regDate;
+	public String updateDate;
+	
 	public Member(Map<String, Object> memberMap) {
 		this.id =(int)memberMap.get("id");
 		this.loginId=(String)memberMap.get("loginId");
 		this.loginPw=(String)memberMap.get("loginPw");
 		this.name=(String)memberMap.get("name");
+		this.regDate=(String)memberMap.get("regDate");
+		this.updateDate=(String)memberMap.get("updateDate");
 	}
 }

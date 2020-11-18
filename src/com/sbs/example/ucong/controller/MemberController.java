@@ -37,6 +37,7 @@ public class MemberController extends Controller {
 		System.out.printf("== %s 회원님 정보 ==\n",member.name);
 		System.out.printf("번호 : %d\n",member.id);
 		System.out.printf("아이디 : %s\n",member.loginId);
+		System.out.printf("가입날짜 : %s\n",member.regDate);
 		System.out.printf("이름 : %s\n",member.name);
 	}
 
