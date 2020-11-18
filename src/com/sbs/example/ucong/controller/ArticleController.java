@@ -41,7 +41,39 @@ public class ArticleController extends Controller {
 			doWriteReply(cmd);
 		} else if (cmd.startsWith("article replyModify")) {
 			doReplyModify(cmd);
+		}else if (cmd.startsWith("article replyDelete")) {
+			doReplyDelete(cmd);
 		}
+	}
+
+	private void doReplyDelete(String cmd) {
+		if (Container.session.logouted()) {
+			System.out.println("로그인하고 이용해주세요.");
+			return;
+		}
+		System.out.println("== 댓글 삭제 ==");
+		String[] cmdBits = cmd.split(" ");
+		if (cmdBits.length <= 2) {
+			System.out.println("댓글 번호를 입력해주세요.");
+			return;
+		}
+		int inputedId = Integer.parseInt(cmdBits[2]);
+
+		ArticleReply articleReply = articleService.getArticleReply(inputedId);
+		int memberId = Container.session.loginedMemberId;
+		if (articleReply == null) {
+			System.out.println("해당 댓글이 존재하지 않습니다.");
+			return;
+		}
+		if (articleReply.memberId != memberId) {
+			System.out.println("댓글 삭제 권한이 없습니다.");
+			return;
+		}
+		
+		articleService.replyDelete(inputedId);
+
+		System.out.printf("%d번 댓글이 삭제되었습니다.\n", inputedId);
+		
 	}
 
 	private void doReplyModify(String cmd) {
@@ -64,7 +96,7 @@ public class ArticleController extends Controller {
 			return;
 		}
 		if (articleReply.memberId != memberId) {
-			System.out.println("게시물 수정 권한이 없습니다.");
+			System.out.println("댓글 수정 권한이 없습니다.");
 			return;
 		}
 		

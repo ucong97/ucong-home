@@ -60,4 +60,9 @@ public class ArticleService {
 		
 	}
 
+	public int replyDelete(int id) {
+		return articleDao.replyDelete(id);
+		
+	}
+
 }

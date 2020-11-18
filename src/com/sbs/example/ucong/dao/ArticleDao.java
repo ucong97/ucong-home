@@ -154,4 +154,12 @@ public class ArticleDao {
 		return MysqlUtil.update(sql);
 	}
 
+	public int replyDelete(int id) {
+		SecSql sql = new SecSql();
+		sql.append("DELETE FROM articleReply");
+		sql.append("WHERE id = ?",id);
+		
+		return MysqlUtil.delete(sql);
+	}
+
 }
