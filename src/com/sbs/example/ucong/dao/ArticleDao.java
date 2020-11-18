@@ -70,7 +70,7 @@ public class ArticleDao {
 		sql.append("SET regDate=NOW(),");
 		sql.append("updateDate=NOW(),");
 		sql.append("title=?,",title);
-		sql.append("`body`=?,",body);
+		sql.append("body=?,",body);
 		sql.append("memberId=?,",memberId);
 		sql.append("boardId=?",boardId);
 		
