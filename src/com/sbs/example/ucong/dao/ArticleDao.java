@@ -85,51 +85,11 @@ public class ArticleDao {
 	}
 
 	public int makeBoard(String name) {
-		Connection con = null;
-		int id = 0;
-		try {
-			try {
-				Class.forName("com.mysql.cj.jdbc.Driver");
-			} catch (ClassNotFoundException e) {
-				e.printStackTrace();
-			}
-			String url = "jdbc:mysql://localhost:3306/textBoard?useUnicode=true&characterEncoding=utf8&autoReconnect=true&serverTimezone=Asia/Seoul&useOldAliasMetadataBehavior=true&zeroDateTimeNehavior=convertToNull&connectTimeout=60000&socketTimeout=60000";
-			String user = "sbsst";
-			String pass = "sbs123414";
-
-			try {
-				con = DriverManager.getConnection(url, user, pass);
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-			String sql = "INSERT INTO board SET `name`= ?";
-
-			try {
-				PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-				ps.setString(1, name);
-
-				ps.executeUpdate();
-				ResultSet rs = ps.getGeneratedKeys();
-				rs.next();
-				id = rs.getInt(1);
-
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-
-		} finally {
-			try {
-				if (con != null) {
-					con.close();
-
-				}
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-
-		return id;
+		SecSql sql = new SecSql();
+		sql.append("INSERT INTO board");
+		sql.append("SET name = ?",name);
+		
+		return MysqlUtil.insert(sql);
 	}
 
 	public Board getBoardById(int inputedId) {
