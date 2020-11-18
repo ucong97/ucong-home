@@ -60,3 +60,11 @@ CREATE TABLE board(
 );
 INSERT INTO board
 SET `name` = '공지사항';
+
+CREATE TABLE articleReply(
+    id INT(10) UNSIGNED PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    regDate DATETIME NOT NULL,
+    `body` TEXT NOT NULL,
+    memberId INT(10) UNSIGNED NOT NULL,
+    articleId INT(10) UNSIGNED NOT NULL
+);
