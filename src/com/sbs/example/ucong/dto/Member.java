@@ -1,5 +1,7 @@
 package com.sbs.example.ucong.dto;
 
+import java.util.Map;
+
 public class Member {
 	public int id;
 	public String loginId;
@@ -10,5 +12,11 @@ public class Member {
 		this.loginId=memberLoginId;
 		this.loginPw=memberLoginPw;
 		this.name=memberName;
+	}
+	public Member(Map<String, Object> memberMap) {
+		this.id =(int)memberMap.get("id");
+		this.loginId=(String)memberMap.get("loginId");
+		this.loginPw=(String)memberMap.get("loginPw");
+		this.name=(String)memberMap.get("name");
 	}
 }
