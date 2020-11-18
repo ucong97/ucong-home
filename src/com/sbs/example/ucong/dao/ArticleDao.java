@@ -101,4 +101,15 @@ public class ArticleDao {
 		return new Board(boardMap);
 	}
 
+	public int addReply(int articleId,int memberId, String body) {
+		SecSql sql = new SecSql();
+		sql.append("INSERT INTO articleReply");
+		sql.append("SET regDate=NOW(),");
+		sql.append("body=?,",body);
+		sql.append("memberId=?,",memberId);
+		sql.append("articleId=?",articleId);
+		
+		return MysqlUtil.insert(sql);
+	}
+
 }

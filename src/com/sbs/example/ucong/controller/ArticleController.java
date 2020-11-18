@@ -36,7 +36,35 @@ public class ArticleController extends Controller {
 			doMakeBoard(cmd);
 		} else if (cmd.startsWith("article selectBoard")) {
 			doSelectBoard(cmd);
+		} else if (cmd.startsWith("article writeReply")) {
+			doWriteReply(cmd);
 		}
+	}
+
+	private void doWriteReply(String cmd) {
+		if (Container.session.logouted()) {
+			System.out.println("로그인하고 이용해주세요.");
+			return;
+		}
+		System.out.println("== 댓글 작성 ==");
+		String[] cmdBits = cmd.split(" ");
+		if (cmdBits.length <= 2) {
+			System.out.println("게시물 번호를 입력해주세요.");
+			return;
+		}
+		int articleId = Integer.parseInt(cmdBits[2]);
+		Article article = articleService.getArticle(articleId);
+		if (article == null) {
+			System.out.println("게시물이 존재하지 않습니다.");
+			return;
+		}
+		System.out.printf("내용 : ");
+		String body = sc.nextLine();
+		
+		int memberId= Container.session.loginedMemberId;
+		int id = articleService.WrtieReply(articleId,memberId,body);
+		
+		System.out.printf("%d번글에 %d번 댓글이 추가되었습니다.\n",articleId,id);
 	}
 
 	private void doSelectBoard(String cmd) {
@@ -47,14 +75,14 @@ public class ArticleController extends Controller {
 			return;
 		}
 		int inputedId = Integer.parseInt(cmdBits[2]);
-		
+
 		Board board = articleService.getBoardById(inputedId);
-		if(board==null) {
+		if (board == null) {
 			System.out.printf("%d번 게시판은 존재하지 않는 게시판입니다.\n", inputedId);
 			return;
 		}
 		Container.session.selectBoard(inputedId);
-		System.out.printf("%s(%d번)게시판이 선택되었습니다.\n",board.name,board.id);
+		System.out.printf("%s(%d번)게시판이 선택되었습니다.\n", board.name, board.id);
 	}
 
 	private void doMakeBoard(String cmd) {
@@ -177,8 +205,8 @@ public class ArticleController extends Controller {
 		for (Article article : articles) {
 			Member member = memberService.getMemberById(article.memberId);
 			Board board = articleService.getBoardById(article.boardId);
-			System.out.printf("%d / %s / %s / %s / %s / %s\n", article.id,board.name, article.regDate,article.updateDate, member.name,
-					article.title);
+			System.out.printf("%d / %s / %s / %s / %s / %s\n", article.id, board.name, article.regDate,
+					article.updateDate, member.name, article.title);
 		}
 	}
 }

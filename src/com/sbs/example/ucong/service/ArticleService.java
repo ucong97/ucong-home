@@ -42,4 +42,8 @@ public class ArticleService {
 		return articleDao.getBoardById(inputedId);
 	}
 
+	public int WrtieReply(int articleId, int memberId,String body) {
+		return articleDao.addReply(articleId,memberId, body);
+	}
+
 }
