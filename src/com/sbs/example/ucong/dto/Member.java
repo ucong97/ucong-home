@@ -10,7 +10,9 @@ public class Member {
 	public String regDate;
 	public String updateDate;
 	
-	
+	public String getType() {
+		return isAdmin()?"관리자":"일반회원";
+	}
 	public boolean isAdmin() {
 		return loginId.equals("ucong");
 	}
