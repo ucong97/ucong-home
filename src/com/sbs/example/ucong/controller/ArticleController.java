@@ -225,8 +225,17 @@ public class ArticleController extends Controller {
 		System.out.println("== 게시판 생성 ==");
 		System.out.printf("게시판 이름 : ");
 		String name = sc.nextLine();
-
-		int id = articleService.makeBoard(name);
+		if(articleService.isMakeBoardAbvailalbeName(name)==false) {
+			System.out.println("해당 이름은 이미 사용중입니다.");
+			return;
+		}
+		System.out.printf("게시판 코드 : ");
+		String code = sc.nextLine();
+		if(articleService.isMakeBoardAbvailalbeCode(code)==false) {
+			System.out.println("해당 이름은 이미 사용중입니다.");
+			return;
+		}
+		int id = articleService.makeBoard(code,name);
 		System.out.printf("%s(%d번) 게시물이 생성되었습니다.\n", name, id);
 	}
 

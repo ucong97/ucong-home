@@ -35,8 +35,8 @@ public class ArticleService {
 		return articleDao.add(memberId,boardId,title, body);
 	}
 
-	public int makeBoard(String name) {
-		return articleDao.makeBoard(name);
+	public int makeBoard(String code, String name) {
+		return articleDao.makeBoard(code,name);
 	}
 
 
@@ -93,6 +93,16 @@ public class ArticleService {
 
 	public Board getBoardByBoardCode(String boardCode) {
 		return articleDao.getBoardByBoardCode(boardCode);
+	}
+
+	public boolean isMakeBoardAbvailalbeName(String name) {
+		Board board = articleDao.getBoardByName(name);
+		return board == null;
+	}
+
+	public boolean isMakeBoardAbvailalbeCode(String code) {
+		Board board = articleDao.getBoardByBoardCode(code);
+		return board == null;
 	}
 
 

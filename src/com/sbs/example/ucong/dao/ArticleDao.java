@@ -79,10 +79,13 @@ public class ArticleDao {
 		
 	}
 
-	public int makeBoard(String name) {
+	public int makeBoard(String code, String name) {
 		SecSql sql = new SecSql();
 		sql.append("INSERT INTO board");
-		sql.append("SET name = ?",name);
+		sql.append("SET regDate=NOW(),");
+		sql.append("updateDate=NOW(),");
+		sql.append("code = ?,",code);
+		sql.append("name = ?",name);
 		
 		return MysqlUtil.insert(sql);
 	}
@@ -219,6 +222,21 @@ public class ArticleDao {
 		}
 	
 		return new Board(boardMap);
+	}
+
+	public Board getBoardByName(String name) {
+		SecSql sql = new SecSql();
+		sql.append("SELECT *");
+		sql.append("FROM board");
+		sql.append("WHERE `name` = ?", name);
+
+		Map<String, Object> map = MysqlUtil.selectRow(sql);
+
+		if (map.isEmpty()) {
+			return null;
+		}
+
+		return new Board(map);
 	}
 
 
