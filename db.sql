@@ -56,10 +56,22 @@ SET regDate = NOW(),
 
 CREATE TABLE board(
     id INT(10) UNSIGNED PRIMARY KEY NOT NULL AUTO_INCREMENT,
-    `name` CHAR(100) NOT NULL
+    regDate DATETIME,
+    updateDate DATETIME,
+    `name` CHAR(20) NOT NULL,
+    `code` CHAR(20) NOT NULL
 );
 INSERT INTO board
-SET `name` = '공지사항';
+SET regDate = NOW(),
+    updateDate = NOW(),
+    `name` = '공지사항',
+    `code`= 'notice';
+
+INSERT INTO board
+SET regDate = NOW(),
+    updateDate = NOW(),
+    `name` = '자유',
+    `code`= 'free';
 
 CREATE TABLE articleReply(
     id INT(10) UNSIGNED PRIMARY KEY NOT NULL AUTO_INCREMENT,

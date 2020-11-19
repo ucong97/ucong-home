@@ -10,7 +10,7 @@ public class Member {
 	public String regDate;
 	public String updateDate;
 	
-
+	
 	public boolean isAdmin() {
 		return loginId.equals("ucong");
 	}
