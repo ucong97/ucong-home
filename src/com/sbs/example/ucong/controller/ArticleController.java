@@ -35,7 +35,7 @@ public class ArticleController extends Controller {
 			doWrite(cmd);
 		} else if (cmd.equals("article makeBoard")) {
 			doMakeBoard(cmd);
-		} else if (cmd.startsWith("article selectBoard")) {
+		} else if (cmd.equals("article selectBoard")) {
 			doSelectBoard(cmd);
 		} else if (cmd.startsWith("article writeReply")) {
 			doWriteReply(cmd);
@@ -195,16 +195,23 @@ public class ArticleController extends Controller {
 
 	private void doSelectBoard(String cmd) {
 		System.out.println("== 게시판 선택 ==");
-		String[] cmdBits = cmd.split(" ");
-		if (cmdBits.length <= 2) {
-			System.out.println("게시판 번호를 입력해주세요.");
-			return;
-		}
-		String boardCode = cmdBits[2];
+		
+		System.out.println("==게시판 목록==");
+		System.out.println("번호 / 생성날짜 / 코드 / 이름 / 게시물 수");
+		
+		List<Board> boards = articleService.getForPrintBoards();
 
+		for (Board board : boards) {
+			int articlesCount = articleService.getArticlesCount(board.id);
+			System.out.printf("%d / %s / %s / %s / %d\n", board.id, board.regDate, board.code, board.name,
+					articlesCount);
+		}
+		
+		System.out.printf("게시판 코드: ");
+		String boardCode = sc.nextLine().trim();
 		Board board = articleService.getBoardByBoardCode(boardCode);
 		if (board == null) {
-			System.out.println("존재하지 않는 게시판입니다.\n");
+			System.out.println("코드를 잘못입력하셨습니다.");
 			return;
 		}
 		Container.session.setCurrentBoardCode(boardCode);
@@ -251,9 +258,9 @@ public class ArticleController extends Controller {
 		String body = sc.nextLine();
 
 		int memberId = Container.session.loginedMemberId;
-		int boardId = 1;//임시
-
-		int id = articleService.write(memberId, boardId, title, body);
+		String boardCode=Container.session.getCurrentBoardCode;
+		Board board = articleService.getBoardByBoardCode(boardCode);
+		int id = articleService.write(memberId, board.id, title, body);
 		System.out.printf("%d번 게시물이 생성되었습니다.\n", id);
 	}
 

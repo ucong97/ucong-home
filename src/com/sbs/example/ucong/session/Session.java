@@ -22,7 +22,7 @@ public class Session {
 		loginedMemberId=0;		
 	}
 	public void setCurrentBoardCode(String boardCode) {
-		getCurrentBoardCode=boardCode;
+		this.getCurrentBoardCode=boardCode;
 		
 	}
 	

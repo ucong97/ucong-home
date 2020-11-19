@@ -239,6 +239,32 @@ public class ArticleDao {
 		return new Board(map);
 	}
 
+	public List<Board> getForPrintBoards() {
+		List<Board> boards = new ArrayList<>();
+
+		SecSql sql = new SecSql();
+		sql.append("SELECT B.*");
+		sql.append("FROM board AS B");
+		sql.append("ORDER BY B.id DESC");
+
+		List<Map<String, Object>> mapList = MysqlUtil.selectRows(sql);
+
+		for (Map<String, Object> map : mapList) {
+			boards.add(new Board(map));
+		}
+
+		return boards;
+	}
+
+	public int getArticlesCount(int boardId) {
+		SecSql sql = new SecSql();
+		sql.append("SELECT COUNT(*) AS cnt");
+		sql.append("FROM article");
+		sql.append("WHERE boardId = ?", boardId);
+
+		return MysqlUtil.selectRowIntValue(sql);
+	}
+
 
 
 }

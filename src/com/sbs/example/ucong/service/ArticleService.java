@@ -105,6 +105,14 @@ public class ArticleService {
 		return board == null;
 	}
 
+	public List<Board> getForPrintBoards() {
+		return articleDao.getForPrintBoards();
+	}
+
+	public int getArticlesCount(int boardId) {
+		return articleDao.getArticlesCount(boardId);
+	}
+
 
 
 }
