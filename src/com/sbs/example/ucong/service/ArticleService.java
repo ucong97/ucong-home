@@ -68,4 +68,11 @@ public class ArticleService {
 		return articleDao.getForPrintArticles();
 	}
 
+	public int hitCount(int inputedId) {
+		return articleDao.hitCount(inputedId);
+		
+	}
+
+
+
 }

@@ -10,6 +10,7 @@ public class Article {
 	public String body;
 	public int memberId;
 	public int boardId;
+	public int hit;
 	public String extra__memberName;
 	public String extra__boardName;
 	
@@ -27,6 +28,9 @@ public class Article {
 		}
 		if(map.containsKey("extra__boardName")) {
 			this.extra__boardName = (String)map.get("extra__boardName");
+		}
+		if(map.containsKey("hit")) {
+			this.hit = (int)map.get("hit");
 		}
 		
 	}

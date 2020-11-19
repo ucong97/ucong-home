@@ -181,4 +181,16 @@ public class ArticleDao {
 		return articles;
 	}
 
+	public int hitCount(int inputedId) {
+		SecSql sql = new SecSql();
+		sql.append("UPDATE article");
+		sql.append("SET hit = hit+1");
+		sql.append("WHERE id = ?",inputedId);
+		
+		return MysqlUtil.update(sql);
+	
+	}
+
+
+
 }

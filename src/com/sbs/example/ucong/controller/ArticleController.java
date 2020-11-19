@@ -39,14 +39,16 @@ public class ArticleController extends Controller {
 			doSelectBoard(cmd);
 		} else if (cmd.startsWith("article writeReply")) {
 			doWriteReply(cmd);
-		} else if (cmd.startsWith("article replyModify")) {
-			doReplyModify(cmd);
-		}else if (cmd.startsWith("article replyDelete")) {
-			doReplyDelete(cmd);
+		} else if (cmd.startsWith("article modifyReply")) {
+			doModifyReply(cmd);
+		}else if (cmd.startsWith("article deleteReply")) {
+			doDeleteReply(cmd);
 		}
 	}
 
-	private void doReplyDelete(String cmd) {
+
+
+	private void doDeleteReply(String cmd) {
 		if (Container.session.logouted()) {
 			System.out.println("로그인하고 이용해주세요.");
 			return;
@@ -76,7 +78,7 @@ public class ArticleController extends Controller {
 		
 	}
 
-	private void doReplyModify(String cmd) {
+	private void doModifyReply(String cmd) {
 		if (Container.session.logouted()) {
 			System.out.println("로그인하고 이용해주세요.");
 			return;
@@ -247,12 +249,18 @@ public class ArticleController extends Controller {
 			return;
 		}
 		int inputedId = Integer.parseInt(cmdBits[2]);
+		
+		articleService.hitCount(inputedId);
 
 		Article article = articleService.getArticle(inputedId);
+		
 		if (article == null) {
 			System.out.println("게시물이 존재하지 않습니다.");
 			return;
 		}
+		
+		
+		
 		Member member = memberService.getMemberById(article.memberId);
 		System.out.printf("번호 : %d\n", article.id);
 		System.out.printf("작성날짜 : %s\n", article.regDate);
@@ -260,6 +268,7 @@ public class ArticleController extends Controller {
 		System.out.printf("작성자 : %s\n", member.name);
 		System.out.printf("제목 : %s\n", article.title);
 		System.out.printf("내용 : %s\n", article.body);
+		System.out.printf("조회수 : %d\n",article.hit);
 		
 		System.out.println("===============댓글리스트===============");
 		List<ArticleReply> articleReplys = articleService.getArticleReplysByArticleId(inputedId);
