@@ -41,12 +41,40 @@ public class ArticleController extends Controller {
 			doWriteReply(cmd);
 		} else if (cmd.startsWith("article modifyReply")) {
 			doModifyReply(cmd);
-		}else if (cmd.startsWith("article deleteReply")) {
+		} else if (cmd.startsWith("article deleteReply")) {
 			doDeleteReply(cmd);
+		}else if (cmd.startsWith("article recommand")) {
+			doRecommand(cmd);
 		}
 	}
 
-
+	private void doRecommand(String cmd) {
+		if (Container.session.logouted()) {
+			System.out.println("로그인하고 이용해주세요.");
+			return;
+		}
+		System.out.println("== 게시물 추천 ==");
+		String[] cmdBits = cmd.split(" ");
+		if (cmdBits.length <= 2) {
+			System.out.println("추천하실 게시물의 번호를 입력해주세요.");
+			return;
+		}
+		int articleId = Integer.parseInt(cmdBits[2]);
+		Article article = articleService.getArticle(articleId);
+		if (article == null) {
+			System.out.println("게시물이 존재하지 않습니다.");
+			return;
+		}
+		int memberId = Container.session.loginedMemberId;
+		
+		boolean recommandAble = articleService.recommand(articleId,memberId);
+		if (recommandAble ==false) {
+			System.out.println("이미 추천되어있습니다.");
+			return;
+		}
+		
+		System.out.printf("%d번 게시물을 추천하셨습니다!  \n",articleId);
+	}
 
 	private void doDeleteReply(String cmd) {
 		if (Container.session.logouted()) {
@@ -71,11 +99,11 @@ public class ArticleController extends Controller {
 			System.out.println("댓글 삭제 권한이 없습니다.");
 			return;
 		}
-		
+
 		articleService.replyDelete(inputedId);
 
 		System.out.printf("%d번 댓글이 삭제되었습니다.\n", inputedId);
-		
+
 	}
 
 	private void doModifyReply(String cmd) {
@@ -101,7 +129,7 @@ public class ArticleController extends Controller {
 			System.out.println("댓글 수정 권한이 없습니다.");
 			return;
 		}
-		
+
 		System.out.printf("내용 : ");
 		String body = sc.nextLine();
 
@@ -128,11 +156,11 @@ public class ArticleController extends Controller {
 		}
 		System.out.printf("내용 : ");
 		String body = sc.nextLine();
-		
-		int memberId= Container.session.loginedMemberId;
-		int id = articleService.WrtieReply(articleId,memberId,body);
-		
-		System.out.printf("%d번글에 %d번 댓글이 추가되었습니다.\n",articleId,id);
+
+		int memberId = Container.session.loginedMemberId;
+		int id = articleService.WrtieReply(articleId, memberId, body);
+
+		System.out.printf("%d번글에 %d번 댓글이 추가되었습니다.\n", articleId, id);
 	}
 
 	private void doSelectBoard(String cmd) {
@@ -249,18 +277,16 @@ public class ArticleController extends Controller {
 			return;
 		}
 		int inputedId = Integer.parseInt(cmdBits[2]);
-		
+
 		articleService.hitCount(inputedId);
 
 		Article article = articleService.getArticle(inputedId);
-		
+
 		if (article == null) {
 			System.out.println("게시물이 존재하지 않습니다.");
 			return;
 		}
-		
-		
-		
+
 		Member member = memberService.getMemberById(article.memberId);
 		System.out.printf("번호 : %d\n", article.id);
 		System.out.printf("작성날짜 : %s\n", article.regDate);
@@ -268,19 +294,19 @@ public class ArticleController extends Controller {
 		System.out.printf("작성자 : %s\n", member.name);
 		System.out.printf("제목 : %s\n", article.title);
 		System.out.printf("내용 : %s\n", article.body);
-		System.out.printf("조회수 : %d\n",article.hit);
-		
+		System.out.printf("조회수 : %d\n", article.hit);
+
 		System.out.println("===============댓글리스트===============");
 		List<ArticleReply> articleReplys = articleService.getArticleReplysByArticleId(inputedId);
-		if(articleReplys.size()==0) {
+		if (articleReplys.size() == 0) {
 			System.out.println("등록된 댓글이 없습니다.");
 			return;
 		}
-		for(ArticleReply articleReply: articleReplys) {
+		for (ArticleReply articleReply : articleReplys) {
 			Member replyMember = memberService.getMemberById(articleReply.memberId);
-			System.out.printf("%s 회원님 : %s\n",replyMember.name, articleReply.body);
+			System.out.printf("%s 회원님 : %s\n", replyMember.name, articleReply.body);
 		}
-		
+
 	}
 
 	private void showList(String cmd) {
@@ -290,10 +316,10 @@ public class ArticleController extends Controller {
 		List<Article> articles = articleService.getForPrintArticles();
 
 		for (Article article : articles) {
-			
+
 			System.out.printf("%d / %s / %s / %s / %s / %s\n", article.id, article.extra__boardName, article.regDate,
 					article.updateDate, article.extra__memberName, article.title);
 		}
-		
+
 	}
 }

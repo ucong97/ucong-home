@@ -191,6 +191,15 @@ public class ArticleDao {
 	
 	}
 
+	public int recommand(int articleId, int memberId) {
+		SecSql sql = new SecSql();
+		sql.append("INSERT INTO recommand(articleId,memberId,regDate,updateDate)");
+		sql.append("SELECT ?,?,NOW(),NOW() FROM DUAL",articleId , memberId);
+		sql.append("WHERE NOT EXISTS(SELECT * FROM recommand WHERE memberId=? AND articleId=?);",memberId,articleId);
+		
+		return MysqlUtil.update(sql);
+	}
+
 
 
 }

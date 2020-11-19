@@ -73,6 +73,14 @@ public class ArticleService {
 		
 	}
 
+	public boolean recommand(int articleId, int memberId) {
+		int affectedLows = articleDao.recommand(articleId,memberId);
+		if(affectedLows==1) {
+			return true;
+		}
+		return false;
+	}
+
 
 
 }
