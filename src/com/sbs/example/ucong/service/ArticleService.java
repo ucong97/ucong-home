@@ -81,6 +81,14 @@ public class ArticleService {
 		return false;
 	}
 
+	public boolean cancleRecommand(int articleId, int memberId) {
+		int affectedRows =articleDao.cancleRecommand(articleId,memberId);
+		if(affectedRows == 1) {
+			return true;
+		}
+		return false;
+	}
+
 
 
 }

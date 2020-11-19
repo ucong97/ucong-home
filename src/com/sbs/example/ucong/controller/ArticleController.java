@@ -45,7 +45,37 @@ public class ArticleController extends Controller {
 			doDeleteReply(cmd);
 		}else if (cmd.startsWith("article recommand")) {
 			doRecommand(cmd);
+		}else if (cmd.startsWith("article cancleRecommand")) {
+			doCancleRecommand(cmd);
 		}
+	}
+
+	private void doCancleRecommand(String cmd) {
+		if (Container.session.logouted()) {
+			System.out.println("로그인하고 이용해주세요.");
+			return;
+		}
+		System.out.println("== 게시물 추천취소 ==");
+		String[] cmdBits = cmd.split(" ");
+		if (cmdBits.length <= 2) {
+			System.out.println("추천하실 게시물의 번호를 입력해주세요.");
+			return;
+		}
+		int articleId = Integer.parseInt(cmdBits[2]);
+		Article article = articleService.getArticle(articleId);
+		if (article == null) {
+			System.out.println("게시물이 존재하지 않습니다.");
+			return;
+		}
+		int memberId = Container.session.loginedMemberId;
+		
+		boolean cancleRecommandAble= articleService.cancleRecommand(articleId,memberId);
+		if(cancleRecommandAble==false) {
+			System.out.println("추천되있지 않습니다.");
+			return;
+		}
+		
+		System.out.printf("%d번 게시물을 추천취소하셨습니다!\n",articleId);
 	}
 
 	private void doRecommand(String cmd) {

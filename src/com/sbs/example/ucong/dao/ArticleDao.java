@@ -200,6 +200,14 @@ public class ArticleDao {
 		return MysqlUtil.update(sql);
 	}
 
+	public int cancleRecommand(int articleId, int memberId) {
+		SecSql sql = new SecSql();
+		sql.append("DELETE FROM recommand");
+		sql.append("WHERE articleId=? and memberId=?",articleId,memberId);
+		
+		return MysqlUtil.delete(sql);
+	}
+
 
 
 }
