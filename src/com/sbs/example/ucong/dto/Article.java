@@ -26,9 +26,6 @@ public class Article {
 		if(map.containsKey("extra__memberName")) {
 			this.extra__memberName = (String)map.get("extra__memberName");
 		}
-		if(map.containsKey("extra__boardName")) {
-			this.extra__boardName = (String)map.get("extra__boardName");
-		}
 		if(map.containsKey("hit")) {
 			this.hit = (int)map.get("hit");
 		}

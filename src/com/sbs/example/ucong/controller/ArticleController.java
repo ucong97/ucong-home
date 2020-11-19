@@ -200,14 +200,14 @@ public class ArticleController extends Controller {
 			System.out.println("게시판 번호를 입력해주세요.");
 			return;
 		}
-		int inputedId = Integer.parseInt(cmdBits[2]);
+		String boardCode = cmdBits[2];
 
-		Board board = articleService.getBoardById(inputedId);
+		Board board = articleService.getBoardByBoardCode(boardCode);
 		if (board == null) {
-			System.out.printf("%d번 게시판은 존재하지 않는 게시판입니다.\n", inputedId);
+			System.out.println("존재하지 않는 게시판입니다.\n");
 			return;
 		}
-		Container.session.selectBoard(inputedId);
+		Container.session.setCurrentBoardCode(boardCode);
 		System.out.printf("%s(%d번)게시판이 선택되었습니다.\n", board.name, board.id);
 	}
 
@@ -242,7 +242,7 @@ public class ArticleController extends Controller {
 		String body = sc.nextLine();
 
 		int memberId = Container.session.loginedMemberId;
-		int boardId = Container.session.selectedBoardId;
+		int boardId = 1;//임시
 
 		int id = articleService.write(memberId, boardId, title, body);
 		System.out.printf("%d번 게시물이 생성되었습니다.\n", id);
@@ -351,14 +351,16 @@ public class ArticleController extends Controller {
 	}
 
 	private void showList(String cmd) {
-		System.out.println("== 게시물 리스트 ==");
-		System.out.println("번호 / 게시판 이름 /  작성 / 수정 / 작성자 / 제목 / 조회수 / 추천수 ");
+		String BoardCode = Container.session.getCurrentBoardCode;
+		Board board = articleService.getBoardByBoardCode(BoardCode);
+		System.out.printf("== %s 리스트 ==\n",board.name);
+		System.out.println("번호 / 작성 / 수정 / 작성자 / 제목 / 조회수 / 추천수 ");
 
-		List<Article> articles = articleService.getForPrintArticles();
+		List<Article> articles = articleService.getForPrintArticles(board.id);
 
 		for (Article article : articles) {
 			int recommandCount = articleService.getRecommandCount(article.id);
-			System.out.printf("%d / %s / %s / %s / %s / %s / %d / %d \n", article.id, article.extra__boardName, article.regDate,
+			System.out.printf("%d / %s / %s / %s / %s / %d / %d \n", article.id, article.regDate,
 					article.updateDate, article.extra__memberName, article.title,article.hit,recommandCount);
 		}
 

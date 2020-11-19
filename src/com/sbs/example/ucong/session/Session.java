@@ -2,11 +2,12 @@ package com.sbs.example.ucong.session;
 
 public class Session {
 	public int loginedMemberId;
-	public int selectedBoardId;
+
+	public String getCurrentBoardCode;
 	
 	public Session() {
 		loginedMemberId=0;
-		selectedBoardId=1;
+		getCurrentBoardCode = "notice";
 	}
 	public void login(int id) {
 		loginedMemberId = id;
@@ -20,9 +21,10 @@ public class Session {
 	public void logout() {
 		loginedMemberId=0;		
 	}
-	public void selectBoard(int inputedId) {
-		selectedBoardId = inputedId;
+	public void setCurrentBoardCode(String boardCode) {
+		getCurrentBoardCode=boardCode;
 		
 	}
+	
 
 }

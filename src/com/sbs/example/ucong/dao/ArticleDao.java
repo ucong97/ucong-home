@@ -87,20 +87,7 @@ public class ArticleDao {
 		return MysqlUtil.insert(sql);
 	}
 
-	public Board getBoardById(int inputedId) {
-		
-		SecSql sql = new SecSql();
-		sql.append("SELECT *");
-		sql.append("FROM board");
-		sql.append("WHERE id = ?",inputedId);
-		Map<String,Object> boardMap = MysqlUtil.selectRow(sql);
-		
-		if(boardMap.isEmpty()) {
-			return null;
-		}
 	
-		return new Board(boardMap);
-	}
 
 	public int addReply(int articleId,int memberId, String body) {
 		SecSql sql = new SecSql();
@@ -162,16 +149,17 @@ public class ArticleDao {
 		return MysqlUtil.delete(sql);
 	}
 
-	public List<Article> getForPrintArticles() {
+	public List<Article> getForPrintArticles(int boardId) {
 		List<Article> articles = new ArrayList<>();
 
 		SecSql sql = new SecSql();
-		sql.append("SELECT a.*, m.name AS extra__memberName,b.name AS extra__boardName");
+		sql.append("SELECT a.*, m.name AS extra__memberName");
 		sql.append("FROM article AS a");
 		sql.append("INNER JOIN `member` AS m");
 		sql.append("ON a.memberId=m.id");
-		sql.append("INNER JOIN board AS b");
-		sql.append("ON a.memberId=b.id");
+		if(boardId!=0) {
+			sql.append("WHERE A.boardId = ?",boardId);
+		}
 
 		List<Map<String, Object>> articleMapList = MysqlUtil.selectRows(sql);
 		for (Map<String, Object> articleMap : articleMapList) {
@@ -217,6 +205,20 @@ public class ArticleDao {
 		
 		return MysqlUtil.selectRowIntValue(sql);
 		
+	}
+
+	public Board getBoardByBoardCode(String boardCode) {
+		SecSql sql = new SecSql();
+		sql.append("SELECT *");
+		sql.append("FROM board");
+		sql.append("WHERE code = ?",boardCode);
+		Map<String,Object> boardMap = MysqlUtil.selectRow(sql);
+		
+		if(boardMap.isEmpty()) {
+			return null;
+		}
+	
+		return new Board(boardMap);
 	}
 
 

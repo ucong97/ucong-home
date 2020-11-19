@@ -39,9 +39,7 @@ public class ArticleService {
 		return articleDao.makeBoard(name);
 	}
 
-	public Board getBoardById(int inputedId) {
-		return articleDao.getBoardById(inputedId);
-	}
+
 
 	public int WrtieReply(int articleId, int memberId,String body) {
 		return articleDao.addReply(articleId,memberId, body);
@@ -64,8 +62,8 @@ public class ArticleService {
 		return articleDao.replyDelete(id);
 		
 	}
-	public List<Article> getForPrintArticles() {
-		return articleDao.getForPrintArticles();
+	public List<Article> getForPrintArticles(int boardId) {
+		return articleDao.getForPrintArticles(boardId);
 	}
 
 	public int hitCount(int inputedId) {
@@ -91,6 +89,10 @@ public class ArticleService {
 
 	public int getRecommandCount(int inputedId) {
 		return articleDao.getRecommandCount(inputedId);
+	}
+
+	public Board getBoardByBoardCode(String boardCode) {
+		return articleDao.getBoardByBoardCode(boardCode);
 	}
 
 
