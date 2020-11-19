@@ -208,6 +208,17 @@ public class ArticleDao {
 		return MysqlUtil.delete(sql);
 	}
 
+	public int getRecommandCount(int inputedId) {
+		SecSql sql = new SecSql();
+		sql.append("SELECT count(*)");
+		sql.append("FROM recommand");
+		sql.append("WHERE articleId=?",inputedId);
+		
+		
+		return MysqlUtil.selectRowIntValue(sql);
+		
+	}
+
 
 
 }

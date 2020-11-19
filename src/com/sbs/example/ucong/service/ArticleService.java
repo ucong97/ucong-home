@@ -89,6 +89,10 @@ public class ArticleService {
 		return false;
 	}
 
+	public int getRecommandCount(int inputedId) {
+		return articleDao.getRecommandCount(inputedId);
+	}
+
 
 
 }

@@ -316,7 +316,7 @@ public class ArticleController extends Controller {
 			System.out.println("게시물이 존재하지 않습니다.");
 			return;
 		}
-
+		int recommandCount = articleService.getRecommandCount(inputedId);
 		Member member = memberService.getMemberById(article.memberId);
 		System.out.printf("번호 : %d\n", article.id);
 		System.out.printf("작성날짜 : %s\n", article.regDate);
@@ -325,6 +325,7 @@ public class ArticleController extends Controller {
 		System.out.printf("제목 : %s\n", article.title);
 		System.out.printf("내용 : %s\n", article.body);
 		System.out.printf("조회수 : %d\n", article.hit);
+		System.out.printf("추천수 : %d\n",recommandCount);
 
 		System.out.println("===============댓글리스트===============");
 		List<ArticleReply> articleReplys = articleService.getArticleReplysByArticleId(inputedId);
@@ -341,14 +342,14 @@ public class ArticleController extends Controller {
 
 	private void showList(String cmd) {
 		System.out.println("== 게시물 리스트 ==");
-		System.out.println("번호 / 게시판 이름 /  작성 / 수정 / 작성자 / 제목 ");
+		System.out.println("번호 / 게시판 이름 /  작성 / 수정 / 작성자 / 제목 / 조회수 / 추천수 ");
 
 		List<Article> articles = articleService.getForPrintArticles();
 
 		for (Article article : articles) {
-
-			System.out.printf("%d / %s / %s / %s / %s / %s\n", article.id, article.extra__boardName, article.regDate,
-					article.updateDate, article.extra__memberName, article.title);
+			int recommandCount = articleService.getRecommandCount(article.id);
+			System.out.printf("%d / %s / %s / %s / %s / %s / %d / %d \n", article.id, article.extra__boardName, article.regDate,
+					article.updateDate, article.extra__memberName, article.title,article.hit,recommandCount);
 		}
 
 	}
