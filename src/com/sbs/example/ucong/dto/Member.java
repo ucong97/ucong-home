@@ -10,6 +10,11 @@ public class Member {
 	public String regDate;
 	public String updateDate;
 	
+
+	public boolean isAdmin() {
+		return loginId.equals("ucong");
+	}
+	
 	public Member(Map<String, Object> memberMap) {
 		this.id =(int)memberMap.get("id");
 		this.loginId=(String)memberMap.get("loginId");

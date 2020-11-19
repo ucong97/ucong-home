@@ -212,6 +212,16 @@ public class ArticleController extends Controller {
 	}
 
 	private void doMakeBoard(String cmd) {
+		if (Container.session.logouted()) {
+			System.out.println("로그인하고 이용해주세요.");
+			return;
+		}
+		int memberId = Container.session.loginedMemberId;
+		Member member = memberService.getMemberById(memberId);
+		if(member.isAdmin()==false) {
+			System.out.println("관리자만 생성 가능합니다.");
+			return;
+		}
 		System.out.println("== 게시판 생성 ==");
 		System.out.printf("게시판 이름 : ");
 		String name = sc.nextLine();
