@@ -6,15 +6,18 @@ import com.sbs.example.mysqlutil.MysqlUtil;
 import com.sbs.example.ucong.container.Container;
 import com.sbs.example.ucong.controller.ArticleController;
 import com.sbs.example.ucong.controller.Controller;
+import com.sbs.example.ucong.controller.BuildController;
 import com.sbs.example.ucong.controller.MemberController;
 
 public class App {
 	private ArticleController articleController;
 	private MemberController memberController;
+	private BuildController buildController;
 	
 	public App() {
 		articleController = Container.articleController;
 		memberController = Container.memberController;
+		buildController = Container.buildController;
 	}
 
 	public void run() {
@@ -50,6 +53,8 @@ public class App {
 			return articleController;
 		}else if(cmd.startsWith("member")) {
 			return memberController;
+		}else if(cmd.startsWith("build")) {
+			return buildController;
 		}
 		return null;
 	}

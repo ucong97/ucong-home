@@ -11,7 +11,8 @@ CREATE TABLE article(
     title CHAR(100) NOT NULL,
     `body` TEXT NOT NULL,
     memberId INT(10) UNSIGNED NOT NULL,
-    boardId INT(10) UNSIGNED NOT NULL
+    boardId INT(10) UNSIGNED NOT NULL,
+    hit INT(10) UNSIGNED NOT NULL
 );
 
 # 게시물 데이터 3개 생성

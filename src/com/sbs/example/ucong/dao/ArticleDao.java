@@ -73,7 +73,8 @@ public class ArticleDao {
 		sql.append("title=?,",title);
 		sql.append("body=?,",body);
 		sql.append("memberId=?,",memberId);
-		sql.append("boardId=?",boardId);
+		sql.append("boardId=?,",boardId);
+		sql.append("hit=0");
 		
 		return MysqlUtil.insert(sql);
 		
