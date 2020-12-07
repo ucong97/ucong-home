@@ -1,48 +1,58 @@
 package com.sbs.example.ucong.service;
 
-import java.io.File;
 import java.util.List;
 
 import com.sbs.example.ucong.container.Container;
 import com.sbs.example.ucong.dto.Article;
-import com.sbs.example.ucong.dto.Member;
 import com.sbs.example.ucong.util.Util;
 
 public class BuildService {
 	private ArticleService articleService;
-	private MemberService memberService;
 	
 	public BuildService() {
 		articleService= Container.articleService;
-		memberService= Container.memberService;
 	}
-	public void makeHtml() {
-		File htmlForder = new File("site");
-
-		if ( htmlForder.exists() == false ) {
-			htmlForder.mkdir();
-		}
+	
+	public void buildSite() {
+		System.out.println("site/article 폴더생성");
+		Util.mkdirs("site/article");
+		
 		List<Article> articles = articleService.getArticles();
 		
-		for(Article article:articles) {
-			Member member = memberService.getMemberById(article.memberId);
+		for(Article article : articles) {
+			StringBuilder sb = new StringBuilder();
 			
-			String fileName=article.id+".html";
-			String html = "<meta charset=\"UTF-8\">";
-			html += "<div>번호 : " + article.id + "</div>";
-			html += "<div>날짜 : " + article.regDate + "</div>";
-			html += "<div>작성자 : " + member.name + "</div>";
-			html += "<div>제목 : " + article.title + "</div>";
-			html += "<div>내용 : " + article.body + "</div>";
+			sb.append("<!DOCTYPE html>");
+			sb.append("<html lang=\"ko\">");
 			
-			if(article.id>1) {
-				html+= "<div><a href=\""+(article.id-1)+".html\">이전글</a></div>";
-			}
-			html += "<div><a href=\""+(article.id+1)+".html\">다음글</a></div>";
+			sb.append("<head>");
+			sb.append("<meta charset=\"UTF=8\">");
+			sb.append("<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"");
+			sb.append("<title>게시물 상세페이지 - " + article.title+"</title>");
+			sb.append("</head>");
 			
-			Util.writeFileContents("site/" + fileName, html);
+			sb.append("<body>");
+			sb.append("<h1>게시물 상세페이지</h1>");
+			
+			sb.append("<div>");
+			sb.append("번호 : " + article.id + "<br>");
+			sb.append("작성날짜 : " + article.regDate + "<br>");
+			sb.append("갱신날짜 : " + article.updateDate + "<br>");
+			sb.append("제목 : " + article.title + "<br>");
+			sb.append("내용 : " + article.body + "<br>");
+			sb.append("<a href=\"" + (article.id - 1) + ".html\">이전글</a><br>");
+			sb.append("<a href=\"" + (article.id + 1) + ".html\">다음글</a><br>");
+			sb.append("</div>");
+			
+			sb.append("</body>");
+			sb.append("</html>");
+			
+			String fileName = article.id + ".html";
+			String filePath = "site/article/" + fileName;
+			
+			Util.writeFile(filePath, sb.toString());
+			System.out.println(filePath + " 생성");
 		}
-		
 	}
 
 }

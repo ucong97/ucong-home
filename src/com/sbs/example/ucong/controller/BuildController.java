@@ -17,8 +17,8 @@ public class BuildController extends Controller{
 	}
 
 	private void doHtml(String cmd) {
-		System.out.println("== html 생성을 시작합니다. ==");
-		buildService.makeHtml();
+		System.out.println("== 사이트 생성 ==");
+		buildService.buildSite();
 	}
 
 }
