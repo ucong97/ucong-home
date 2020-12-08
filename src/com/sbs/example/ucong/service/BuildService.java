@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.sbs.example.ucong.container.Container;
 import com.sbs.example.ucong.dto.Article;
+import com.sbs.example.ucong.dto.Board;
 import com.sbs.example.ucong.util.Util;
 
 public class BuildService {
@@ -17,42 +18,48 @@ public class BuildService {
 		System.out.println("site/article 폴더생성");
 		Util.mkdirs("site/article");
 		
-		List<Article> articles = articleService.getArticles();
+		String head = Util.getFileContents("site_template/part/head.html");
+		String foot = Util.getFileContents("site_template/part/foot.html");
 		
-		for(Article article : articles) {
-			StringBuilder sb = new StringBuilder();
-			
-			sb.append("<!DOCTYPE html>");
-			sb.append("<html lang=\"ko\">");
-			
-			sb.append("<head>");
-			sb.append("<meta charset=\"UTF=8\">");
-			sb.append("<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"");
-			sb.append("<title>게시물 상세페이지 - " + article.title+"</title>");
-			sb.append("</head>");
-			
-			sb.append("<body>");
-			sb.append("<h1>게시물 상세페이지</h1>");
-			
-			sb.append("<div>");
-			sb.append("번호 : " + article.id + "<br>");
-			sb.append("작성날짜 : " + article.regDate + "<br>");
-			sb.append("갱신날짜 : " + article.updateDate + "<br>");
-			sb.append("제목 : " + article.title + "<br>");
-			sb.append("내용 : " + article.body + "<br>");
-			sb.append("<a href=\"" + (article.id - 1) + ".html\">이전글</a><br>");
-			sb.append("<a href=\"" + (article.id + 1) + ".html\">다음글</a><br>");
-			sb.append("</div>");
-			
-			sb.append("</body>");
-			sb.append("</html>");
-			
-			String fileName = article.id + ".html";
-			String filePath = "site/article/" + fileName;
-			
-			Util.writeFile(filePath, sb.toString());
-			System.out.println(filePath + " 생성");
+		// 각 게시판 별 게시물 리스트 페이지 생성
+		List<Board> boards = articleService.getBoards();
+		
+		for(Board board: boards) {
+			String html="";
+			String fileName= board.code + "-list-1.html";
+			String filePath= "site/article/" + fileName;
+			List<Article> articles = articleService.getArticlesByBoardId(board.id);
+			for(Article article:articles) {
+				html+= "<div>번호 : " + article.id + "</div>";
+				html+= "<div>작성일 : " + article.regDate + "</div>";
+				html+= "<div><a href=\""+article.id +".html\">제목 : " + article.title + "</a></div>";
+			}
+			html = head + html + foot;
+
+			Util.writeFileContents(filePath, html);
 		}
+		
+		//게시물 별 파일생성생성
+		List<Article> articles = articleService.getArticles();
+		for(Article article : articles) {
+			
+			String html = "";
+			String fileName=article.id+".html";
+			String filePath= "site/article/" + fileName;
+			html += "<div>번호 : " + article.id + "</div>";
+			html += "<div>날짜 : " + article.regDate + "</div>";
+			html += "<div>제목 : " + article.title + "</div>";
+			html += "<div>내용 : " + article.body + "</div>";
+
+			if(article.id>1) {
+				html+= "<div><a href=\""+(article.id-1)+".html\">이전글</a></div>";
+			}
+			html += "<div><a href=\""+(article.id+1)+".html\">다음글</a></div>";
+
+			html = head + html+ foot;
+			Util.writeFileContents(filePath,html);
+		}
+		
 	}
 
 }

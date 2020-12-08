@@ -113,6 +113,16 @@ public class ArticleService {
 		return articleDao.getArticlesCount(boardId);
 	}
 
+	public List<Board> getBoards() {
+		return articleDao.getForPrintBoards();
+	}
+
+	
+
+	public List<Article> getArticlesByBoardId(int boardId) {
+		return articleDao.getArticlesByBoardId(boardId);
+	}
+
 
 
 }

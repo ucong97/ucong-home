@@ -267,5 +267,22 @@ public class ArticleDao {
 	}
 
 
+	public List<Article> getArticlesByBoardId(int boardId) {
+		List<Article> articles = new ArrayList<>();
+
+		SecSql sql = new SecSql();
+		sql.append("SELECT *");
+		sql.append("FROM article");
+		sql.append("WHERE boardId=?",boardId);
+
+		List<Map<String, Object>> articleMapList = MysqlUtil.selectRows(sql);
+		for (Map<String, Object> articleMap : articleMapList) {
+			articles.add(new Article(articleMap));
+
+		}
+		return articles;
+	}
+
+
 
 }

@@ -11,7 +11,7 @@ public class BuildController extends Controller{
 	}
 
 	public void doCommand(String cmd) {
-		if(cmd.equals("build html")) {
+		if(cmd.equals("build site")) {
 			doHtml(cmd);
 		}
 	}

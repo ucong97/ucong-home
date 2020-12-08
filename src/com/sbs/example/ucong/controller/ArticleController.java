@@ -370,13 +370,13 @@ public class ArticleController extends Controller {
 		String BoardCode = Container.session.getCurrentBoardCode;
 		Board board = articleService.getBoardByBoardCode(BoardCode);
 		System.out.printf("== %s 리스트 ==\n",board.name);
-		System.out.println("번호 / 작성 / 수정 / 작성자 / 제목 / 조회수 / 추천수 ");
+		System.out.println("게시판 / 번호 / 작성 / 수정 / 작성자 / 제목 / 조회수 / 추천수 ");
 
 		List<Article> articles = articleService.getForPrintArticles(board.id);
 
 		for (Article article : articles) {
 			int recommandCount = articleService.getRecommandCount(article.id);
-			System.out.printf("%d / %s / %s / %s / %s / %d / %d \n", article.id, article.regDate,
+			System.out.printf("%s / %d / %s / %s / %s / %s / %d / %d \n",board.name, article.id, article.regDate,
 					article.updateDate, article.extra__memberName, article.title,article.hit,recommandCount);
 		}
 
