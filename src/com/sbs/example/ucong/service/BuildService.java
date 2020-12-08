@@ -59,6 +59,17 @@ public class BuildService {
 			html = head + html+ foot;
 			Util.writeFileContents(filePath,html);
 		}
+		//모든 게시물 리스트 페이지 생성
+		String html = "";
+		String fileName="article-list.html";
+		String filePath= "site/article/" + fileName;
+		for(Article article : articles) {
+			
+			html+="<div>번호 : " + article.id + " 제목 :<a href=\""+article.id+".html\"> "+article.title+"</a></div>";
+		}
+		
+		html = head + html+ foot;
+		Util.writeFileContents(filePath,html);
 		
 	}
 
