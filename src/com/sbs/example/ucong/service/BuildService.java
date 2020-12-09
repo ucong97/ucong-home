@@ -19,6 +19,8 @@ public class BuildService {
 		Util.rmdir("site");
 		Util.mkdirs("site");
 		
+		Util.copy("site_template/part/app.css","site/app.css");
+		
 		String head = Util.getFileContents("site_template/part/head.html");
 		String foot = Util.getFileContents("site_template/part/foot.html");
 		

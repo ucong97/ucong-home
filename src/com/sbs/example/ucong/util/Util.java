@@ -8,6 +8,10 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 
 public class Util {
 
@@ -84,5 +88,29 @@ public class Util {
 
 		return dirToBeDeleted.delete();
 	}
+
+	public static boolean copy(String sourcePath, String destPath) {
+		Path source = Paths.get(sourcePath);
+        Path target = Paths.get(destPath);
+        
+        if (!Files.exists(target.getParent())) {
+            try {
+				Files.createDirectories(target.getParent());
+			} catch (IOException e) {
+				e.printStackTrace();
+				return false;
+			}
+        
+        }
+        try {
+			Files.copy(source, target, StandardCopyOption.REPLACE_EXISTING);
+		} catch (IOException e) {
+        
+			return true;
+		}
+
+        return true;
+	}
 }
+
 
