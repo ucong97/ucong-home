@@ -69,5 +69,20 @@ public class Util {
 			}
 		}
 	}
+
+	public static boolean rmdir(String path) {
+		return rmdir(new File(path));
+	}
+
+	public static boolean rmdir(File dirToBeDeleted) {
+		File[] allContents = dirToBeDeleted.listFiles();
+		if (allContents != null) {
+			for (File file : allContents) {
+				rmdir(file);
+			}
+		}
+
+		return dirToBeDeleted.delete();
+	}
 }
 

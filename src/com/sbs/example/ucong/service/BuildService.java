@@ -15,8 +15,9 @@ public class BuildService {
 	}
 	
 	public void buildSite() {
-		System.out.println("site/article 폴더생성");
-		Util.mkdirs("site/article");
+		System.out.println("site 폴더생성");
+		Util.rmdir("site");
+		Util.mkdirs("site");
 		
 		String head = Util.getFileContents("site_template/part/head.html");
 		String foot = Util.getFileContents("site_template/part/foot.html");
@@ -27,7 +28,7 @@ public class BuildService {
 		for(Board board: boards) {
 			String html="";
 			String fileName= board.code + "_article_list_1.html";
-			String filePath= "site/article/" + fileName;
+			String filePath= "site/" + fileName;
 			List<Article> articles = articleService.getArticlesByBoardId(board.id);
 			for(Article article:articles) {
 				html+= "<div>번호 : " + article.id + "</div>";
@@ -45,7 +46,7 @@ public class BuildService {
 			
 			String html = "";
 			String fileName=article.id+".html";
-			String filePath= "site/article/" + fileName;
+			String filePath= "site/" + fileName;
 			html += "<div>번호 : " + article.id + "</div>";
 			html += "<div>날짜 : " + article.regDate + "</div>";
 			html += "<div>제목 : " + article.title + "</div>";
@@ -62,7 +63,7 @@ public class BuildService {
 		//모든 게시물 리스트 페이지 생성
 		String html = "";
 		String fileName="article_list.html";
-		String filePath= "site/article/" + fileName;
+		String filePath= "site/" + fileName;
 		for(Article article : articles) {
 			
 			html+="<div>번호 : " + article.id + " 제목 :<a href=\""+article.id+".html\"> "+article.title+"</a></div>";
@@ -74,7 +75,7 @@ public class BuildService {
 		//인덱스 생성
 		html = "";
 		fileName="index.html";
-		filePath= "site/article/" + fileName;
+		filePath= "site/" + fileName;
 		html = head + html+ foot;
 		Util.writeFileContents(filePath,html);
 	}
