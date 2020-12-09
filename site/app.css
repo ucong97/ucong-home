@@ -14,7 +14,9 @@ a {
 .flex {
 	display: flex;
 }
-
+.flex-jc-s{
+  justify-content:flex-start;
+}
 .flex-jc-c {
 	justify-content: center;
 }
@@ -43,7 +45,12 @@ a {
 .height-100p {
 	height: 100%;
 }
-
+.text-align-center{
+  text-align:center;
+}
+.block{
+  display:block;
+}
 /* 커스텀 */
 .con-min-width {
 	min-width: 1200px;
@@ -71,3 +78,50 @@ a {
 	height: 150px;
 }
 /* 로고바 끝 */
+
+/*메뉴바 시작*/
+.menu-bar{
+  background-color:black;
+  color:white;
+}
+/*메뉴바 끝*/
+
+/*메뉴바 메뉴1시작*/
+.menu-bar__menu-1>ul ul{
+  display:none;
+  background-color:black;
+  color:white;
+  position:absolute;
+  top:100%;
+  left:-10px;
+  width:100%;
+  border:solid black 10px;
+  border-top-width:0;
+  border-radius:0 0 10px 10px;
+}
+.menu-bar__menu-1 ul>li{
+   position:relative;
+}
+.menu-bar__menu-1>ul>li{
+   width:25%;
+}
+.menu-bar__menu-1 ul>li>a{
+  font-weight:bold;
+  font-size:1.5rem;
+  padding:20px 0;
+  text-align:center;
+}
+.menu-bar__menu-1>ul>li>a{
+ border-radius:10px 10px 0 0;
+}
+.menu-bar__menu-1 ul>li:hover>a{
+  background-color:white;
+  color:black;
+}
+.menu-bar__menu-1 ul>li:hover>ul{
+  display:block;
+}
+.menu-bar__menu-1> ul ul>li:last-child>a{
+  border-radius:0 0 10px 10px;
+}
+/*메뉴바 메뉴1끝*/
