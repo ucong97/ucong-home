@@ -26,7 +26,7 @@ public class BuildService {
 		
 		for(Board board: boards) {
 			String html="";
-			String fileName= board.code + "-list-1.html";
+			String fileName= board.code + "_article_list_1.html";
 			String filePath= "site/article/" + fileName;
 			List<Article> articles = articleService.getArticlesByBoardId(board.id);
 			for(Article article:articles) {
@@ -61,7 +61,7 @@ public class BuildService {
 		}
 		//모든 게시물 리스트 페이지 생성
 		String html = "";
-		String fileName="article-list.html";
+		String fileName="article_list.html";
 		String filePath= "site/article/" + fileName;
 		for(Article article : articles) {
 			
@@ -71,6 +71,12 @@ public class BuildService {
 		html = head + html+ foot;
 		Util.writeFileContents(filePath,html);
 		
+		//인덱스 생성
+		html = "";
+		fileName="index.html";
+		filePath= "site/article/" + fileName;
+		html = head + html+ foot;
+		Util.writeFileContents(filePath,html);
 	}
 
 }
