@@ -97,7 +97,7 @@ public class BuildService {
 		for (Board board : boards) {
 			boardMenuContentHtml.append("<li>");
 			boardMenuContentHtml
-					.append("<a href=\"" + board.code + "_article_list_1.html\" class=\"flex flex-ai-c flex-jc-c\">");
+					.append("<a href=\"" + board.code + "_article_list_1.html\" class=\"block text-align-center\">");
 			String iClass = "fas fa-clipboard-list";
 
 			if (board.code.contains("notice")) {
@@ -107,6 +107,7 @@ public class BuildService {
 			}
 			boardMenuContentHtml.append("<i class=\"" + iClass + "\"></i>");
 
+			boardMenuContentHtml.append(" ");
 			boardMenuContentHtml.append("<span>");
 			boardMenuContentHtml.append(board.code);
 			boardMenuContentHtml.append("</span>");

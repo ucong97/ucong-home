@@ -10,7 +10,9 @@
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
 <link rel="stylesheet" href="app.css">
 <body>
-	<header class="logo-bar con-min-width">
+	<div class="body-content min-height-100vh flex flex-column">
+  
+<header class="logo-bar con-min-width">
   <div class="con height-100p flex flex-jc-c">
     <a href="index.html" class="logo flex flex-ai-c"> <i class="fab fa-jenkins"></i> <span> Developers </span>
     </a>
@@ -21,15 +23,34 @@
   <div class="con">
     <nav class="menu-bar__menu-1 ">
       <ul class="flex">
-        <li><a href="index.html" class="flex flex-ai-c flex-jc-c"><i class="fas fa-home"></i><span>HOME</span></a></li>
-        <li><a class="flex flex-ai-c flex-jc-c"><i class="fas fa-list"></i><span>ARTICLE</span></a>
+        <li><a href="index.html" class="block text-align-center"><i class="fas fa-home"></i>
+          <span>HOME</span></a></li>
+        <li><a class="block text-align-center"><i class="fas fa-list"></i>
+        <span>ARTICLE</span></a>
           <ul>
-           	${menu-bar__menu-1__board-menu-content}
+            ${menu-bar__menu-1__board-menu-content}
           </ul>
         </li>
-        <li><a href="https://tistory.com" class="flex flex-ai-c flex-jc-c"><i class="fab fa-blogger-b"></i><span>BLOG</span></a></li>
-        <li><a href="https://github.com" class="flex flex-ai-c flex-jc-c"><i class="fab fa-github"></i><span>GITHUB</span></a></li>
+        <li><a class="block text-align-center"><i class="fas fa-link"></i>
+        <span>LINK</span></a><ul>
+            <li><a href="https://tistory.com" class="block text-align-center"><i class="fab fa-blogger-b"></i>
+            <span>BLOG</span></a></li>
+            <li><a href="https://github.com" class="block text-align-center"><i class="fab fa-github"></i>
+            <span>GITHUB</span></a></li>
+          </ul></li>
+        <li><a href="#" class="block text-align-center"><i class="fas fa-chart-pie"></i>
+        <span>STATISTICS</span></a></li>
       </ul>
     </nav>
   </div>
 </header>
+
+
+<main class="flex-grow-1">
+  <section class="title-bar con-min-width">
+    <h1 class="con">
+      <i class="fas fa-home"></i>
+      <span>HOME</span>
+    </h1>
+  </section>
+</main>
