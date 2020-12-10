@@ -24,9 +24,16 @@ public class BuildService {
 		String head = Util.getFileContents("site_template/part/head.html");
 		String foot = Util.getFileContents("site_template/part/foot.html");
 
-		// 각 게시판 별 게시물 리스트 페이지 생성
 		List<Board> boards = articleService.getBoards();
 
+		// 게시판 html 만들기
+		String boardListHtml="";
+		for(Board board : boards) {
+			boardListHtml += "<li><a href=\""+board.code+"_article_list_1.html\" class=\"flex flex-ai-c flex-jc-c\"><span>"+board.code + "</span></a></li>";
+		}
+		head=head.replace("[AAA]", boardListHtml);
+		
+				// 각 게시판 별 게시물 리스트 페이지 생성
 		for (Board board : boards) {
 			StringBuilder sb = new StringBuilder();
 			String fileName = board.code + "_article_list_1.html";
@@ -42,7 +49,6 @@ public class BuildService {
 			Util.writeFileContents(filePath, head + sb.toString() + foot);
 		}
 		System.out.println("각 게시판 별 게시물 리스트 페이지 생성");
-
 		// 게시물 별 파일생성
 		List<Article> articles = articleService.getArticles();
 		for (Article article : articles) {

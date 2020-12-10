@@ -55,7 +55,9 @@ a {
 .con-min-width {
 	min-width: 1200px;
 }
-
+.flex-jc-a{
+  justify-content:space-around;
+}
 .con {
 	width: 1200px;
 }
@@ -89,42 +91,41 @@ a {
 /*메뉴바 메뉴1시작*/
 .menu-bar__menu-1>ul ul{
   display:none;
-  background-color:black;
-  color:white;
   position:absolute;
   top:100%;
-  left:-10px;
   width:100%;
-  border:solid black 10px;
-  border-top-width:0;
+  left:-10px;
   border-radius:0 0 10px 10px;
+  border:10px solid black;
+  border-top-width:0;
 }
 .menu-bar__menu-1 ul>li{
-   position:relative;
+  position:relative;
 }
 .menu-bar__menu-1>ul>li{
-   width:25%;
+  width:25%;
 }
 .menu-bar__menu-1 ul>li>a{
-  font-weight:bold;
   font-size:1.2rem;
+  font-weight:bold;
   padding:20px 0;
-  text-align:center;
-}
-.menu-bar__menu-1 ul>li>a>span{
-	margin-left:10px;
 }
 .menu-bar__menu-1>ul>li>a{
- border-radius:10px 10px 0 0;
+  border-radius:10px 10px 0 0;
 }
 .menu-bar__menu-1 ul>li:hover>a{
   background-color:white;
   color:black;
 }
-.menu-bar__menu-1 ul>li:hover>ul{
+.menu-bar__menu-1>ul>li:hover>ul{
+  background-color:black;
+  color:white;
   display:block;
 }
-.menu-bar__menu-1> ul ul>li:last-child>a{
+.menu-bar__menu-1>ul ul>li:last-child>a{
   border-radius:0 0 10px 10px;
 }
+
+
+
 /*메뉴바 메뉴1끝*/
