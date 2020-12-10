@@ -21,19 +21,12 @@ public class BuildService {
 
 		Util.copy("site_template/part/app.css", "site/app.css");
 
-		String head = Util.getFileContents("site_template/part/head.html");
+		String head = getHeadHtml();
 		String foot = Util.getFileContents("site_template/part/foot.html");
 
 		List<Board> boards = articleService.getBoards();
 
-		// 게시판 html 만들기
-		String boardListHtml="";
-		for(Board board : boards) {
-			boardListHtml += "<li><a href=\""+board.code+"_article_list_1.html\" class=\"flex flex-ai-c flex-jc-c\"><span>"+board.code + "</span></a></li>";
-		}
-		head=head.replace("[AAA]", boardListHtml);
-		
-				// 각 게시판 별 게시물 리스트 페이지 생성
+		// 각 게시판 별 게시물 리스트 페이지 생성
 		for (Board board : boards) {
 			StringBuilder sb = new StringBuilder();
 			String fileName = board.code + "_article_list_1.html";
@@ -74,7 +67,7 @@ public class BuildService {
 			Util.writeFileContents(filePath, head + sb.toString() + foot);
 		}
 		System.out.println("게시물 별 파일생성");
-		
+
 		// 모든 게시물 리스트 페이지 생성
 		String fileName = "article_list.html";
 		String filePath = "site/" + fileName;
@@ -83,15 +76,46 @@ public class BuildService {
 			sb.append("<div>번호 : " + article.id + " 제목 :<a href=\"" + article.id + ".html\"> " + article.title
 					+ "</a></div>");
 		}
-		Util.writeFileContents(filePath,head + sb.toString() + foot);
+		Util.writeFileContents(filePath, head + sb.toString() + foot);
 		System.out.println("리스트 페이지 생성");
 
 		// 인덱스 생성
-		sb.setLength(0); 
+		sb.setLength(0);
 		fileName = "index.html";
 		filePath = "site/" + fileName;
 		Util.writeFileContents(filePath, head + sb.toString() + foot);
 		System.out.println("인덱스 생성");
+	}
+	// 헤더 게시판 메뉴 동적생성
+	private String getHeadHtml() {
+		String head = Util.getFileContents("site_template/part/head.html");
+
+		StringBuilder boardMenuContentHtml = new StringBuilder();
+
+		List<Board> boards = articleService.getBoards();
+
+		for (Board board : boards) {
+			boardMenuContentHtml.append("<li>");
+			boardMenuContentHtml
+					.append("<a href=\"" + board.code + "_article_list_1.html\" class=\"flex flex-ai-c flex-jc-c\">");
+			String iClass = "fas fa-clipboard-list";
+
+			if (board.code.contains("notice")) {
+				iClass = "fab fa-free-code-camp";
+			} else if (board.code.contains("free")) {
+				iClass = "fab fa-free-code-camp";
+			}
+			boardMenuContentHtml.append("<i class=\"" + iClass + "\"></i>");
+
+			boardMenuContentHtml.append("<span>");
+			boardMenuContentHtml.append(board.code);
+			boardMenuContentHtml.append("</span>");
+			boardMenuContentHtml.append("</a>");
+			boardMenuContentHtml.append("</li>");
+		}
+		head = head.replace("${menu-bar__menu-1__board-menu-content}", boardMenuContentHtml.toString());
+
+		return head;
 	}
 
 }
