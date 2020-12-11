@@ -1,5 +1,7 @@
 package com.sbs.example.ucong.service;
 
+import java.util.List;
+
 import com.sbs.example.ucong.container.Container;
 import com.sbs.example.ucong.dao.MemberDao;
 import com.sbs.example.ucong.dto.Member;
@@ -23,6 +25,10 @@ public class MemberService {
 	public Member getMemberById(int memberId) {
 		// TODO Auto-generated method stub
 		return memberDao.getMemberById(memberId);
+	}
+
+	public List<Member> getmembers() {
+		return memberDao.getmembers();
 	}
 
 	

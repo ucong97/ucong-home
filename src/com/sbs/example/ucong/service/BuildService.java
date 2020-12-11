@@ -5,13 +5,16 @@ import java.util.List;
 import com.sbs.example.ucong.container.Container;
 import com.sbs.example.ucong.dto.Article;
 import com.sbs.example.ucong.dto.Board;
+import com.sbs.example.ucong.dto.Member;
 import com.sbs.example.ucong.util.Util;
 
 public class BuildService {
 	private ArticleService articleService;
+	private MemberService memberService;
 
 	public BuildService() {
 		articleService = Container.articleService;
+		memberService = Container.memberService;
 	}
 
 	public void buildSite() {
@@ -24,8 +27,41 @@ public class BuildService {
 		buildIndexPage();
 		buildArticleDetailPages();
 		buildBoardArticlePages();
+		buildStatisticsPage();
 
 	}
+	// 통계 페이지 생성
+	private void buildStatisticsPage() {
+		//회원수
+		List<Member> members = memberService.getmembers();
+		System.out.println("회원수 = "+members.size());
+		//전체 게시물수
+		List<Article> articles= articleService.getArticles();
+		System.out.println("전체 게시물수 = "+articles.size());
+		//각 게시판별 게시물수
+		List<Board> boards = articleService.getBoards();
+		for(Board board:boards) {
+			List<Article> boardArticles = articleService.getArticlesByBoardId(board.id);
+			System.out.println(board.code+"board의 게시물수 = " + boardArticles.size());
+		}
+		//전체 게시물 조회수
+		int hitSum=0;
+		for(Article article : articles) {
+			hitSum += article.hit;
+		}
+		System.out.println("전체게시물조회수 = " + hitSum);
+		//각 게시판별 게시물 조회수
+		for(Board board:boards) {
+			List<Article> boardArticles = articleService.getArticlesByBoardId(board.id);
+			int boardHitSum=0;
+			for(Article article : boardArticles) {
+				boardHitSum += article.hit;
+			}
+			System.out.println(board.code+"게시판 조회수 = " + boardHitSum);
+		}
+		
+	}
+
 	// 각 게시판 별 게시물 리스트 페이지 생성
 	private void buildBoardArticlePages() {
 		List<Board> boards = articleService.getBoards();
@@ -45,7 +81,7 @@ public class BuildService {
 
 			Util.writeFileContents(filePath, head + sb.toString() + foot);
 		}
-		System.out.println("각 게시판 별 게시물 리스트 페이지 생성");
+		//System.out.println("각 게시판 별 게시물 리스트 페이지 생성");
 	}
 
 	private void buildArticleDetailPages() {
@@ -76,7 +112,7 @@ public class BuildService {
 			sb.append("</section>");
 			Util.writeFileContents(filePath, head + sb.toString() + foot);
 		}
-		System.out.println("게시물 별 파일생성");
+		//System.out.println("게시물 별 파일생성");
 
 	}
 
@@ -94,7 +130,7 @@ public class BuildService {
 		
 		String filePath = "site/index.html";
 		Util.writeFile(filePath, sb.toString());
-		System.out.println(filePath+ "생성");
+		//System.out.println(filePath+ "생성");
 	}
 
 	// 헤더 게시판 메뉴 동적생성
