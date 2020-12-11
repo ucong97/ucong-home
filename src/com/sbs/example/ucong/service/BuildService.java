@@ -26,10 +26,10 @@ public class BuildService {
 		buildBoardArticlePages();
 
 	}
+	// 각 게시판 별 게시물 리스트 페이지 생성
 	private void buildBoardArticlePages() {
 		List<Board> boards = articleService.getBoards();
 		String foot = Util.getFileContents("site_template/part/foot.html");
-		// 각 게시판 별 게시물 리스트 페이지 생성
 		for (Board board : boards) {
 			String head = getHeadHtml("article_list_"+board.code);
 			StringBuilder sb = new StringBuilder();
@@ -58,7 +58,8 @@ public class BuildService {
 			String fileName = article.id + ".html";
 			String filePath = "site/" + fileName;
 
-			sb.append("<div>");
+			sb.append("<section class=\"con-min-width\">");
+			sb.append("<div class=\"con\">");
 			sb.append("번호 : " + article.id + "<br>");
 			sb.append("작성날짜 : " + article.regDate + "<br>");
 			sb.append("갱신날짜 : " + article.updateDate + "<br>");
@@ -72,6 +73,7 @@ public class BuildService {
 				sb.append("<a href=\"" + (article.id + 1) + ".html\">다음글</a>");
 			}
 			sb.append("</div>");
+			sb.append("</section>");
 			Util.writeFileContents(filePath, head + sb.toString() + foot);
 		}
 		System.out.println("게시물 별 파일생성");
