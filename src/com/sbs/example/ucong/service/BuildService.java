@@ -63,23 +63,35 @@ public class BuildService {
 	}
 
 	// 각 게시판 별 게시물 리스트 페이지 생성
+	//${article-list__content}
+	//<div class="flex">
+    //<div class="article-list__cell-id">1</div>
+    //<div class="article-list__cell-reg-date">2020-12-24</div>
+    //<div class="article-list__cell-writer">루돌프</div>
+    //<div class="article-list__cell-title"><a href="#" class="hover-underline">크리스마스이브</a></div>
+    //</div>
 	private void buildBoardArticlePages() {
 		List<Board> boards = articleService.getBoards();
 		String foot = Util.getFileContents("site_template/part/foot.html");
 		for (Board board : boards) {
+			String list = Util.getFileContents("site_template/part/list.html");
 			String head = getHeadHtml("article_list_"+board.code);
 			StringBuilder sb = new StringBuilder();
 			String fileName = board.code + "_article_list_1.html";
 			String filePath = "site/" + fileName;
 			List<Article> articles = articleService.getArticlesByBoardId(board.id);
 			for (Article article : articles) {
-				sb.append("<div>번호 : " + article.id + "</div>");
-				sb.append("<div>작성일 : " + article.regDate + "</div>");
-				sb.append("<div><a href=" + article.id + ".html>제목 :" + article.title + "</a></div>");
-
+				Member member = memberService.getMemberById(article.memberId);
+				sb.append("<div class=\"flex\">\n");
+				sb.append("<div class=\"article-list__cell-id\">" + article.id + "</div>");
+				sb.append("<div class=\"article-list__cell-reg-date\">" + "2020-12-12" + "</div>");
+				sb.append("<div class=\"article-list__cell-writer\">"+ member.name + "</div>");
+				sb.append("<div class=\"article-list__cell-title\"><a href=\"" + article.id + ".html\" class=\"hover-underline\">" + article.title + "</a></div>");
+				sb.append("</div>\n");
 			}
-
-			Util.writeFileContents(filePath, head + sb.toString() + foot);
+			
+			list = list.replace("${article-list__content}",sb.toString());
+			Util.writeFileContents(filePath, head + list + foot);
 		}
 		//System.out.println("각 게시판 별 게시물 리스트 페이지 생성");
 	}
