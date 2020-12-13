@@ -27,49 +27,41 @@ public class BuildService {
 		buildIndexPage();
 		buildArticleDetailPages();
 		buildBoardArticlePages();
-		buildStatisticsPage();
+//		buildStatisticsPage();
 
 	}
 	// 통계 페이지 생성
-	private void buildStatisticsPage() {
-		//회원수
-		List<Member> members = memberService.getmembers();
-		System.out.println("회원수 = "+members.size());
-		//전체 게시물수
-		List<Article> articles= articleService.getArticles();
-		System.out.println("전체 게시물수 = "+articles.size());
-		//각 게시판별 게시물수
-		List<Board> boards = articleService.getBoards();
-		for(Board board:boards) {
-			List<Article> boardArticles = articleService.getArticlesByBoardId(board.id);
-			System.out.println(board.code+"board의 게시물수 = " + boardArticles.size());
-		}
-		//전체 게시물 조회수
-		int hitSum=0;
-		for(Article article : articles) {
-			hitSum += article.hit;
-		}
-		System.out.println("전체게시물조회수 = " + hitSum);
-		//각 게시판별 게시물 조회수
-		for(Board board:boards) {
-			List<Article> boardArticles = articleService.getArticlesByBoardId(board.id);
-			int boardHitSum=0;
-			for(Article article : boardArticles) {
-				boardHitSum += article.hit;
-			}
-			System.out.println(board.code+"게시판 조회수 = " + boardHitSum);
-		}
+//	private void buildStatisticsPage() {
+//		//회원수
+//		List<Member> members = memberService.getmembers();
+//		System.out.println("회원수 = "+members.size());
+//		//전체 게시물수
+//		List<Article> articles= articleService.getArticles();
+//		System.out.println("전체 게시물수 = "+articles.size());
+//		//각 게시판별 게시물수
+//		List<Board> boards = articleService.getBoards();
+//		for(Board board:boards) {
+//			List<Article> boardArticles = articleService.getArticlesByBoardId(board.id);
+//			System.out.println(board.code+"board의 게시물수 = " + boardArticles.size());
+//		}
+//		//전체 게시물 조회수
+//		int hitSum=0;
+//		for(Article article : articles) {
+//			hitSum += article.hit;
+//		}
+//		System.out.println("전체게시물조회수 = " + hitSum);
+//		//각 게시판별 게시물 조회수
+//		for(Board board:boards) {
+//			List<Article> boardArticles = articleService.getArticlesByBoardId(board.id);
+//			int boardHitSum=0;
+//			for(Article article : boardArticles) {
+//				boardHitSum += article.hit;
+//			}
+//			System.out.println(board.code+"게시판 조회수 = " + boardHitSum);
+//		}
 		
-	}
+//	}
 
-	// 각 게시판 별 게시물 리스트 페이지 생성
-	//${article-list__content}
-	//<div class="flex">
-    //<div class="article-list__cell-id">1</div>
-    //<div class="article-list__cell-reg-date">2020-12-24</div>
-    //<div class="article-list__cell-writer">루돌프</div>
-    //<div class="article-list__cell-title"><a href="#" class="hover-underline">크리스마스이브</a></div>
-    //</div>
 	private void buildBoardArticlePages() {
 		List<Board> boards = articleService.getBoards();
 		String foot = Util.getFileContents("site_template/part/foot.html");
@@ -103,30 +95,49 @@ public class BuildService {
 		List<Article> articles = articleService.getArticles();
 		String head = getHeadHtml("article_detail");
 		String foot = Util.getFileContents("site_template/part/foot.html");
+		long startTime = 0L;
+		long elapsedTime = 0L;
 		for (Article article : articles) {
+			String detail = Util.getFileContents("site_template/part/detail.html");
 			StringBuilder sb = new StringBuilder();
 
+			Member member = memberService.getMemberById(article.memberId);
+			int recommandCount = articleService.getRecommandCount(article.id);
+			
 			String fileName = article.id + ".html";
 			String filePath = "site/" + fileName;
 
-			sb.append("<section class=\"con-min-width\">");
-			sb.append("<div class=\"con\">");
-			sb.append("번호 : " + article.id + "<br>");
-			sb.append("작성날짜 : " + article.regDate + "<br>");
-			sb.append("갱신날짜 : " + article.updateDate + "<br>");
-			sb.append("제목 : " + article.title + "<br>");
-			sb.append("내용 : " + article.body + "<br>");
-
+			sb.append("<h1>"+article.title +"</h1>" );
+			sb.append("<div class=\"article-detail__info flex\">");
+			sb.append("<div class=\"article-detail__cell-writer\">"+member.name+"</div>");
+			sb.append("<div class=\"article-detail__cell-reg-date\">"+article.regDate+"</div>");
+			sb.append("<div class=\"count flex\">");
+			sb.append("<div class=\"article-detail__cell-hit\">조회수</div>"+article.hit);
+			sb.append("<div class=\"article-detail__cell-recommand\">추천수</div>"+recommandCount);
+			sb.append("</div>");
+			sb.append("</div>");
+			
+			detail = detail.replace("${article-detail-top}",sb.toString());
+			
+			sb.setLength(0);
+			sb.append(article.body);
+			detail = detail.replace("${article-detail-content}",sb.toString());
+			
+			sb.setLength(0);
+			
 			if (article.id > 1) {
-				sb.append("<a href=\"" + (article.id - 1) + ".html\">이전글</a>");
+				sb.append("<a href=\"" + (article.id - 1) + ".html\" class=\"hover-underline\">이전글</a>");
 			}
 			if (article.id < articles.size()) {
-				sb.append("<a href=\"" + (article.id + 1) + ".html\">다음글</a>");
+				sb.append("<a href=\"" + (article.id + 1) + ".html\" class=\"hover-underline\">다음글</a>");
 			}
-			sb.append("</div>");
-			sb.append("</section>");
-			Util.writeFileContents(filePath, head + sb.toString() + foot);
+			
+			detail = detail.replace("${article-detail-bottom}",sb.toString());
+			Util.writeFileContents(filePath, head +detail+ foot);
+
 		}
+		elapsedTime = System.currentTimeMillis() - startTime;
+		System.out.println(elapsedTime);
 		//System.out.println("게시물 별 파일생성");
 
 	}
