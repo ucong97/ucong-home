@@ -82,11 +82,14 @@ public class BuildService {
 			List<Article> articles = articleService.getArticlesByBoardId(board.id);
 			for (Article article : articles) {
 				Member member = memberService.getMemberById(article.memberId);
+				int recommandCount = articleService.getRecommandCount(article.id);
 				sb.append("<div class=\"flex\">\n");
 				sb.append("<div class=\"article-list__cell-id\">" + article.id + "</div>");
-				sb.append("<div class=\"article-list__cell-reg-date\">" + "2020-12-12" + "</div>");
+				sb.append("<div class=\"article-list__cell-reg-date\">" + article.regDate + "</div>");
 				sb.append("<div class=\"article-list__cell-writer\">"+ member.name + "</div>");
 				sb.append("<div class=\"article-list__cell-title\"><a href=\"" + article.id + ".html\" class=\"hover-underline\">" + article.title + "</a></div>");
+				sb.append("<div class=\"article-list__cell-hit\">"+ article.hit + "</div>");
+				sb.append("<div class=\"article-list__cell-recommand\">"+ recommandCount + "</div>");
 				sb.append("</div>\n");
 			}
 			
