@@ -6,7 +6,6 @@ import java.util.Map;
 
 import com.sbs.example.mysqlutil.MysqlUtil;
 import com.sbs.example.mysqlutil.SecSql;
-import com.sbs.example.ucong.dto.Article;
 import com.sbs.example.ucong.dto.Member;
 
 public class MemberDao {
@@ -68,6 +67,14 @@ public class MemberDao {
 
 		}
 		return members;
+	}
+
+	public int getMembersCount() {
+		SecSql sql = new SecSql();
+		sql.append("SELECT COUNT(*) AS cnt");
+		sql.append("FROM member");
+
+		return MysqlUtil.selectRowIntValue(sql);
 	}
 
 }

@@ -214,7 +214,7 @@ public class ArticleController extends Controller {
 		List<Board> boards = articleService.getForPrintBoards();
 
 		for (Board board : boards) {
-			int articlesCount = articleService.getArticlesCount(board.id);
+			int articlesCount = articleService.getArticlesCountByBoardId(board.id);
 			System.out.printf("%d / %s / %s / %s / %d\n", board.id, board.regDate, board.code, board.name,
 					articlesCount);
 		}

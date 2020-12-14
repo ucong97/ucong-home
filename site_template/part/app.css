@@ -96,6 +96,7 @@ a {
 /* 커스텀 */
 .con-min-width {
 	min-width: 1200px;
+  padding:0 20px;
 }
 
 .con {
@@ -146,7 +147,6 @@ a {
 
 .menu-bar__menu-1>ul>li>a{
   border-radius:10px 10px 0 0;
-  z-index:1;
 }
 
 .menu-bar__menu-1 ul>li:hover>a{
@@ -163,7 +163,7 @@ a {
   border-radius:0 0 20px 20px;
   border:10px solid black;
   border-top-width:0;
-  z-index:1;
+  z-index:10;
 }
 
 .menu-bar__menu-1>ul>li:hover>ul{
@@ -252,12 +252,15 @@ a {
 
 /*상세게시물 시작*/
 :root{
+  --article-detail__cell-reg-date__width:220px;
+  --article-detail__cell-writer__width:120px;
   --article-detail__cell-hit__width:70px;
   --article-detail__cell-recommand__width:70px;
 }
 .article-detail__cell-writer{
-  padding-right: 10px;
+  padding-right:10px;
 }
+
 .article-detail__cell-hit{
   width: var(--article-detail__cell-hit__width);
 }
@@ -290,6 +293,7 @@ a {
 .article-detail__bottom>a{
   padding:0 10px;
 }
+
 
 /*상세게시물 끝*/
 

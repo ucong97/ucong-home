@@ -257,7 +257,7 @@ public class ArticleDao {
 		return boards;
 	}
 
-	public int getArticlesCount(int boardId) {
+	public int getArticlesCountByBoardId(int boardId) {
 		SecSql sql = new SecSql();
 		sql.append("SELECT COUNT(*) AS cnt");
 		sql.append("FROM article");
@@ -292,6 +292,31 @@ public class ArticleDao {
 		sql.append("WHERE id=?",boardId);
 
 		return MysqlUtil.selectRowStringValue(sql);
+	}
+
+	public int getArticlesCount() {
+		SecSql sql = new SecSql();
+		sql.append("SELECT COUNT(*) AS cnt");
+		sql.append("FROM article");
+
+		return MysqlUtil.selectRowIntValue(sql);
+	}
+
+	public int getArticlesHitCount() {
+		SecSql sql = new SecSql();
+		sql.append("SELECT SUM(hit)");
+		sql.append("FROM article");
+
+		return MysqlUtil.selectRowIntValue(sql);
+	}
+
+	public int getBoardArticlesHitCountByBoardId(int boardId) {
+		SecSql sql = new SecSql();
+		sql.append("SELECT SUM(hit)");
+		sql.append("FROM article");
+		sql.append("WHERE boardId = ?", boardId);
+
+		return MysqlUtil.selectRowIntValue(sql);
 	}
 
 

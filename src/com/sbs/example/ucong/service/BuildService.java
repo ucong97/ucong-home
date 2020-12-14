@@ -21,53 +21,49 @@ public class BuildService {
 		System.out.println("site 폴더생성");
 		Util.rmdir("site");
 		Util.mkdirs("site");
-		
+
 		Util.copy("site_template/part/app.css", "site/app.css");
-		
+
 		buildIndexPage();
 		buildArticleDetailPages();
 		buildBoardArticlePages();
-//		buildStatisticsPage();
+		buildStatisticsPage();
 
 	}
+
 	// 통계 페이지 생성
-//	private void buildStatisticsPage() {
-//		//회원수
-//		List<Member> members = memberService.getmembers();
-//		System.out.println("회원수 = "+members.size());
-//		//전체 게시물수
-//		List<Article> articles= articleService.getArticles();
-//		System.out.println("전체 게시물수 = "+articles.size());
-//		//각 게시판별 게시물수
-//		List<Board> boards = articleService.getBoards();
-//		for(Board board:boards) {
-//			List<Article> boardArticles = articleService.getArticlesByBoardId(board.id);
-//			System.out.println(board.code+"board의 게시물수 = " + boardArticles.size());
-//		}
-//		//전체 게시물 조회수
-//		int hitSum=0;
-//		for(Article article : articles) {
-//			hitSum += article.hit;
-//		}
-//		System.out.println("전체게시물조회수 = " + hitSum);
-//		//각 게시판별 게시물 조회수
-//		for(Board board:boards) {
-//			List<Article> boardArticles = articleService.getArticlesByBoardId(board.id);
-//			int boardHitSum=0;
-//			for(Article article : boardArticles) {
-//				boardHitSum += article.hit;
-//			}
-//			System.out.println(board.code+"게시판 조회수 = " + boardHitSum);
-//		}
+	private void buildStatisticsPage() {
+		String head = getHeadHtml("article_statistics");
+		String foot = Util.getFileContents("site_template/part/foot.html");
+		StringBuilder sb = new StringBuilder();
+		// 회원수
+		int membersCount = memberService.getMembersCount();
+		// 전체 게시물수
+		int articlesCount = articleService.getArticlesCount();
+		// 전체 게시물 조회수
+		int articlesHitCount = articleService.getArticlesHitCount();
+
 		
-//	}
+		List<Board> boards = articleService.getBoards();
+		for (Board board : boards) {
+			// 각 게시판별 게시물수
+			int boardArticlesCount = articleService.getArticlesCountByBoardId(board.id);
+			// 각 게시판별 게시물 조회수
+			int boardArticlesHitCount = articleService.getBoardArticlesHitCountByBoardId(board.id);
+			
+		}
+	
+		
+		String filePath = "site/stat.html";
+		Util.writeFileContents(filePath, head +sb.toString() +foot);
+	}
 
 	private void buildBoardArticlePages() {
 		List<Board> boards = articleService.getBoards();
 		String foot = Util.getFileContents("site_template/part/foot.html");
 		for (Board board : boards) {
 			String list = Util.getFileContents("site_template/part/list.html");
-			String head = getHeadHtml("article_list_"+board.code);
+			String head = getHeadHtml("article_list_" + board.code);
 			StringBuilder sb = new StringBuilder();
 			String fileName = board.code + "_article_list_1.html";
 			String filePath = "site/" + fileName;
@@ -78,88 +74,87 @@ public class BuildService {
 				sb.append("<div class=\"flex\">\n");
 				sb.append("<div class=\"article-list__cell-id\">" + article.id + "</div>");
 				sb.append("<div class=\"article-list__cell-reg-date\">" + article.regDate + "</div>");
-				sb.append("<div class=\"article-list__cell-writer\">"+ member.name + "</div>");
-				sb.append("<div class=\"article-list__cell-title\"><a href=\"" + article.id + ".html\" class=\"hover-underline\">" + article.title + "</a></div>");
-				sb.append("<div class=\"article-list__cell-hit\">"+ article.hit + "</div>");
-				sb.append("<div class=\"article-list__cell-recommand\">"+ recommandCount + "</div>");
+				sb.append("<div class=\"article-list__cell-writer\">" + member.name + "</div>");
+				sb.append("<div class=\"article-list__cell-title\"><a href=\"" + article.id
+						+ ".html\" class=\"hover-underline\">" + article.title + "</a></div>");
+				sb.append("<div class=\"article-list__cell-hit\">" + article.hit + "</div>");
+				sb.append("<div class=\"article-list__cell-recommand\">" + recommandCount + "</div>");
 				sb.append("</div>\n");
 			}
-			
-			list = list.replace("${article-list__content}",sb.toString());
+
+			list = list.replace("${article-list__content}", sb.toString());
 			Util.writeFileContents(filePath, head + list + foot);
 		}
-		//System.out.println("각 게시판 별 게시물 리스트 페이지 생성");
+		// System.out.println("각 게시판 별 게시물 리스트 페이지 생성");
 	}
 
 	private void buildArticleDetailPages() {
 		List<Article> articles = articleService.getArticles();
 		String head = getHeadHtml("article_detail");
 		String foot = Util.getFileContents("site_template/part/foot.html");
-		
+
 		for (Article article : articles) {
 			String detail = Util.getFileContents("site_template/part/detail.html");
 			StringBuilder sb = new StringBuilder();
 
 			Member member = memberService.getMemberById(article.memberId);
 			int recommandCount = articleService.getRecommandCount(article.id);
-			
+
 			String fileName = article.id + ".html";
 			String filePath = "site/" + fileName;
 
-			sb.append("<h1>"+article.title +"</h1>" );
+			sb.append("<h1>" + article.title + "</h1>");
 			sb.append("<div class=\"article-detail__info flex\">");
-			sb.append("<div class=\"article-detail__cell-writer\">"+member.name+"</div>");
-			sb.append("<div class=\"article-detail__cell-reg-date\">"+article.regDate+"</div>");
+			sb.append("<div class=\"article-detail__cell-writer\">" + member.name + "</div>");
+			sb.append("<div class=\"article-detail__cell-reg-date\">" + article.regDate + "</div>");
 			sb.append("<div class=\"count flex\">");
-			sb.append("<div class=\"article-detail__cell-hit\">조회수</div>"+article.hit);
-			sb.append("<div class=\"article-detail__cell-recommand\">추천수</div>"+recommandCount);
+			sb.append("<div class=\"article-detail__cell-hit\">조회수</div>" + article.hit);
+			sb.append("<div class=\"article-detail__cell-recommand\">추천수</div>" + recommandCount);
 			sb.append("</div>");
 			sb.append("</div>");
-			
-			detail = detail.replace("${article-detail-top}",sb.toString());
-			
+
+			detail = detail.replace("${article-detail-top}", sb.toString());
+
 			sb.setLength(0);
 			sb.append(article.body);
-			detail = detail.replace("${article-detail-content}",sb.toString());
-			
+			detail = detail.replace("${article-detail-content}", sb.toString());
+
 			sb.setLength(0);
-			
-			
+
 			String boardCode = articleService.getBoardCodeById(article.boardId);
 			sb.append("<a href=\"" + boardCode + "_article_list_1.html\" class=\"hover-underline\">목록</a>");
-		
-			
+
 			if (article.id > 1) {
-				sb.append("<a href=\"" + (article.id - 1) + ".html\" class=\"hover-underline\">이전글</a>");
+				sb.append("<a href=\"" + (article.id - 1) + ".html\" class=\"hover-underline\">&lt;이전글</a>");
 			}
 			if (article.id < articles.size()) {
-				sb.append("<a href=\"" + (article.id + 1) + ".html\" class=\"hover-underline\">다음글</a>");
+				sb.append("<a href=\"" + (article.id + 1) + ".html\" class=\"hover-underline\">다음글&gt;</a>");
 			}
-			
-			detail = detail.replace("${article-detail-bottom}",sb.toString());
-			Util.writeFileContents(filePath, head +detail+ foot);
+
+			detail = detail.replace("${article-detail-bottom}", sb.toString());
+			Util.writeFileContents(filePath, head + detail + foot);
 
 		}
-		
-		//System.out.println("게시물 별 파일생성");
+
+		// System.out.println("게시물 별 파일생성");
 
 	}
 
 	private void buildIndexPage() {
 		StringBuilder sb = new StringBuilder();
-		
+
 		String head = getHeadHtml("index");
 		String foot = Util.getFileContents("site_template/part/foot.html");
-	
+
 		String mainHtml = Util.getFileContents("site_template/part/index.html");
-		
+
 		sb.append(head);
 		sb.append(mainHtml);
 		sb.append(foot);
-		
+
 		String filePath = "site/index.html";
 		Util.writeFile(filePath, sb.toString());
-		//System.out.println(filePath+ "생성");
+		// System.out.println(filePath+ "생성");
 	}
 
 	// 헤더 게시판 메뉴 동적생성
@@ -174,8 +169,8 @@ public class BuildService {
 			boardMenuContentHtml.append("<li>");
 			boardMenuContentHtml
 					.append("<a href=\"" + board.code + "_article_list_1.html\" class=\"block text-align-center\">");
-			
-			boardMenuContentHtml.append(getTitleBarContentByPageName("article_list_"+board.code));
+
+			boardMenuContentHtml.append(getTitleBarContentByPageName("article_list_" + board.code));
 			boardMenuContentHtml.append("</a>");
 			boardMenuContentHtml.append("</li>");
 		}
@@ -186,16 +181,19 @@ public class BuildService {
 	}
 
 	private String getTitleBarContentByPageName(String pageName) {
-		if(pageName.equals("index")) {
+		if (pageName.equals("index")) {
 			return "<i class=\"fas fa-home\"></i> <span>HOME</span>";
-		}else if (pageName.equals("article_detail")) {
+		} else if (pageName.equals("article_detail")) {
 			return "<i class=\"fas fa-file-alt\"></i> <span>ARTICLE DETAIL</span>";
 		} else if (pageName.startsWith("article_list_free")) {
 			return "<i class=\"fab fa-free-code-camp\"></i> <span>FREE LIST</span>";
 		} else if (pageName.startsWith("article_list_notice")) {
 			return "<i class=\"fas fa-flag\"></i> <span>NOTICE LIST</span>";
 		} else if (pageName.startsWith("article_list_")) {
-			return "<i class=\"fas fa-clipboard-list\"></i> <span>"+pageName.split("_")[2].toUpperCase()+" LIST</span>";
+			return "<i class=\"fas fa-clipboard-list\"></i> <span>" + pageName.split("_")[2].toUpperCase()
+					+ " LIST</span>";
+		} else if (pageName.equals("article_statistics")) {
+			return "<i class=\"fas fa-chart-pie\"></i> <span>STATISTICS</span>";
 		}
 		return "";
 	}

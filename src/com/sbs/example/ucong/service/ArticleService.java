@@ -109,8 +109,8 @@ public class ArticleService {
 		return articleDao.getForPrintBoards();
 	}
 
-	public int getArticlesCount(int boardId) {
-		return articleDao.getArticlesCount(boardId);
+	public int getArticlesCountByBoardId(int boardId) {
+		return articleDao.getArticlesCountByBoardId(boardId);
 	}
 
 	public List<Board> getBoards() {
@@ -125,6 +125,18 @@ public class ArticleService {
 
 	public String getBoardCodeById(int boardId) {
 		return articleDao.getBoardCodeById(boardId);
+	}
+
+	public int getArticlesCount() {
+		return articleDao.getArticlesCount();
+	}
+
+	public int getArticlesHitCount() {
+		return articleDao.getArticlesHitCount();
+	}
+
+	public int getBoardArticlesHitCountByBoardId(int boardId) {
+		return articleDao.getBoardArticlesHitCountByBoardId(boardId);
 	}
 
 

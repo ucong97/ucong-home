@@ -31,6 +31,10 @@ public class MemberService {
 		return memberDao.getmembers();
 	}
 
+	public int getMembersCount() {
+		return memberDao.getMembersCount();
+	}
+
 	
 
 }
