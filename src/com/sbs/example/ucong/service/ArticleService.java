@@ -123,6 +123,10 @@ public class ArticleService {
 		return articleDao.getArticlesByBoardId(boardId);
 	}
 
+	public String getBoardCodeById(int boardId) {
+		return articleDao.getBoardCodeById(boardId);
+	}
+
 
 
 }

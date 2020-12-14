@@ -95,8 +95,7 @@ public class BuildService {
 		List<Article> articles = articleService.getArticles();
 		String head = getHeadHtml("article_detail");
 		String foot = Util.getFileContents("site_template/part/foot.html");
-		long startTime = 0L;
-		long elapsedTime = 0L;
+		
 		for (Article article : articles) {
 			String detail = Util.getFileContents("site_template/part/detail.html");
 			StringBuilder sb = new StringBuilder();
@@ -125,6 +124,11 @@ public class BuildService {
 			
 			sb.setLength(0);
 			
+			
+			String boardCode = articleService.getBoardCodeById(article.boardId);
+			sb.append("<a href=\"" + boardCode + "_article_list_1.html\" class=\"hover-underline\">목록</a>");
+		
+			
 			if (article.id > 1) {
 				sb.append("<a href=\"" + (article.id - 1) + ".html\" class=\"hover-underline\">이전글</a>");
 			}
@@ -136,8 +140,7 @@ public class BuildService {
 			Util.writeFileContents(filePath, head +detail+ foot);
 
 		}
-		elapsedTime = System.currentTimeMillis() - startTime;
-		System.out.println(elapsedTime);
+		
 		//System.out.println("게시물 별 파일생성");
 
 	}
@@ -192,7 +195,7 @@ public class BuildService {
 		} else if (pageName.startsWith("article_list_notice")) {
 			return "<i class=\"fas fa-flag\"></i> <span>NOTICE LIST</span>";
 		} else if (pageName.startsWith("article_list_")) {
-			return "<i class=\"fas fa-clipboard-list\"></i> <span>NOTICE LIST</span>";
+			return "<i class=\"fas fa-clipboard-list\"></i> <span>"+pageName.split("_")[2].toUpperCase()+" LIST</span>";
 		}
 		return "";
 	}
