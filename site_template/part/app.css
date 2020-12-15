@@ -249,6 +249,31 @@ a {
 
 /*게시물리스트 끝*/
 
+/*게시물리스트 하단메뉴시작*/
+.article-page-menu{
+  margin-top:20px;
+}
+.article-page-menu>ul>li>a{
+  padding:7px;
+}
+
+.article-page-menu>ul>li:not(:first-child):not(:last-child)>a{
+  border:1px solid transparent;
+  padding-left:0;
+  padding-right:0;
+  min-width:30px;
+  justify-content:center;
+}
+.article-page-menu > ul > li:not(:first-child):not(:last-child):hover > a {
+  border-color:#afafaf;
+}
+
+.article-page-menu__link--selected{
+  color:red;
+}
+
+/*게시물리스트 하단메뉴끝*/
+
 
 /*상세게시물 시작*/
 :root{
