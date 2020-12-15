@@ -164,6 +164,7 @@ public class ArticleDao {
 		if(boardId!=0) {
 			sql.append("WHERE A.boardId = ?",boardId);
 		}
+		sql.append("ORDER BY a.id DESC");
 
 		List<Map<String, Object>> articleMapList = MysqlUtil.selectRows(sql);
 		for (Map<String, Object> articleMap : articleMapList) {

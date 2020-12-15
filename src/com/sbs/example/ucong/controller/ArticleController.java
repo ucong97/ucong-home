@@ -47,18 +47,6 @@ public class ArticleController extends Controller {
 			doRecommand(cmd);
 		}else if (cmd.startsWith("article cancleRecommand")) {
 			doCancleRecommand(cmd);
-		}else if (cmd.startsWith("article testMake")) {
-			doTestMake(cmd);
-		}
-	}
-
-	private void doTestMake(String cmd) {
-		ArticleService articleService = Container.articleService;
-		for (int i = 4; i <= 20; i++) {
-			articleService.write(1, 1, "제목" + i, "내용" + i);
-		}
-		for (int i = 21; i <= 40; i++) {
-			articleService.write(1, 2, "제목" + i, "내용" + i);
 		}
 	}
 

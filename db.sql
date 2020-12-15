@@ -88,3 +88,13 @@ CREATE TABLE recommand(
     articleId INT(10) UNSIGNED NOT NULL,
     memberId INT(10) UNSIGNED NOT NULL
 );
+
+// 게시물 랜덤 생성
+
+INSERT INTO article
+SET regDate = NOW(),
+    updateDate = NOW(),
+    title = CONCAT('제목_',RAND()),
+    `body` = CONCAT('내용_',RAND()),
+    memberId = IF(RAND()>0.5,1,2),
+    boardId =IF(RAND()>0.5,1,2);
