@@ -76,6 +76,10 @@ a {
   display:block;
 }
 
+.none{
+	display:none;
+}
+
 .hover-underline:hover{
   text-decoration:underline;
 }
@@ -282,6 +286,11 @@ a {
   --article-detail__cell-hit__width:70px;
   --article-detail__cell-recommand__width:70px;
 }
+
+.article-detail__cell-board-name{
+  padding-right:10px;
+}
+
 .article-detail__cell-writer{
   padding-right:10px;
 }

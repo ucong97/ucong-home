@@ -231,7 +231,8 @@ public class BuildService {
 
 				int recommandCount = articleService.getRecommandCount(article.id);
 
-				String body = bodyTemplate.replace("${article-detail__title}", article.title);
+				String body = bodyTemplate.replace("${article-detail__title}", article.title);				
+				body = body.replace("${article-detail__board-name}", article.extra__boardName);
 				body = body.replace("${article-detail__writer}", article.extra__memberName);
 				body = body.replace("${article-detail__reg-date}", article.regDate);
 				body = body.replace("${article-detail__hit}", article.hit + "");
@@ -241,16 +242,21 @@ public class BuildService {
 
 				body = body.replace("${article-detail__link-list-url}",
 						getArticleListFileName(article.extra__boardCode, 1));
+				
 				body = body.replace("${article-detail__link-prev-article-url}",
 						getArticleDetailFileName(prevArticleId));
+				body = body.replace("${article-detail__link-prev-article-title-attr}",
+						prevArticle != null ? prevArticle.title : "");
+				body = body.replace("${article-detail__link-prev-article-class-addi}",
+						prevArticleId == 0 ? "none" : "");
+
 				body = body.replace("${article-detail__link-next-article-url}",
 						getArticleDetailFileName(nextArticleId));
-
-				body = body.replace("${article-detail__link-prev-article-title-attr}",
+				body = body.replace("${article-detail__link-next-article-title-attr}",
 						nextArticle != null ? nextArticle.title : "");
-				body = body.replace("${article-detail__link-next-article-class-attr}",
+				body = body.replace("${article-detail__link-next-article-class-addi}",
 						nextArticleId == 0 ? "none" : "");
-
+				
 				sb.append(body);
 				sb.append(foot);
 
