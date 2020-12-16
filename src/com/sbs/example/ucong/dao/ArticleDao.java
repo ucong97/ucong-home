@@ -157,14 +157,19 @@ public class ArticleDao {
 		List<Article> articles = new ArrayList<>();
 
 		SecSql sql = new SecSql();
-		sql.append("SELECT a.*, m.name AS extra__memberName");
-		sql.append("FROM article AS a");
-		sql.append("INNER JOIN `member` AS m");
-		sql.append("ON a.memberId=m.id");
+		sql.append("SELECT A.*");
+		sql.append(", M.name AS extra__memberName");
+		sql.append(", B.code AS extra__boardCode");
+		sql.append("FROM article AS A");
+		sql.append("INNER JOIN `member` AS M");
+		sql.append("ON A.memberId=M.id");
+		sql.append("INNER JOIN board AS B");
+		sql.append("ON A.boardId=B.id");
 		if(boardId!=0) {
 			sql.append("WHERE A.boardId = ?",boardId);
 		}
-		sql.append("ORDER BY a.id DESC");
+		
+		sql.append("ORDER BY A.id DESC");
 
 		List<Map<String, Object>> articleMapList = MysqlUtil.selectRows(sql);
 		for (Map<String, Object> articleMap : articleMapList) {

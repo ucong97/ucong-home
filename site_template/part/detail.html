@@ -1,13 +1,23 @@
 <section class="article-detail con-min-width">
     <div class="con">
       <header>
-        ${article-detail-top}
+       <h1 class= "article-detail__title">${article-detail__title}</h1>
+          <div class="article-detail__info flex">
+            <div class="article-detail__cell-writer">${article-detail__writer}</div>
+            <div class="article-detail__cell-reg-date">${article-detail__reg-date}</div>
+            <div class="count flex">
+              <div class="article-detail__cell-hit">조회수</div>${article-detail__hit}
+              <div class="article-detail__cell-recommand">추천수</div>${article-detail__recommand}
+            </div>
+          </div>
       </header>
       <main class="article-detail__content min-height-45vh">
-          ${article-detail-content}
+          ${article-detail__content}
       </main>
       <div class="article-detail__bottom flex flex-jc-e">
-        ${article-detail-bottom}
+       <a href="${article-detail__link-list-url}" class="hover-underline">목록</a>
+          <a title="${article-detail__link-prev-article-title-attr}" href="${article-detail__link-prev-article-url}" class="hover-underline">&lt; 이전글</a>
+          <a title="${article-detail__link-next-article-title-attr}" href="${article-detail__link-next-article-url}" class="hover-underline">다음글 &gt;</a>
       </div>
     </div>
   </section>

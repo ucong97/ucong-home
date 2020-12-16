@@ -13,6 +13,7 @@ public class Article {
 	public int hit;
 	public String extra__memberName;
 	public String extra__boardName;
+	public String extra__boardCode;
 	
 
 	public Article(Map<String, Object> map) {
@@ -25,6 +26,9 @@ public class Article {
 		this.boardId=(int)map.get("boardId");
 		if(map.containsKey("extra__memberName")) {
 			this.extra__memberName = (String)map.get("extra__memberName");
+		}
+		if(map.containsKey("extra__boardCode")) {
+			this.extra__boardCode = (String)map.get("extra__boardCode");
 		}
 		if(map.containsKey("hit")) {
 			this.hit = (int)map.get("hit");

@@ -139,6 +139,10 @@ public class ArticleService {
 		return articleDao.getBoardArticlesHitCountByBoardId(boardId);
 	}
 
+	public List<Article> getForPrintArticles() {
+		return articleDao.getForPrintArticles(0);
+	}
+
 
 
 }
