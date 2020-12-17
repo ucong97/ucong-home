@@ -20,7 +20,7 @@
             </div>
           </div>
       </header>
-      <main class="article-detail__body min-height-45vh">
+      <main class="article-detail__body min-height-45vh">${article-detail__body}
       </main>
       <div class="article-detail__bottom flex flex-jc-e">
        <a href="${article-detail__link-list-url}" class="hover-underline">목록</a>
@@ -30,14 +30,4 @@
     </div>
   </section>
   
-  <script>
-  function ArticleDetail__Body__init() {
-	  var viewer = new toastui.Editor.factory({
-	    el: document.querySelector('.article-detail__body'),
-	    initialValue: `${article-detail__body}`,
-	    viewer:true
-	  });
-  }
   
-  ArticleDetail__Body__init();
-  </script>

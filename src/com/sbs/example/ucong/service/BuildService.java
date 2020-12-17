@@ -20,6 +20,7 @@ public class BuildService {
 		Util.mkdirs("site");
 
 		Util.copy("site_template/part/app.css", "site/app.css");
+		Util.copy("site_template/part/app.js", "site/app.js");
 
 		buildIndexPage();
 		buildArticleDetailPages();
