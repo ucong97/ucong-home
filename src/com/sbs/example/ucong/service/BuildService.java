@@ -262,7 +262,7 @@ public class BuildService {
 
 				String fileName = getArticleDetailFileName(article.id);
 				String filePath = "site/" + fileName;
-
+				System.out.println(fileName);
 				Util.writeFileContents(filePath, sb.toString());
 			}
 		}
