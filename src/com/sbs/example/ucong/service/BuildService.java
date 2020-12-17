@@ -205,7 +205,6 @@ public class BuildService {
 
 			for (int i = 0; i < articles.size(); i++) {
 				Article article = articles.get(i);
-
 				Article prevArticle = null;
 				int prevArticleIndex = i + 1;
 				int prevArticleId = 0;
@@ -262,7 +261,6 @@ public class BuildService {
 
 				String fileName = getArticleDetailFileName(article.id);
 				String filePath = "site/" + fileName;
-				System.out.println(fileName);
 				Util.writeFileContents(filePath, sb.toString());
 			}
 		}

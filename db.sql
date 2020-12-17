@@ -51,9 +51,16 @@ CREATE TABLE `member`(
 INSERT INTO `member`
 SET regDate = NOW(),
     updateDate = NOW(),
-    loginId = 'ucong',
-    loginPw = 'ucong',
-    `name`= '김유경';
+    loginId = 'aa',
+    loginPw = 'aa',
+    `name`= 'aa';
+
+INSERT INTO `member`
+SET regDate = NOW(),
+    updateDate = NOW(),
+    loginId = 'bb',
+    loginPw = 'bb',
+    `name`= 'bb';
 
 CREATE TABLE board(
     id INT(10) UNSIGNED PRIMARY KEY NOT NULL AUTO_INCREMENT,
@@ -89,7 +96,8 @@ CREATE TABLE recommand(
     memberId INT(10) UNSIGNED NOT NULL
 );
 
-// 게시물 랜덤 생성
+
+# 게시물 랜덤 생성
 
 INSERT INTO article
 SET regDate = NOW(),
@@ -109,3 +117,5 @@ WHERE id = '1';
 UPDATE article 
 SET `body` = '# 자바기본문법\r\n```java\r\nint a = 10;\r\nint b = 20;\r\nint c = a + b ; // 결과값 30\r\n```' 
 WHERE id = '2';
+
+
