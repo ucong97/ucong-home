@@ -99,6 +99,13 @@ SET regDate = NOW(),
     memberId = IF(RAND()>0.5,1,2),
     boardId =IF(RAND()>0.5,1,2);
 
-    UPDATE article 
-    SET `body` = '# 안녕\r\n# 나는\r\n# 김유경\r\n- 하하\r\n- 호호\r\n- 즐거워' 
-    WHERE `id` = '1'; 
+# 1번글 내용을 마크다운 문법으로 수정
+
+UPDATE article 
+SET `body` = '# 안녕\r\n# 나는\r\n# 김유경\r\n- 하하\r\n- 호호\r\n- 즐거워' 
+WHERE id = '1'; 
+
+# 2번글 내용에 자바소스코드 넣기
+UPDATE article 
+SET `body` = '# 자바기본문법\r\n```java\r\nint a = 10;\r\nint b = 20;\r\nint c = a + b ; // 결과값 30\r\n```' 
+WHERE id = '2';
