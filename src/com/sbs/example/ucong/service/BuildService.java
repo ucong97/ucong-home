@@ -16,7 +16,6 @@ public class BuildService {
 
 	public void buildSite() {
 		System.out.println("site 폴더생성");
-		Util.rmdir("site");
 		Util.mkdirs("site");
 
 		Util.copy("site_template/part/app.css", "site/app.css");
