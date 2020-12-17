@@ -238,7 +238,7 @@ public class BuildService {
 				body = body.replace("${article-detail__hit}", article.hit + "");
 				body = body.replace("${article-detail__recommand}", recommandCount + "");
 
-				body = body.replace("${article-detail__content}", article.body);
+				body = body.replace("${article-detail__body}", article.body);
 
 				body = body.replace("${article-detail__link-list-url}",
 						getArticleListFileName(article.extra__boardCode, 1));

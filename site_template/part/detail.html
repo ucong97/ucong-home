@@ -1,3 +1,11 @@
+<!-- 토스트 UI 에디터, 자바스크립트 코어 -->
+<script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
+
+<!-- 코드 미러 라이브러리 추가, 토스트 UI 에디터에서 사용됨 -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.58.3/codemirror.min.css" />
+<!-- 토스트 UI 에디터, CSS 코어 -->
+<link rel="stylesheet" href="https://uicdn.toast.com/editor/latest/toastui-editor.min.css" />
+
 <section class="article-detail con-min-width">
     <div class="con">
       <header>
@@ -12,8 +20,7 @@
             </div>
           </div>
       </header>
-      <main class="article-detail__content min-height-45vh">
-          ${article-detail__content}
+      <main class="article-detail__body min-height-45vh">
       </main>
       <div class="article-detail__bottom flex flex-jc-e">
        <a href="${article-detail__link-list-url}" class="hover-underline">목록</a>
@@ -22,3 +29,15 @@
       </div>
     </div>
   </section>
+  
+  <script>
+  function ArticleDetail__Body__init() {
+	  var viewer = new toastui.Editor.factory({
+	    el: document.querySelector('.article-detail__body'),
+	    initialValue: `${article-detail__body}`,
+	    viewer:true
+	  });
+  }
+  
+  ArticleDetail__Body__init();
+  </script>

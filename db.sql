@@ -98,3 +98,7 @@ SET regDate = NOW(),
     `body` = CONCAT('내용_',RAND()),
     memberId = IF(RAND()>0.5,1,2),
     boardId =IF(RAND()>0.5,1,2);
+
+    UPDATE article 
+    SET `body` = '# 안녕\r\n# 나는\r\n# 김유경\r\n- 하하\r\n- 호호\r\n- 즐거워' 
+    WHERE `id` = '1'; 
