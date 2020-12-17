@@ -66,20 +66,23 @@ public class BuildService {
 			List<Article> articles = articleService.getForPrintArticles(board.id);
 			int articleCount = articles.size();
 			int totalPage = (int) Math.ceil((double) articleCount / itemsInAPage);
-
+			if(totalPage <= 0) {
+				totalPage = 1;
+			}
 			for (int i = 1; i <= totalPage; i++) {
-				buildArticleListPage(board, itemsInAPage, pageBoxSize, articles, i);
+				System.out.println(board.name +" " + articles.size());
+				buildArticleListPage(board, itemsInAPage, pageBoxSize, totalPage , articles, i);
 			}
 		}
 	}
 
-	private void buildArticleListPage(Board board, int itemsInAPage, int pageBoxSize, List<Article> articles,
+	private void buildArticleListPage(Board board, int itemsInAPage, int pageBoxSize, int totalPage, List<Article> articles,
 			int page) {
 		StringBuilder sb = new StringBuilder();
 
 		// 헤더시작
 		sb.append(getHeadHtml("article_list_" + board.code));
-
+		
 		// 바디 시작
 		String bodyTemplate = Util.getFileContents("site_template/part/list.html");
 
@@ -111,10 +114,9 @@ public class BuildService {
 		}
 
 		StringBuilder pageMenuContent = new StringBuilder();
-
-		// 토탈 페이지 계산
-		int totalPage = (int) Math.ceil((double) articlesCount / itemsInAPage);
-
+		
+		
+		
 		// 현재 페이지 계산
 		if (page < 1) {
 			page = 1;
@@ -131,6 +133,7 @@ public class BuildService {
 		if (pageBoxEndPage > totalPage) {
 			pageBoxEndPage = totalPage;
 		}
+		
 
 		// 이전버튼 페이지 계산
 		int pageBoxStartBeforePage = pageBoxStartPage - 1;
@@ -182,7 +185,6 @@ public class BuildService {
 		String filePath = "site/" + fileName;
 
 		Util.writeFileContents(filePath, sb.toString());
-		System.out.println(filePath + "생성");
 	}
 
 	private String getArticleListFileName(Board board, int page) {
@@ -202,7 +204,6 @@ public class BuildService {
 
 		for (Board board : boards) {
 			List<Article> articles = articleService.getForPrintArticles(board.id);
-
 			for (int i = 0; i < articles.size(); i++) {
 				Article article = articles.get(i);
 				Article prevArticle = null;
@@ -262,6 +263,7 @@ public class BuildService {
 				String fileName = getArticleDetailFileName(article.id);
 				String filePath = "site/" + fileName;
 				Util.writeFileContents(filePath, sb.toString());
+				System.out.println(fileName + "생성");
 			}
 		}
 
@@ -285,7 +287,7 @@ public class BuildService {
 
 		String filePath = "site/index.html";
 		Util.writeFile(filePath, sb.toString());
-		// System.out.println(filePath+ "생성");
+//		 System.out.println(filePath+ "생성");
 	}
 
 	// 헤더 게시판 메뉴 동적생성
