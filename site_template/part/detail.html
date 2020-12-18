@@ -29,6 +29,21 @@
       </header>
       <main class="article-detail__body min-height-45vh">${article-detail__body}
       </main>
+      <div class="article-detail__reply-box">
+          <div id="disqus_thread"></div>
+          <script>
+                (function() { // DON'T EDIT BELOW THIS LINE
+                var d = document, s = d.createElement('script');
+                s.src = 'https://cong-ssg.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+                })();
+          </script>
+          <noscript>
+             Please enable JavaScript to view the 
+             <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+          </noscript>
+      </div>
       <div class="article-detail__bottom flex flex-jc-e">
        <a href="${article-detail__link-list-url}" class="hover-underline">목록</a>
           <a title="${article-detail__link-prev-article-title-attr}" href="${article-detail__link-prev-article-url}" class="hover-underline ${article-detail__link-prev-article-class-addi}">&lt; 이전글</a>
