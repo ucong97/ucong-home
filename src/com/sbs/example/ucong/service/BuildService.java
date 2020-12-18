@@ -70,7 +70,6 @@ public class BuildService {
 				totalPage = 1;
 			}
 			for (int i = 1; i <= totalPage; i++) {
-				System.out.println(board.name +" " + articles.size());
 				buildArticleListPage(board, itemsInAPage, pageBoxSize, totalPage , articles, i);
 			}
 		}
@@ -80,6 +79,7 @@ public class BuildService {
 			int page) {
 		StringBuilder sb = new StringBuilder();
 
+		System.out.println(board.name +" " + articles.size());
 		// 헤더시작
 		sb.append(getHeadHtml("article_list_" + board.code));
 		
@@ -95,10 +95,17 @@ public class BuildService {
 		if (end >= articlesCount) {
 			end = articlesCount - 1;
 		}
-
+		
+		if(articlesCount==0) {
+			mainContent.append("<div class= \"flex flex-jc-c\">");
+			mainContent.append("<div> 등록된 게시물이 없습니다. </div>");
+			mainContent.append("</div>");
+		}
+		
 		for (int i = start; i <= end; i++) {
 			Article article = articles.get(i);
-
+			
+			
 			String link = getArticleDetailFileName(article.id);
 
 			int recommandCount = articleService.getRecommandCount(article.id);
@@ -111,8 +118,10 @@ public class BuildService {
 			mainContent.append("<div class=\"article-list__cell-hit\">" + article.hit + "</div>");
 			mainContent.append("<div class=\"article-list__cell-recommand\">" + recommandCount + "</div>");
 			mainContent.append("</div>");
+			
+			
 		}
-
+		System.out.println(mainContent.toString());
 		StringBuilder pageMenuContent = new StringBuilder();
 		
 		
