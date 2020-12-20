@@ -132,6 +132,11 @@ a {
 	background-color: blue;
 }
 
+.bg-white{
+	background-color:white;
+}
+
+
 .bg-body{
 	background: linear-gradient( to bottom, rgba(255,156,158)
 , white	 );
@@ -139,6 +144,10 @@ a {
 
 .bd-home{
 	border: 20px solid #8f6156;
+}
+
+.bd-body-box{
+	border: 10px solid #d9534f;
 }
 /* 커스텀 */
 .con-min-width {
@@ -341,16 +350,18 @@ a {
 
 /*상세게시물 시작*/
 :root{
+  --article-detail__cell-board-name__width: 90px;
   --article-detail__cell-reg-date__width:220px;
   --article-detail__cell-writer__width:120px;
   --article-detail__cell-hit__width:70px;
   --article-detail__cell-recommand__width:70px;
 }
-
+.article-detail{
+  padding:10px;
+}
 .article-detail__cell-board-name{
   padding-right:10px;
 }
-
 .article-detail__cell-writer{
   padding-right:10px;
 }
@@ -367,10 +378,12 @@ a {
   right:0;
   padding-right:10px;
 }
-.article-detail>div>header{
+.article-detail>header{
   padding:20px 0;
-  border-top:solid 3px rgba(0,0,0,0.2);
   border-bottom:solid 3px rgba(0,0,0,0.2);
+}
+.article-detail{
+  border-radius:10px;
 }
 .article-detail__info{
   margin-top:10px;
