@@ -132,7 +132,14 @@ a {
 	background-color: blue;
 }
 
+.bg-body{
+	background: linear-gradient( to bottom, rgba(255,156,158)
+, white	 );
+}
 
+.bd-home{
+	border: 20px solid #8f6156;
+}
 /* 커스텀 */
 .con-min-width {
 	min-width: 1200px;
@@ -156,7 +163,7 @@ a {
 
 /* 로고바 시작 */
 .logo-bar{
-	background-color: black;
+	background-color: #d9534f;
 	color: white;
 	height: 150px;
 }
@@ -164,7 +171,7 @@ a {
 
 /*메뉴바 시작*/
 .menu-bar{
-  background-color:black;
+  background-color:#d9534f;
   color:white;
 }
 /*메뉴바 끝*/
@@ -191,7 +198,7 @@ a {
 
 .menu-bar__menu-1 ul>li:hover>a{
   background-color:white;
-  color:black;
+  color:#d9534f;
 }
 
 .menu-bar__menu-1>ul ul{
@@ -201,13 +208,13 @@ a {
   width:100%;
   left:-10px;
   border-radius:0 0 20px 20px;
-  border:10px solid black;
+  border:10px solid #d9534f;
   border-top-width:0;
   z-index:10;
 }
 
 .menu-bar__menu-1>ul>li:hover>ul{
-  background-color:black;
+  background-color:#d9534f;
   color:white;
   display:block;
 }
@@ -221,9 +228,26 @@ a {
 /*타이틀바 시작*/
 .title-bar{
   margin:30px 0;
+   color:#d9534f;
 }
 /*타이틀바 끝*/
 
+/*홈바디 시작*/
+.home-content__body>div{
+  position:relative;
+}
+.home-content__body>div>img{
+  width:100%;
+}
+
+.home-content__body>div>span{
+  position:absolute;
+  left:30%;
+  bottom:15%;
+  font-size:3rem;
+  font-weight:darkgray;
+}
+/*홈바디 끝*/
 
 /*게시물리스트 시작*/
 
@@ -372,7 +396,7 @@ a {
 /*하단바 시작*/
 .bottom-bar{
   margin-top:30px;
-  background-color:black;
+  background-color:#d9534f;
   color:white;
   padding:30px 0;
 }

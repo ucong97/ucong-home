@@ -79,7 +79,6 @@ public class BuildService {
 			int page) {
 		StringBuilder sb = new StringBuilder();
 
-		System.out.println(board.name +" " + articles.size());
 		// 헤더시작
 		sb.append(getHeadHtml("article_list_" + board.code));
 		
@@ -121,7 +120,6 @@ public class BuildService {
 			
 			
 		}
-		System.out.println(mainContent.toString());
 		StringBuilder pageMenuContent = new StringBuilder();
 		
 		
