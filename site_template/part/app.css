@@ -148,6 +148,7 @@ a {
 
 .bd-body-box{
 	border: 10px solid #d9534f;
+	border-radius:10px;
 }
 /* 커스텀 */
 .con-min-width {
@@ -251,10 +252,16 @@ a {
 
 .home-content__body>div>span{
   position:absolute;
+  left:30.2%;
+  bottom:14.6%;
+  font-size:3rem;
+  font-weight:bold;
+}
+.home-content__body>div>span:last-child{
+  position:absolute;
   left:30%;
   bottom:15%;
-  font-size:3rem;
-  font-weight:darkgray;
+  color:red;
 }
 /*홈바디 끝*/
 
@@ -423,6 +430,90 @@ a {
 
 
 /*상세게시물 끝*/
+
+/*통계 시작*/
+:root{
+  --article-stat__menu-totalMembersCount__width:100px;
+  --article-stat__menu-totalArticlesCount__width:150px;
+  --article-stat__menu-totalArticlesHit__width:170px;
+  --article-stat__menu-boardArticlesCount__width:190px;
+  --article-stat__menu-boardArticlesHit__width:230px;
+}
+.article-stat__menu-totalMembersCount {
+  width:var(--article-stat__menu-totalMembersCount__width);
+}
+.article-stat__menu-totalArticlesCount {
+  width:var(--article-stat__menu-totalArticlesCount__width);
+}
+.article-stat__menu-totalArticlesHit {
+  width:var(--article-stat__menu-totalArticlesHit__width);
+}
+.article-stat__menu-boardArticlesCount {
+  width:var(--article-stat__menu-boardArticlesCount__width);
+}
+.article-stat__menu-boardArticlesHit {
+  width:var(--article-stat__menu-boardArticlesHit__width);
+}
+.article-stat__menu>*{
+  font-size:1rem;
+  font-weight:bold;
+  color:#d9534f;
+  height:50px;
+  transition:background-color 1s, font-size 1s,color 1s, width 1s;
+  border-radius:10px 10px 0 0 ;
+}
+
+.article-stat__content > *{
+  position:relative;
+}
+
+.article-stat__content>div>img{
+  padding:10px 0;
+}
+.article-stat__content>div>div>div{
+
+  margin:20px 0;
+}
+.article-stat__content-totalMembersCount>div{
+  font-size:2rem;
+  position:absolute;
+  top:50%;
+  left:50%;
+  transform:translatex(-50%);
+  
+}
+.article-stat__content-totalArticlesCount>div{
+  position:absolute;
+  top:70%;
+  left:17.5%;
+  font-size:3rem;
+  color:rgba(78,158,190);
+}
+.article-stat__content-totalArticlesHit>div{
+  position:absolute;
+  top:40%;
+  left:32.5%;
+  font-size:3rem;
+  color:rgba(78,158,190);
+}
+.article-stat__content-boardArticlesCount>div{
+  position:absolute;
+  top:40%;
+  left:8%;
+  font-size:2rem;
+  color:rgba(78,158,190);
+  
+}
+.article-stat__content-boardArticlesHit>div{
+  position:absolute;
+  top:25%;
+  left:8%;
+  font-size:2rem;
+  color:rgba(78,158,190);
+}
+
+
+/*통계 끝*/
 
 
 /*하단바 시작*/

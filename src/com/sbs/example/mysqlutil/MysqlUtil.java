@@ -163,7 +163,8 @@ public class MysqlUtil {
 			return Integer.parseInt(String.valueOf(row.get(key)));
 			//return (int) row.get(key);
 		}
-
+		
+		
 		return -1;
 	}
 

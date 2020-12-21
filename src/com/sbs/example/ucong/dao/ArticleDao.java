@@ -322,7 +322,7 @@ public class ArticleDao {
 		sql.append("SELECT SUM(hit)");
 		sql.append("FROM article");
 		sql.append("WHERE boardId = ?", boardId);
-
+		
 		return MysqlUtil.selectRowIntValue(sql);
 	}
 

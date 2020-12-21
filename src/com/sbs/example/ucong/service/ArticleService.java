@@ -110,6 +110,7 @@ public class ArticleService {
 	}
 
 	public int getArticlesCountByBoardId(int boardId) {
+		
 		return articleDao.getArticlesCountByBoardId(boardId);
 	}
 
@@ -136,6 +137,10 @@ public class ArticleService {
 	}
 
 	public int getBoardArticlesHitCountByBoardId(int boardId) {
+		List<Article> articles = articleDao.getArticlesByBoardId(boardId);
+		if(articles.size()==0) {
+			return 0;
+		}
 		return articleDao.getBoardArticlesHitCountByBoardId(boardId);
 	}
 

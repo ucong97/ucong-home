@@ -9,9 +9,11 @@ import com.sbs.example.ucong.util.Util;
 
 public class BuildService {
 	private ArticleService articleService;
+	private MemberService memberService;
 
 	public BuildService() {
 		articleService = Container.articleService;
+		memberService = Container.memberService;
 	}
 
 	public void buildSite() {
@@ -24,36 +26,46 @@ public class BuildService {
 		buildIndexPage();
 		buildArticleDetailPages();
 		buildArticleListPages();
-//		buildStatisticsPage();
+	buildStatisticsPage();
 
 	}
 
-	// 통계 페이지 생성
-//	private void buildStatisticsPage() {
-//		String head = getHeadHtml("article_statistics");
-//		String foot = Util.getFileContents("site_template/part/foot.html");
-//		StringBuilder sb = new StringBuilder();
-//		// 회원수
-//		int membersCount = memberService.getMembersCount();
-//		// 전체 게시물수
-//		int articlesCount = articleService.getArticlesCount();
-//		// 전체 게시물 조회수
-//		int articlesHitCount = articleService.getArticlesHitCount();
-//
-//		
-//		List<Board> boards = articleService.getBoards();
-//		for (Board board : boards) {
-//			// 각 게시판별 게시물수
-//			int boardArticlesCount = articleService.getArticlesCountByBoardId(board.id);
-//			// 각 게시판별 게시물 조회수
-//			int boardArticlesHitCount = articleService.getBoardArticlesHitCountByBoardId(board.id);
-//			
-//		}
-//	
-//		
-//		String filePath = "site/stat.html";
-//		Util.writeFileContents(filePath, head +sb.toString() +foot);
-//	}
+	 //통계 페이지 생성
+	private void buildStatisticsPage() {
+		String head = getHeadHtml("article_statistics");
+		String bodyTemplate = Util.getFileContents("site_template/part/stat.html");
+		String foot = Util.getFileContents("site_template/part/foot.html");
+		
+		StringBuilder sb = new StringBuilder();
+		
+		sb.append(head);
+		
+		// 회원수
+		String body = bodyTemplate.replace("${article-stat__totalMembersCount}", memberService.getMembersCount()+"명");
+		// 전체 게시물수
+		body = body.replace("${article-stat__totalArticlesCount}", "총 "+articleService.getArticlesCount()+" 개");
+		// 전체 게시물 조회수
+		body = body.replace("${article-stat__totalArticlesHit}", "총 "+articleService.getArticlesHitCount()+" 회");
+
+		StringBuilder bdBodyArticles = new StringBuilder();
+		StringBuilder bdBodyHit = new StringBuilder();
+		List<Board> boards = articleService.getBoards();
+		for (Board board : boards) {
+			// 각 게시판별 게시물수
+			
+			bdBodyArticles.append("<div>"+board.name+"게시판 " +articleService.getArticlesCountByBoardId(board.id)+" 개"+"</div>");
+			// 각 게시판별 게시물 조회수
+			
+			bdBodyHit.append("<div>"+board.name+"게시판 " +articleService.getBoardArticlesHitCountByBoardId(board.id)+" 회"+"</div>");
+		}
+		body= body.replace("${article-stat__boardArticlesCount}", bdBodyArticles.toString());
+		body= body.replace("${article-stat__boardArticlesHit}", bdBodyHit.toString());
+		sb.append(body);
+		sb.append(foot);
+		
+		String filePath = "site/stat.html";
+		Util.writeFileContents(filePath, sb.toString());
+	}
 
 	// 리스트
 	private void buildArticleListPages() {
