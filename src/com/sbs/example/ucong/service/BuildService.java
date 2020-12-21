@@ -337,9 +337,11 @@ public class BuildService {
 			return "<i class=\"fas fa-home\"></i> <span>HOME</span>";
 		} else if (pageName.equals("article_detail")) {
 			return "<i class=\"fas fa-file-alt\"></i> <span>ARTICLE DETAIL</span>";
-		} else if (pageName.startsWith("article_list_free")) {
-			return "<i class=\"fab fa-free-code-camp\"></i> <span>FREE LIST</span>";
-		} else if (pageName.startsWith("article_list_notice")) {
+		} else if (pageName.startsWith("article_list_study")) {
+			return "<i class=\"fas fa-pencil-alt\"></i> <span>STUDY LIST</span>";
+		}  else if (pageName.startsWith("article_list_daily")) {
+			return "<i class=\"fab fa-dailymotion\"></i> <span>DAILY LIST</span>";
+		}  else if (pageName.startsWith("article_list_notice")) {
 			return "<i class=\"fas fa-flag\"></i> <span>NOTICE LIST</span>";
 		} else if (pageName.startsWith("article_list_")) {
 			return "<i class=\"fas fa-clipboard-list\"></i> <span>" + pageName.split("_")[2].toUpperCase()
