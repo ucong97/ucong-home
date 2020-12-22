@@ -59,6 +59,9 @@ a {
 	justify-content: center;
 }
 
+.flex-jc-e {
+	justify-content: flex-end;
+}
 .flex-ai-c {
 	align-items: center;
 }
@@ -408,8 +411,14 @@ a {
 }
 :root{
   --newArticle-list__cell-reg-date__width:220px;
-  --newArticle-list__cell-hit__width:150px;
+  --newArticle-list__cell-hit__width:80px;
    --newArticle-list__cell-title:calc(100% - var(--newArticle-list__cell-reg-date__width) - var(--newArticle-list__cell-hit__width));
+}
+.newArticle-list>*>div>div{
+  text-align:center;
+}
+.newArticle-list>main>div>div:first-child{
+  text-align:left;
 }
 .newArticle-list__cell-title {
   width:var(--newArticle-list__cell-title);
@@ -417,13 +426,12 @@ a {
 
 .newArticle-list__cell-reg-date{
   width:var(--newArticle-list__cell-reg-date__width);
-  text-align:center;
 }
 
-.newArticle-list__cell-hit {
-  width:var(--newArticle-lsit__cell-hit__width);
-  text-align:center;
+.newArticle-list__cell-hit{
+  width:var(--newArticle-list__cell-hit__width);
 }
+
 .newArticle-list>header{
  border-bottom:solid 2.5px #d9534f;
 border-top:solid 4px #d9534f;
@@ -438,7 +446,6 @@ border-top:solid 4px #d9534f;
 .newArticle-list>main>div:last-child{
   border-bottom:solid 4px #d9534f;
 }
-
 /*최신글 리스트 끝*/
 
 /*게시물리스트 시작*/

@@ -76,10 +76,10 @@ public class BuildService {
 			String link = getArticleDetailFileName(article.id);
 
 			mainContent.append("<div class=\"flex\">");
-			mainContent.append("<div class=\"article-list__cell-title\"><a href=\"" + link
+			mainContent.append("<div class=\"newArticle-list__cell-title\"><a href=\"" + link
 					+ "\"class=\"hover-underline\">" + article.title + "</a></div>");
-			mainContent.append("<div class=\"article-list__cell-reg-date\">" + article.regDate + "</div>");
-			mainContent.append("<div class=\"article-list__cell-hit\">" + article.hit + "</div>");
+			mainContent.append("<div class=\"newArticle-list__cell-reg-date\">" + article.regDate + "</div>");
+			mainContent.append("<div class=\"newArticle-list__cell-hit\">" + article.hit + "</div>");
 			mainContent.append("</div>");
 
 		}
