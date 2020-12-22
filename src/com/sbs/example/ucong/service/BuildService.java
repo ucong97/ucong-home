@@ -151,6 +151,9 @@ public class BuildService {
 	}
 
 	private String getNewArticleListFileName(int page) {
+		if(page==1) {
+			return "index.html";
+		}
 		return "index_" + page + ".html";
 	}
 
@@ -437,7 +440,7 @@ public class BuildService {
 	}
 
 	private String getTitleBarContentByPageName(String pageName) {
-		if (pageName.equals("index")) {
+		if (pageName.startsWith("index")) {
 			return "<i class=\"fas fa-home\"></i> <span>HOME</span>";
 		} else if (pageName.equals("article_detail")) {
 			return "<i class=\"fas fa-file-alt\"></i> <span>ARTICLE DETAIL</span>";
