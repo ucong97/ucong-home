@@ -29,9 +29,9 @@ public class BuildService {
 		buildStatisticsPage();
 
 	}
-	
+
 	private void buildIndexPages() {
-		
+
 		List<Article> articles = articleService.getArticles();
 		int itemsInAPage = 5;
 		int pageBoxSize = 5;
@@ -45,17 +45,17 @@ public class BuildService {
 		}
 	}
 
-	//인덱스 페이지
+	// 인덱스 페이지
 	private void buildIndexPage(int itemsInAPage, int pageBoxSize, int totalPage, List<Article> articles, int page) {
 		StringBuilder sb = new StringBuilder();
 
 		String head = getHeadHtml("index");
 		String foot = Util.getFileContents("site_template/part/foot.html");
 
-		String bodyTemplate  = Util.getFileContents("site_template/part/index.html");
-		
+		String bodyTemplate = Util.getFileContents("site_template/part/index.html");
+
 		StringBuilder mainContent = new StringBuilder();
-		
+
 		int articlesCount = articles.size();
 		int start = (page - 1) * itemsInAPage;
 		int end = start + itemsInAPage - 1;
@@ -69,7 +69,7 @@ public class BuildService {
 //			mainContent.append("<div> 등록된 게시물이 없습니다. </div>");
 //			mainContent.append("</div>");
 //		}
-		
+
 		for (int i = start; i <= end; i++) {
 			Article article = articles.get(i);
 
@@ -83,9 +83,64 @@ public class BuildService {
 			mainContent.append("</div>");
 
 		}
-		
-		String body = bodyTemplate.replace("${newArticle-list__content}", mainContent.toString());
+		StringBuilder pageMenuContent = new StringBuilder();
 
+		// 현재 페이지 계산
+		if (page < 1) {
+			page = 1;
+		}
+		if (page > totalPage) {
+			page = totalPage;
+		}
+
+		// 현재 페이지 박스 시작, 끝 시작
+		int previousPageBoxesCount = (page - 1) / pageBoxSize;
+		int pageBoxStartPage = pageBoxSize * previousPageBoxesCount + 1;
+		int pageBoxEndPage = pageBoxStartPage + pageBoxSize - 1;
+
+		if (pageBoxEndPage > totalPage) {
+			pageBoxEndPage = totalPage;
+		}
+		// 이전버튼 페이지 계산
+
+		int pageBoxStartBeforePage = pageBoxStartPage - 1;
+		if (pageBoxStartBeforePage < 1) {
+			pageBoxStartBeforePage = 1;
+		}
+
+		// 다음버튼 페이지 계산
+		int pageBoxEndAfterPage = pageBoxEndPage + 1;
+		if (pageBoxEndAfterPage > totalPage) {
+			pageBoxEndAfterPage = totalPage;
+		}
+
+		// 이전버튼 노출여부 계산
+		boolean pageBoxStartBeforeBtnNeedToShow = pageBoxStartBeforePage != pageBoxStartPage;
+
+		// 다음버튼 노출여부 계산
+		boolean pageBoxEndAfterBtnNeedToShow = pageBoxEndAfterPage != pageBoxEndPage;
+
+		if (pageBoxStartBeforeBtnNeedToShow) {
+			pageMenuContent.append("<li><a href=\"" + getNewArticleListFileName(pageBoxStartBeforePage)
+					+ "\" class=\"flex flex-ai-c\">&lt;이전</a></li>");
+		}
+		for (int i = pageBoxStartPage; i <= pageBoxEndPage; i++) {
+			String selectedClass = "";
+
+			if (i == page) {
+				selectedClass = "article-page-menu__link--selected";
+			}
+			pageMenuContent.append("<li><a href=\"" +  getNewArticleListFileName(i) + "\" class=\"flex flex-ai-c "
+					+ selectedClass + " \">" + i + "</a></li>");
+		}
+
+		if (pageBoxEndAfterBtnNeedToShow) {
+			pageMenuContent.append("<li><a href=\"" + getNewArticleListFileName(pageBoxEndAfterPage)
+					+ "\" class=\"flex flex-ai-c\">다음 &gt;</a></li>");
+		}
+
+		String body = bodyTemplate.replace("${newArticle-list__content}", mainContent.toString());
+		body = body.replace("${newArticle-page-menu__content}", pageMenuContent.toString());
 		
 		sb.append(head);
 		sb.append(body);
@@ -94,6 +149,7 @@ public class BuildService {
 		String filePath = "site/" + fileName;
 		Util.writeFile(filePath, sb.toString());
 	}
+
 	private String getNewArticleListFileName(int page) {
 		return "index_" + page + ".html";
 	}
@@ -356,8 +412,6 @@ public class BuildService {
 	private String getArticleDetailFileName(int id) {
 		return "article_detail_" + id + ".html";
 	}
-
-	
 
 	// 헤더 게시판 메뉴 동적생성
 	private String getHeadHtml(String pageName) {
