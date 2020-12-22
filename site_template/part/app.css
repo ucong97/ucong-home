@@ -88,8 +88,8 @@ a {
   min-height:100vh;
 }
 
-.min-height-80vh{
-  min-height:80vh;
+.min-height-60vh{
+  min-height:60vh;
 }
 
 .min-height-45vh{
@@ -171,15 +171,15 @@ a {
 
 /* 로고 시작 */
 .logo>img{
-  width:500px;
-  height:150px;
+  width:400px;
+  height:100px;
 }
 
 /* 로고 끝 */
 
 /* 로고바 시작 */
 .logo-bar{
-	height: 200px;
+	height:150px;
 }
 /* 로고바 끝 */
 
@@ -253,7 +253,7 @@ a {
 #wrapper{
   width:600px;
   margin:50px auto;
-  height:400px;
+  height:600px;
   position:relative;
   color:#fff;
   text-shadow:rgba(0,0,0,0.1) 2px 2px 0px;  
@@ -633,7 +633,7 @@ border-top:solid 4px #d9534f;
   color:#d9534f;
   height:50px;
   transition:background-color 1s, font-size 1s,color 1s, width 1s;
-  border-radius:10px 10px 0 0 ;
+  border-radius:10px 10px 0 0 ; 
 }
 
 .article-stat__content > *{
@@ -642,6 +642,7 @@ border-top:solid 4px #d9534f;
 
 .article-stat__content>div>img{
   padding:10px 0;
+  height:600px;
 }
 .article-stat__content>div>div>div{
 
@@ -652,7 +653,7 @@ border-top:solid 4px #d9534f;
   position:absolute;
   top:50%;
   left:50%;
-  transform:translatex(-50%);
+  transform:translatex(-50%) translatey(-25%);
   
 }
 .article-stat__content-totalArticlesCount>div{
@@ -685,6 +686,11 @@ border-top:solid 4px #d9534f;
   color:rgba(78,158,190);
 }
 
+.article-stat__info{
+  height:500px;
+  text-align:center;
+  line-height:500px;
+}
 
 /*통계 끝*/
 
