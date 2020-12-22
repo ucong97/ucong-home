@@ -23,50 +23,81 @@ public class BuildService {
 		Util.copy("site_template/part/app.css", "site/app.css");
 		Util.copy("site_template/part/app.js", "site/app.js");
 
-		buildIndexPage();
+		buildIndexPages();
 		buildArticleDetailPages();
 		buildArticleListPages();
 		buildStatisticsPage();
 
 	}
 	
+	private void buildIndexPages() {
+		
+		List<Article> articles = articleService.getArticles();
+		int itemsInAPage = 5;
+		int pageBoxSize = 5;
+		int articleCount = articles.size();
+		int totalPage = (int) Math.ceil((double) articleCount / itemsInAPage);
+		if (totalPage <= 0) {
+			totalPage = 1;
+		}
+		for (int i = 1; i <= totalPage; i++) {
+			buildIndexPage(itemsInAPage, pageBoxSize, totalPage, articles, i);
+		}
+	}
+
 	//인덱스 페이지
-	private void buildIndexPage() {
+	private void buildIndexPage(int itemsInAPage, int pageBoxSize, int totalPage, List<Article> articles, int page) {
 		StringBuilder sb = new StringBuilder();
 
 		String head = getHeadHtml("index");
 		String foot = Util.getFileContents("site_template/part/foot.html");
 
-		String mainHtml = Util.getFileContents("site_template/part/index.html");
-		
-		List<Article> articles = articleService.getArticles();
+		String bodyTemplate  = Util.getFileContents("site_template/part/index.html");
 		
 		StringBuilder mainContent = new StringBuilder();
-		for(Article article:articles) {
-			
+		
+		int articlesCount = articles.size();
+		int start = (page - 1) * itemsInAPage;
+		int end = start + itemsInAPage - 1;
+
+		if (end >= articlesCount) {
+			end = articlesCount - 1;
+		}
+
+//		if (articlesCount == 0) {
+//			mainContent.append("<div class= \"flex flex-jc-c\">");
+//			mainContent.append("<div> 등록된 게시물이 없습니다. </div>");
+//			mainContent.append("</div>");
+//		}
+		
+		for (int i = start; i <= end; i++) {
+			Article article = articles.get(i);
+
 			String link = getArticleDetailFileName(article.id);
-			
+
 			mainContent.append("<div class=\"flex\">");
 			mainContent.append("<div class=\"article-list__cell-title\"><a href=\"" + link
 					+ "\"class=\"hover-underline\">" + article.title + "</a></div>");
 			mainContent.append("<div class=\"article-list__cell-reg-date\">" + article.regDate + "</div>");
 			mainContent.append("<div class=\"article-list__cell-hit\">" + article.hit + "</div>");
 			mainContent.append("</div>");
+
 		}
 		
-		mainHtml = mainHtml.replace("${newArticle-list__content}", mainContent.toString());
-		
-		
-		
+		String body = bodyTemplate.replace("${newArticle-list__content}", mainContent.toString());
+
 		
 		sb.append(head);
-		sb.append(mainHtml);
+		sb.append(body);
 		sb.append(foot);
-
-		String filePath = "site/index.html";
+		String fileName = getNewArticleListFileName(page);
+		String filePath = "site/" + fileName;
 		Util.writeFile(filePath, sb.toString());
-//		 System.out.println(filePath+ "생성");
 	}
+	private String getNewArticleListFileName(int page) {
+		return "index_" + page + ".html";
+	}
+
 	// 통계 페이지 생성
 	private void buildStatisticsPage() {
 		String head = getHeadHtml("article_statistics");
