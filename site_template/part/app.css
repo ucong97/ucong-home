@@ -229,12 +229,12 @@ a {
   left:-10px;
   border-radius:0 0 20px 20px;
   border:5px solid #d9534f;
-  border-top:5px solid rgba(255,181,183);
+  border-top:5px solid rgba(255,170,172);
   z-index:10;
 }
 
 .menu-bar__menu-1>ul>li:hover>ul{
-  background-color:rgba(255,181,183);
+  background-color:rgba(255,170,172);
   color:#d9534f;
   display:block;
 }
