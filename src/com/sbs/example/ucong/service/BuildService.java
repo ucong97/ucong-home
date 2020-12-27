@@ -342,7 +342,6 @@ public class BuildService {
 	// 게시물 상세 페이지
 	private void buildArticleDetailPages() {
 		List<Board> boards = articleService.getForPrintBoards();
-		String head = getHeadHtml("article_detail");
 		String bodyTemplate = Util.getFileContents("site_template/part/detail.html");
 		String foot = Util.getFileContents("site_template/part/foot.html");
 
@@ -350,6 +349,9 @@ public class BuildService {
 			List<Article> articles = articleService.getForPrintArticles(board.id);
 			for (int i = 0; i < articles.size(); i++) {
 				Article article = articles.get(i);
+				
+				String head = getHeadHtml("article_detail",article);
+				
 				Article prevArticle = null;
 				int prevArticleIndex = i + 1;
 				int prevArticleId = 0;
@@ -418,7 +420,7 @@ public class BuildService {
 	}
 
 	// 헤더 게시판 메뉴 동적생성
-	private String getHeadHtml(String pageName) {
+	private String getHeadHtml(String pageName,Object relObj) {
 		String head = Util.getFileContents("site_template/part/head.html");
 
 		StringBuilder boardMenuContentHtml = new StringBuilder();
@@ -437,7 +439,39 @@ public class BuildService {
 		head = head.replace("${menu-bar__menu-1__board-menu-content}", boardMenuContentHtml.toString());
 		String titleBarContentHtml = getTitleBarContentByPageName(pageName);
 		head = head.replace("${title-bar__content}", titleBarContentHtml);
+		
+		String pageTitle = getPageTitle(pageName, relObj);
+		head = head.replace("${page-title}", pageTitle);
+
 		return head;
+	}
+
+	private String getPageTitle(String pageName, Object relObj) {
+		StringBuilder sb= new StringBuilder();
+		String forPrintPageName = pageName;
+		
+		if (forPrintPageName.startsWith("index")) {
+			forPrintPageName = "home";
+		}
+		
+		forPrintPageName= forPrintPageName.toUpperCase();
+		forPrintPageName = forPrintPageName.replaceAll("_"," ");
+		
+		sb.append("Heycong | ");
+		sb.append(forPrintPageName);
+		
+		if (relObj instanceof Article) {
+			Article article = (Article) relObj;
+			
+			sb.insert(0,article.title + " | ");
+		}
+		
+		return sb.toString();
+		
+	}
+	
+	private String getHeadHtml(String pageName) {
+		return getHeadHtml(pageName, null);
 	}
 
 	private String getTitleBarContentByPageName(String pageName) {
