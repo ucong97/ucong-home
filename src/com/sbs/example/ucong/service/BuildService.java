@@ -20,6 +20,7 @@ public class BuildService {
 		System.out.println("site 폴더생성");
 		Util.mkdirs("site");
 
+		Util.copy("site_template/part/favicon.ico", "site/favicon.ico");
 		Util.copy("site_template/part/app.css", "site/app.css");
 		Util.copy("site_template/part/app.js", "site/app.js");
 
