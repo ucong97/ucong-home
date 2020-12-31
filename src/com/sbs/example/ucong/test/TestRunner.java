@@ -8,6 +8,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sbs.example.ucong.apidto.DisqusApiDataListThread;
+import com.sbs.example.ucong.container.Container;
 import com.sbs.example.ucong.util.Util;
 
 public class TestRunner {
@@ -32,7 +33,7 @@ public class TestRunner {
 
 	private void testApi() {
 		String url = "https://disqus.com/api/3.0/forums/listThreads.json";
-		String rs = Util.callApi(url, "api_key=AYoqRgidP7DfQxNRxRiJ11Ciqq3iL3GdXUqKdjvsZdZzbLrADjPoBRmOWrYB0Wrt",
+		String rs = Util.callApi(url, "api_key="+ Container.config.getDisqusApiKey(),
 				"forum=cong-ssg", "thread:ident=article_detail_1.html");
 
 		System.out.println(rs);
@@ -40,7 +41,7 @@ public class TestRunner {
 	
 	private void testApi2() {
 		String url = "https://disqus.com/api/3.0/forums/listThreads.json";
-		Map<String, Object> rs = Util.callApiResponseToMap(url, "api_key=AYoqRgidP7DfQxNRxRiJ11Ciqq3iL3GdXUqKdjvsZdZzbLrADjPoBRmOWrYB0Wrt",
+		Map<String, Object> rs = Util.callApiResponseToMap(url,  "api_key="+ Container.config.getDisqusApiKey(),
 				"forum=cong-ssg", "thread:ident=article_detail_1.html");
 		List<Map<String, Object>> response = (List<Map<String, Object>>) rs.get("response");
 		System.out.println(rs.get("code"));
@@ -50,7 +51,7 @@ public class TestRunner {
 	
 	private void testApi3() {
 		String url = "https://disqus.com/api/3.0/forums/listThreads.json";
-		DisqusApiDataListThread rs = (DisqusApiDataListThread)Util.callApiResponseTo(DisqusApiDataListThread.class,url, "api_key=AYoqRgidP7DfQxNRxRiJ11Ciqq3iL3GdXUqKdjvsZdZzbLrADjPoBRmOWrYB0Wrt",
+		DisqusApiDataListThread rs = (DisqusApiDataListThread)Util.callApiResponseTo(DisqusApiDataListThread.class,url,  "api_key="+ Container.config.getDisqusApiKey(),
 				"forum=cong-ssg", "thread:ident=article_detail_1.html");
 	
 		System.out.println(rs.response.get(0).likes + rs.response.get(0).posts);

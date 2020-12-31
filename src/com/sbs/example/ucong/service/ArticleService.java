@@ -1,6 +1,8 @@
 package com.sbs.example.ucong.service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.sbs.example.ucong.container.Container;
 import com.sbs.example.ucong.dao.ArticleDao;
@@ -28,21 +30,24 @@ public class ArticleService {
 	}
 
 	public int modify(int id, String title, String body) {
-		return articleDao.modify(id, title, body);
+		Map<String, Object> modifyArgs = new HashMap<>();
+		modifyArgs.put("id", id);
+		modifyArgs.put("title", title);
+		modifyArgs.put("body", body);
+		
+		return modify(modifyArgs);
 	}
 
 	public int write(int memberId, int boardId, String title, String body) {
-		return articleDao.add(memberId,boardId,title, body);
+		return articleDao.add(memberId, boardId, title, body);
 	}
 
 	public int makeBoard(String code, String name) {
-		return articleDao.makeBoard(code,name);
+		return articleDao.makeBoard(code, name);
 	}
 
-
-
-	public int WrtieReply(int articleId, int memberId,String body) {
-		return articleDao.addReply(articleId,memberId, body);
+	public int WrtieReply(int articleId, int memberId, String body) {
+		return articleDao.addReply(articleId, memberId, body);
 	}
 
 	public List<ArticleReply> getArticleReplysByArticleId(int articleId) {
@@ -55,33 +60,34 @@ public class ArticleService {
 
 	public int replyModify(int id, String body) {
 		return articleDao.replyModify(id, body);
-		
+
 	}
 
 	public int replyDelete(int id) {
 		return articleDao.replyDelete(id);
-		
+
 	}
+
 	public List<Article> getForPrintArticles(int boardId) {
 		return articleDao.getForPrintArticles(boardId);
 	}
 
 	public int hitCount(int inputedId) {
 		return articleDao.hitCount(inputedId);
-		
+
 	}
 
 	public boolean recommand(int articleId, int memberId) {
-		int affectedLows = articleDao.recommand(articleId,memberId);
-		if(affectedLows==1) {
+		int affectedLows = articleDao.recommand(articleId, memberId);
+		if (affectedLows == 1) {
 			return true;
 		}
 		return false;
 	}
 
 	public boolean cancleRecommand(int articleId, int memberId) {
-		int affectedRows =articleDao.cancleRecommand(articleId,memberId);
-		if(affectedRows == 1) {
+		int affectedRows = articleDao.cancleRecommand(articleId, memberId);
+		if (affectedRows == 1) {
 			return true;
 		}
 		return false;
@@ -110,15 +116,13 @@ public class ArticleService {
 	}
 
 	public int getArticlesCountByBoardId(int boardId) {
-		
+
 		return articleDao.getArticlesCountByBoardId(boardId);
 	}
 
 	public List<Board> getBoards() {
 		return articleDao.getForPrintBoards();
 	}
-
-	
 
 	public List<Article> getArticlesByBoardId(int boardId) {
 		return articleDao.getArticlesByBoardId(boardId);
@@ -138,7 +142,7 @@ public class ArticleService {
 
 	public int getBoardArticlesHitCountByBoardId(int boardId) {
 		List<Article> articles = articleDao.getArticlesByBoardId(boardId);
-		if(articles.size()==0) {
+		if (articles.size() == 0) {
 			return 0;
 		}
 		return articleDao.getBoardArticlesHitCountByBoardId(boardId);
@@ -148,6 +152,8 @@ public class ArticleService {
 		return articleDao.getForPrintArticles(0);
 	}
 
-
+	public int modify(Map<String, Object> args) {
+		return articleDao.modify(args);
+	}
 
 }

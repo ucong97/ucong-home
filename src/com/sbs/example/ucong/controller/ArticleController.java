@@ -287,6 +287,11 @@ public class ArticleController extends Controller {
 			System.out.println("게시물 수정 권한이 없습니다.");
 			return;
 		}
+		System.out.printf("번호 : %d\n", article.id);
+		System.out.printf("제목 : %s\n", article.title);
+		System.out.printf("내용 : %s\n", article.body);
+		
+		System.out.println("========수정하기=========");
 		System.out.printf("제목 : ");
 		String title = sc.nextLine();
 		System.out.printf("내용 : ");

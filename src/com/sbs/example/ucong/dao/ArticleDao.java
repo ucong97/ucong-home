@@ -29,55 +29,77 @@ public class ArticleDao {
 	}
 
 	public Article getArticle(int inputedId) {
-		
+
 		SecSql sql = new SecSql();
 		sql.append("SELECT *");
 		sql.append("FROM article");
-		sql.append("WHERE id = ?",inputedId);
-		
-		Map<String,Object> articleMap = MysqlUtil.selectRow(sql);
-		
-		if(articleMap.isEmpty()) {
+		sql.append("WHERE id = ?", inputedId);
+
+		Map<String, Object> articleMap = MysqlUtil.selectRow(sql);
+
+		if (articleMap.isEmpty()) {
 			return null;
 		}
-		
+
 		return new Article(articleMap);
 	}
 
 	public int delete(int inputedId) {
 		SecSql sql = new SecSql();
 		sql.append("DELETE FROM article");
-		sql.append("WHERE id = ?",inputedId);
-		
+		sql.append("WHERE id = ?", inputedId);
+
 		return MysqlUtil.delete(sql);
 
 	}
 
-	public int modify(int id, String title, String body) {
+	public int modify(Map<String, Object> args) {
 		SecSql sql = new SecSql();
+
+		int id = (int) args.get("id");
+		String title = args.get("title") != null ? (String) args.get("title") : null;
+		String body = args.get("body") != null ? (String) args.get("body") : null;
+		int likesCount = args.get("likesCount") != null ? (int) args.get("likesCount") : -1;
+		int commentsCount = args.get("commentsCount") != null ? (int) args.get("commentsCount") : -1;
+
 		sql.append("UPDATE article");
-		sql.append("SET title=?,",title);
-		sql.append("`body`=?,",body);
-		sql.append("updateDate=NOW()");
-		sql.append("WHERE id=?",id);
-		
+		sql.append(" SET updateDate = NOW()");
+
+		if (title != null) {
+			sql.append(", title = ?", title);
+		}
+
+		if (body != null) {
+			sql.append(", body = ?", body);
+		}
+
+		if (likesCount != -1) {
+			sql.append(", likesCount = ?", likesCount);
+		}
+
+		if (commentsCount != -1) {
+			sql.append(", commentsCount = ?", commentsCount);
+		}
+
+		sql.append("WHERE id = ?", id);
+
 		return MysqlUtil.update(sql);
 	}
 
 	public int add(int memberId, int boardId, String title, String body) {
-		
+
 		SecSql sql = new SecSql();
 		sql.append("INSERT INTO article");
 		sql.append("SET regDate=NOW(),");
 		sql.append("updateDate=NOW(),");
-		sql.append("title=?,",title);
-		sql.append("body=?,",body);
-		sql.append("memberId=?,",memberId);
-		sql.append("boardId=?,",boardId);
+		sql.append("title=?,", title);
+		sql.append("body=?,", body);
+		sql.append("memberId=?,", memberId);
+		sql.append("boardId=?,", boardId);
 		sql.append("hit=0");
-		
+
 		return MysqlUtil.insert(sql);
-		
+
 	}
 
 	public int makeBoard(String code, String name) {
@@ -85,22 +107,20 @@ public class ArticleDao {
 		sql.append("INSERT INTO board");
 		sql.append("SET regDate=NOW(),");
 		sql.append("updateDate=NOW(),");
-		sql.append("code = ?,",code);
-		sql.append("name = ?",name);
-		
+		sql.append("code = ?,", code);
+		sql.append("name = ?", name);
+
 		return MysqlUtil.insert(sql);
 	}
 
-	
-
-	public int addReply(int articleId,int memberId, String body) {
+	public int addReply(int articleId, int memberId, String body) {
 		SecSql sql = new SecSql();
 		sql.append("INSERT INTO articleReply");
 		sql.append("SET regDate=NOW(),");
-		sql.append("body=?,",body);
-		sql.append("memberId=?,",memberId);
-		sql.append("articleId=?",articleId);
-		
+		sql.append("body=?,", body);
+		sql.append("memberId=?,", memberId);
+		sql.append("articleId=?", articleId);
+
 		return MysqlUtil.insert(sql);
 	}
 
@@ -110,7 +130,7 @@ public class ArticleDao {
 		SecSql sql = new SecSql();
 		sql.append("SELECT *");
 		sql.append("FROM articleReply");
-		sql.append("WHERE articleId = ? ",articleId);
+		sql.append("WHERE articleId = ? ", articleId);
 
 		List<Map<String, Object>> articleReplyMapList = MysqlUtil.selectRows(sql);
 		for (Map<String, Object> articleReplyMap : articleReplyMapList) {
@@ -124,32 +144,32 @@ public class ArticleDao {
 		SecSql sql = new SecSql();
 		sql.append("SELECT *");
 		sql.append("FROM articleReply");
-		sql.append("WHERE id = ?",id);
-		
-		Map<String,Object> articleReplyMap = MysqlUtil.selectRow(sql);
-		
-		if(articleReplyMap.isEmpty()) {
+		sql.append("WHERE id = ?", id);
+
+		Map<String, Object> articleReplyMap = MysqlUtil.selectRow(sql);
+
+		if (articleReplyMap.isEmpty()) {
 			return null;
 		}
-		
+
 		return new ArticleReply(articleReplyMap);
 	}
 
 	public int replyModify(int id, String body) {
 		SecSql sql = new SecSql();
 		sql.append("UPDATE articleReply");
-		sql.append("SET `body`=?,",body);
+		sql.append("SET `body`=?,", body);
 		sql.append("regDate=NOW()");
-		sql.append("WHERE id=?",id);
-		
+		sql.append("WHERE id=?", id);
+
 		return MysqlUtil.update(sql);
 	}
 
 	public int replyDelete(int id) {
 		SecSql sql = new SecSql();
 		sql.append("DELETE FROM articleReply");
-		sql.append("WHERE id = ?",id);
-		
+		sql.append("WHERE id = ?", id);
+
 		return MysqlUtil.delete(sql);
 	}
 
@@ -166,10 +186,10 @@ public class ArticleDao {
 		sql.append("ON A.memberId=M.id");
 		sql.append("INNER JOIN board AS B");
 		sql.append("ON A.boardId=B.id");
-		if(boardId!=0) {
-			sql.append("WHERE A.boardId = ?",boardId);
+		if (boardId != 0) {
+			sql.append("WHERE A.boardId = ?", boardId);
 		}
-		
+
 		sql.append("ORDER BY A.id DESC");
 
 		List<Map<String, Object>> articleMapList = MysqlUtil.selectRows(sql);
@@ -184,26 +204,26 @@ public class ArticleDao {
 		SecSql sql = new SecSql();
 		sql.append("UPDATE article");
 		sql.append("SET hit = hit+1");
-		sql.append("WHERE id = ?",inputedId);
-		
+		sql.append("WHERE id = ?", inputedId);
+
 		return MysqlUtil.update(sql);
-	
+
 	}
 
 	public int recommand(int articleId, int memberId) {
 		SecSql sql = new SecSql();
 		sql.append("INSERT INTO recommand(articleId,memberId,regDate,updateDate)");
-		sql.append("SELECT ?,?,NOW(),NOW() FROM DUAL",articleId , memberId);
-		sql.append("WHERE NOT EXISTS(SELECT * FROM recommand WHERE memberId=? AND articleId=?);",memberId,articleId);
-		
+		sql.append("SELECT ?,?,NOW(),NOW() FROM DUAL", articleId, memberId);
+		sql.append("WHERE NOT EXISTS(SELECT * FROM recommand WHERE memberId=? AND articleId=?);", memberId, articleId);
+
 		return MysqlUtil.update(sql);
 	}
 
 	public int cancleRecommand(int articleId, int memberId) {
 		SecSql sql = new SecSql();
 		sql.append("DELETE FROM recommand");
-		sql.append("WHERE articleId=? and memberId=?",articleId,memberId);
-		
+		sql.append("WHERE articleId=? and memberId=?", articleId, memberId);
+
 		return MysqlUtil.delete(sql);
 	}
 
@@ -211,24 +231,23 @@ public class ArticleDao {
 		SecSql sql = new SecSql();
 		sql.append("SELECT count(*)");
 		sql.append("FROM recommand");
-		sql.append("WHERE articleId=?",inputedId);
-		
-		
+		sql.append("WHERE articleId=?", inputedId);
+
 		return MysqlUtil.selectRowIntValue(sql);
-		
+
 	}
 
 	public Board getBoardByBoardCode(String boardCode) {
 		SecSql sql = new SecSql();
 		sql.append("SELECT *");
 		sql.append("FROM board");
-		sql.append("WHERE code = ?",boardCode);
-		Map<String,Object> boardMap = MysqlUtil.selectRow(sql);
-		
-		if(boardMap.isEmpty()) {
+		sql.append("WHERE code = ?", boardCode);
+		Map<String, Object> boardMap = MysqlUtil.selectRow(sql);
+
+		if (boardMap.isEmpty()) {
 			return null;
 		}
-	
+
 		return new Board(boardMap);
 	}
 
@@ -273,14 +292,13 @@ public class ArticleDao {
 		return MysqlUtil.selectRowIntValue(sql);
 	}
 
-
 	public List<Article> getArticlesByBoardId(int boardId) {
 		List<Article> articles = new ArrayList<>();
 
 		SecSql sql = new SecSql();
 		sql.append("SELECT *");
 		sql.append("FROM article");
-		sql.append("WHERE boardId=?",boardId);
+		sql.append("WHERE boardId=?", boardId);
 		sql.append("ORDER BY id DESC");
 
 		List<Map<String, Object>> articleMapList = MysqlUtil.selectRows(sql);
@@ -291,12 +309,11 @@ public class ArticleDao {
 		return articles;
 	}
 
-
 	public String getBoardCodeById(int boardId) {
 		SecSql sql = new SecSql();
 		sql.append("SELECT code");
 		sql.append("FROM board");
-		sql.append("WHERE id=?",boardId);
+		sql.append("WHERE id=?", boardId);
 
 		return MysqlUtil.selectRowStringValue(sql);
 	}
@@ -322,10 +339,8 @@ public class ArticleDao {
 		sql.append("SELECT SUM(hit)");
 		sql.append("FROM article");
 		sql.append("WHERE boardId = ?", boardId);
-		
+
 		return MysqlUtil.selectRowIntValue(sql);
 	}
-
-
 
 }

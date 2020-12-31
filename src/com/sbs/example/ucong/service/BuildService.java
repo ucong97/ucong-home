@@ -1,6 +1,8 @@
 package com.sbs.example.ucong.service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.sbs.example.ucong.container.Container;
 import com.sbs.example.ucong.dto.Article;
@@ -10,10 +12,12 @@ import com.sbs.example.ucong.util.Util;
 public class BuildService {
 	private ArticleService articleService;
 	private MemberService memberService;
+	private DisqusApiService disqusApiService;
 
 	public BuildService() {
 		articleService = Container.articleService;
 		memberService = Container.memberService;
+		disqusApiService = Container.disqusApiService;
 	}
 
 	public void buildSite() {
@@ -24,11 +28,34 @@ public class BuildService {
 		Util.copy("site_template/part/app.css", "site/app.css");
 		Util.copy("site_template/part/app.js", "site/app.js");
 
+		loadDisqusData();
+
 		buildIndexPages();
 		buildArticleDetailPages();
 		buildArticleListPages();
 		buildStatisticsPage();
 
+	}
+
+	private void loadDisqusData() {
+		List<Article> articles = articleService.getForPrintArticles();
+		
+		for(Article article:articles) {
+			Map<String, Object> disqusArticleData = disqusApiService.getArticleDate(article);
+			
+			if(disqusArticleData != null) {
+				int likesCount = (int)disqusArticleData.get("likes");
+				int commentCount = (int)disqusArticleData.get("commentCount");		
+				
+				Map<String, Object> modifyArgs = new HashMap<>();
+				modifyArgs.put("id", article.id);
+				modifyArgs.put("likes", likesCount);
+				modifyArgs.put("posts", commentCount);
+				
+				articleService.modify(modifyArgs);
+			}
+		}
+		
 	}
 
 	private void buildIndexPages() {
@@ -131,7 +158,7 @@ public class BuildService {
 			if (i == page) {
 				selectedClass = "article-page-menu__link--selected";
 			}
-			pageMenuContent.append("<li><a href=\"" +  getNewArticleListFileName(i) + "\" class=\"flex flex-ai-c "
+			pageMenuContent.append("<li><a href=\"" + getNewArticleListFileName(i) + "\" class=\"flex flex-ai-c "
 					+ selectedClass + " \">" + i + "</a></li>");
 		}
 
@@ -142,7 +169,7 @@ public class BuildService {
 
 		String body = bodyTemplate.replace("${newArticle-list__content}", mainContent.toString());
 		body = body.replace("${newArticle-page-menu__content}", pageMenuContent.toString());
-		
+
 		sb.append(head);
 		sb.append(body);
 		sb.append(foot);
@@ -152,7 +179,7 @@ public class BuildService {
 	}
 
 	private String getNewArticleListFileName(int page) {
-		if(page==1) {
+		if (page == 1) {
 			return "index.html";
 		}
 		return "index_" + page + ".html";
@@ -349,9 +376,9 @@ public class BuildService {
 			List<Article> articles = articleService.getForPrintArticles(board.id);
 			for (int i = 0; i < articles.size(); i++) {
 				Article article = articles.get(i);
-				
-				String head = getHeadHtml("article_detail",article);
-				
+
+				String head = getHeadHtml("article_detail", article);
+
 				Article prevArticle = null;
 				int prevArticleIndex = i + 1;
 				int prevArticleId = 0;
@@ -402,10 +429,10 @@ public class BuildService {
 						nextArticle != null ? nextArticle.title : "");
 				body = body.replace("${article-detail__link-next-article-class-addi}",
 						nextArticleId == 0 ? "none" : "");
-				
+
 				body = body.replace("${site-domain}", "blog.heycong.com");
 				body = body.replace("${file-name}", getArticleDetailFileName(article.id));
-				
+
 				sb.append(body);
 				sb.append(foot);
 
@@ -418,12 +445,12 @@ public class BuildService {
 
 	}
 
-	private String getArticleDetailFileName(int id) {
+	public String getArticleDetailFileName(int id) {
 		return "article_detail_" + id + ".html";
 	}
 
 	// 헤더 게시판 메뉴 동적생성
-	private String getHeadHtml(String pageName,Object relObj) {
+	private String getHeadHtml(String pageName, Object relObj) {
 		String head = Util.getFileContents("site_template/part/head.html");
 
 		StringBuilder boardMenuContentHtml = new StringBuilder();
@@ -442,7 +469,7 @@ public class BuildService {
 		head = head.replace("${menu-bar__menu-1__board-menu-content}", boardMenuContentHtml.toString());
 		String titleBarContentHtml = getTitleBarContentByPageName(pageName);
 		head = head.replace("${title-bar__content}", titleBarContentHtml);
-		
+
 		String pageTitle = getPageTitle(pageName, relObj);
 		head = head.replace("${page-title}", pageTitle);
 
@@ -450,29 +477,29 @@ public class BuildService {
 	}
 
 	private String getPageTitle(String pageName, Object relObj) {
-		StringBuilder sb= new StringBuilder();
+		StringBuilder sb = new StringBuilder();
 		String forPrintPageName = pageName;
-		
+
 		if (forPrintPageName.startsWith("index")) {
 			forPrintPageName = "home";
 		}
-		
-		forPrintPageName= forPrintPageName.toUpperCase();
-		forPrintPageName = forPrintPageName.replaceAll("_"," ");
-		
+
+		forPrintPageName = forPrintPageName.toUpperCase();
+		forPrintPageName = forPrintPageName.replaceAll("_", " ");
+
 		sb.append("Heycong | ");
 		sb.append(forPrintPageName);
-		
+
 		if (relObj instanceof Article) {
 			Article article = (Article) relObj;
-			
-			sb.insert(0,article.title + " | ");
+
+			sb.insert(0, article.title + " | ");
 		}
-		
+
 		return sb.toString();
-		
+
 	}
-	
+
 	private String getHeadHtml(String pageName) {
 		return getHeadHtml(pageName, null);
 	}
