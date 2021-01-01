@@ -12,7 +12,9 @@ CREATE TABLE article(
     `body` TEXT NOT NULL,
     memberId INT(10) UNSIGNED NOT NULL,
     boardId INT(10) UNSIGNED NOT NULL,
-    hit INT(10) UNSIGNED NOT NULL
+    hit INT(10) UNSIGNED NOT NULL,
+    likesCount INT(10) UNSIGNED NOT NULL,
+    commentsCount INT(10) UNSIGNED NOT NULL
 );
 
 # 게시물 데이터 3개 생성

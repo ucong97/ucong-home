@@ -44,13 +44,13 @@ public class BuildService {
 			Map<String, Object> disqusArticleData = disqusApiService.getArticleDate(article);
 			
 			if(disqusArticleData != null) {
-				int likesCount = (int)disqusArticleData.get("likes");
-				int commentCount = (int)disqusArticleData.get("commentCount");		
+				int likesCount = (int)disqusArticleData.get("likesCount");
+				int commentCount = (int)disqusArticleData.get("commentsCount");		
 				
 				Map<String, Object> modifyArgs = new HashMap<>();
 				modifyArgs.put("id", article.id);
-				modifyArgs.put("likes", likesCount);
-				modifyArgs.put("posts", commentCount);
+				modifyArgs.put("likesCount", likesCount);
+				modifyArgs.put("commentsCount", commentCount);
 				
 				articleService.modify(modifyArgs);
 			}
@@ -409,8 +409,9 @@ public class BuildService {
 				body = body.replace("${article-detail__writer}", article.extra__memberName);
 				body = body.replace("${article-detail__reg-date}", article.regDate);
 				body = body.replace("${article-detail__hit}", article.hit + "");
-				body = body.replace("${article-detail__recommand}", recommandCount + "");
-
+				body = body.replace("${article-detail__likes-counts}", article.likesCount + "");
+				body = body.replace("${article-detail__comments-count}", article.commentsCount + "");
+				
 				body = body.replace("${article-detail__body}", article.body);
 
 				body = body.replace("${article-detail__link-list-url}",

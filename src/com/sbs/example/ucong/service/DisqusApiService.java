@@ -23,8 +23,8 @@ public class DisqusApiService {
 		}
 
 		Map<String, Object> rs = new HashMap<>();
-		rs.put("likes", disqusApiDataListThread.response.get(0).likes);
-		rs.put("posts", disqusApiDataListThread.response.get(0).posts);
+		rs.put("likesCount", disqusApiDataListThread.response.get(0).likes);
+		rs.put("commentsCount", disqusApiDataListThread.response.get(0).posts);
 
 		return rs;
 	}

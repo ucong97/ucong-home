@@ -39,10 +39,10 @@ public class Container {
 		articleDao = new ArticleDao();
 		memberDao = new MemberDao();
 		
+		disqusApiService = new DisqusApiService();
 		articleService = new ArticleService();
 		memberService = new MemberService();
 		buildService = new BuildService();
-		disqusApiService = new DisqusApiService();
 		
 		articleController = new ArticleController();
 		memberController = new MemberController();
