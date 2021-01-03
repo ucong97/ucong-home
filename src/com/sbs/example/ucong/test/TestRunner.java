@@ -47,13 +47,14 @@ public class TestRunner {
 	}
 
 	private void testUpdateGoogleAnalyticsApi() {
+		
 		String ga4PropertyId = Container.config.getGa4PropertyId();
 		try (AlphaAnalyticsDataClient analyticsData = AlphaAnalyticsDataClient.create()) {
 			RunReportRequest request = RunReportRequest.newBuilder()
 					.setEntity(Entity.newBuilder().setPropertyId(ga4PropertyId))
 					.addDimensions(Dimension.newBuilder().setName("pagePath"))
 					.addMetrics(Metric.newBuilder().setName("activeUsers"))
-					.addDateRanges(DateRange.newBuilder().setStartDate("2020-12-17").setEndDate("today")).build();
+					.addDateRanges(DateRange.newBuilder().setStartDate("2021-01-01").setEndDate("today")).build();
 
 			// Make the request
 			RunReportResponse response = analyticsData.runReport(request);

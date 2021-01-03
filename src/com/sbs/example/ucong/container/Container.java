@@ -11,6 +11,7 @@ import com.sbs.example.ucong.dao.MemberDao;
 import com.sbs.example.ucong.service.ArticleService;
 import com.sbs.example.ucong.service.BuildService;
 import com.sbs.example.ucong.service.DisqusApiService;
+import com.sbs.example.ucong.service.GoogleAnalyticsApiService;
 import com.sbs.example.ucong.service.MemberService;
 import com.sbs.example.ucong.session.Session;
 
@@ -28,6 +29,7 @@ public class Container {
 	public static BuildService buildService;
 	public static DisqusApiService disqusApiService;
 	public static AppConfig config;
+	public static GoogleAnalyticsApiService googleAnalyticsApiService;
 	
 	static {
 		
@@ -39,6 +41,7 @@ public class Container {
 		articleDao = new ArticleDao();
 		memberDao = new MemberDao();
 		
+		googleAnalyticsApiService = new GoogleAnalyticsApiService();
 		disqusApiService = new DisqusApiService();
 		articleService = new ArticleService();
 		memberService = new MemberService();
