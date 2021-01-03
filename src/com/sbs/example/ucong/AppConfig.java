@@ -14,4 +14,8 @@ public class AppConfig {
 		return "cong-ssg";
 	}
 
+	public String getGa4PropertyId() {
+		return "256639871";
+	}
+
 }
