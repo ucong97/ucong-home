@@ -21,13 +21,20 @@ public class TestRunner {
 	}
 	public void run() {
 		// testApi();
-		//testApi2();
-		testApi3();
+		// testApi2();
+		// testApi3();
 		// testJackson();
 		// testJackson2();
 		// testJackson3();
-		//testJackson4();
-		//testJackson5();
+		// testJackson4();
+		// testJackson5();
+		testGoogleCredentials();
+	}
+
+
+	private void testGoogleCredentials() {
+		String keyFilePath = System.getenv("GOOGLE_APPLICATION_CREDENTIALS");
+		System.out.println(keyFilePath);
 	}
 
 
