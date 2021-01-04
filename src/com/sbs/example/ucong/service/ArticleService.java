@@ -156,4 +156,10 @@ public class ArticleService {
 		return articleDao.modify(args);
 	}
 
+	public void updatePageHits() {
+		articleDao.updatePageHits();
+		
+	}
+
+
 }

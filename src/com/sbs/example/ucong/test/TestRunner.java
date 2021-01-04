@@ -16,6 +16,7 @@ import com.google.analytics.data.v1alpha.Metric;
 import com.google.analytics.data.v1alpha.Row;
 import com.google.analytics.data.v1alpha.RunReportRequest;
 import com.google.analytics.data.v1alpha.RunReportResponse;
+import com.sbs.example.mysqlutil.MysqlUtil;
 import com.sbs.example.ucong.apidto.DisqusApiDataListThread;
 import com.sbs.example.ucong.container.Container;
 import com.sbs.example.ucong.util.Util;
@@ -37,8 +38,16 @@ public class TestRunner {
 		// testJackson3();
 		// testJackson4();
 		// testJackson5();
-		testGoogleCredentials();
-		testUpdateGoogleAnalyticsApi();
+		//testGoogleCredentials();
+		//testUpdateGoogleAnalyticsApi();
+		MysqlUtil.setDBInfo(Container.config.getDbHost(), Container.config.getDbId(), Container.config.getDbPw(), Container.config.getDbName());
+		
+		testUpdatePageHitsByGa4Api();
+	}
+
+	private void testUpdatePageHitsByGa4Api() {
+		Container.googleAnalyticsApiService.updatePageHits();
+		
 	}
 
 	private void testGoogleCredentials() {
