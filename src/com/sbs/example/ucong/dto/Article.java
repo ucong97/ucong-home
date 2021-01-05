@@ -10,7 +10,7 @@ public class Article {
 	public String body;
 	public int memberId;
 	public int boardId;
-	public int hit;
+	public int hitCount;
 	public int likesCount;
 	public int commentsCount;
 	
@@ -29,6 +29,7 @@ public class Article {
 		this.boardId=(int)map.get("boardId");
 		this.likesCount=(int)map.get("likesCount");
 		this.commentsCount=(int)map.get("commentsCount");
+		this.hitCount=(int)map.get("hitCount");
 		
 		if(map.containsKey("extra__memberName")) {
 			this.extra__memberName = (String)map.get("extra__memberName");
@@ -39,19 +40,19 @@ public class Article {
 		if(map.containsKey("extra__boardName")) {
 			this.extra__boardName = (String)map.get("extra__boardName");
 		}
-		if(map.containsKey("hit")) {
-			this.hit = (int)map.get("hit");
-		}
+		
 		
 	}
 
 
 	@Override
 	public String toString() {
-		return "Article [id=" + id + ", regDate=" + regDate + ", updateDate=" + updateDate + ", title=" + title
-				+ ", body=" + body + ", memberId=" + memberId + ", boardId=" + boardId + ", hit=" + hit
-				+ ", likesCount=" + likesCount + ", commentsCount=" + commentsCount + ", extra__memberName="
-				+ extra__memberName + ", extra__boardName=" + extra__boardName + ", extra__boardCode="
-				+ extra__boardCode + "]";
+		return "Article [id=" + id + ", regDate=" + regDate + ", updateDate=" + updateDate + ", title=" + title + ", body=" + body + ", memberId=" + memberId + ", boardId=" + boardId + ", hitCount=" + hitCount + ", likesCount=" + likesCount
+				+ ", commentsCount=" + commentsCount + ", extra__memberName=" + extra__memberName + ", extra__boardName=" + extra__boardName + ", extra__boardCode=" + extra__boardCode + "]";
 	}
+
+
+	
+
+	
 }

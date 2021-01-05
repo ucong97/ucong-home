@@ -28,7 +28,8 @@ public class BuildService {
 		Util.copy("site_template/part/app.css", "site/app.css");
 		Util.copy("site_template/part/app.js", "site/app.js");
 
-		loadDisqusData();
+		loadDataFromDisqus();
+		loadDataFromGa4Data();
 
 		buildIndexPages();
 		buildArticleDetailPages();
@@ -37,25 +38,13 @@ public class BuildService {
 
 	}
 
-	private void loadDisqusData() {
-		List<Article> articles = articleService.getForPrintArticles();
-		
-		for(Article article:articles) {
-			Map<String, Object> disqusArticleData = disqusApiService.getArticleDate(article);
-			
-			if(disqusArticleData != null) {
-				int likesCount = (int)disqusArticleData.get("likesCount");
-				int commentCount = (int)disqusArticleData.get("commentsCount");		
-				
-				Map<String, Object> modifyArgs = new HashMap<>();
-				modifyArgs.put("id", article.id);
-				modifyArgs.put("likesCount", likesCount);
-				modifyArgs.put("commentsCount", commentCount);
-				
-				articleService.modify(modifyArgs);
-			}
-		}
-		
+	private void loadDataFromGa4Data() {
+		Container.googleAnalyticsApiService.updatePageHits();
+	}
+
+	private void loadDataFromDisqus() {
+		Container.disqusApiService.updateArticlesCounts();
+
 	}
 
 	private void buildIndexPages() {
@@ -104,10 +93,9 @@ public class BuildService {
 			String link = getArticleDetailFileName(article.id);
 
 			mainContent.append("<div class=\"flex\">");
-			mainContent.append("<div class=\"newArticle-list__cell-title\"><a href=\"" + link
-					+ "\"class=\"hover-underline\">" + article.title + "</a></div>");
+			mainContent.append("<div class=\"newArticle-list__cell-title\"><a href=\"" + link + "\"class=\"hover-underline\">" + article.title + "</a></div>");
 			mainContent.append("<div class=\"newArticle-list__cell-reg-date\">" + article.regDate + "</div>");
-			mainContent.append("<div class=\"newArticle-list__cell-hit\">" + article.hit + "</div>");
+			mainContent.append("<div class=\"newArticle-list__cell-hit\">" + article.hitCount + "</div>");
 			mainContent.append("</div>");
 
 		}
@@ -149,8 +137,7 @@ public class BuildService {
 		boolean pageBoxEndAfterBtnNeedToShow = pageBoxEndAfterPage != pageBoxEndPage;
 
 		if (pageBoxStartBeforeBtnNeedToShow) {
-			pageMenuContent.append("<li><a href=\"" + getNewArticleListFileName(pageBoxStartBeforePage)
-					+ "\" class=\"flex flex-ai-c\">&lt;이전</a></li>");
+			pageMenuContent.append("<li><a href=\"" + getNewArticleListFileName(pageBoxStartBeforePage) + "\" class=\"flex flex-ai-c\">&lt;이전</a></li>");
 		}
 		for (int i = pageBoxStartPage; i <= pageBoxEndPage; i++) {
 			String selectedClass = "";
@@ -158,13 +145,11 @@ public class BuildService {
 			if (i == page) {
 				selectedClass = "article-page-menu__link--selected";
 			}
-			pageMenuContent.append("<li><a href=\"" + getNewArticleListFileName(i) + "\" class=\"flex flex-ai-c "
-					+ selectedClass + " \">" + i + "</a></li>");
+			pageMenuContent.append("<li><a href=\"" + getNewArticleListFileName(i) + "\" class=\"flex flex-ai-c " + selectedClass + " \">" + i + "</a></li>");
 		}
 
 		if (pageBoxEndAfterBtnNeedToShow) {
-			pageMenuContent.append("<li><a href=\"" + getNewArticleListFileName(pageBoxEndAfterPage)
-					+ "\" class=\"flex flex-ai-c\">다음 &gt;</a></li>");
+			pageMenuContent.append("<li><a href=\"" + getNewArticleListFileName(pageBoxEndAfterPage) + "\" class=\"flex flex-ai-c\">다음 &gt;</a></li>");
 		}
 
 		String body = bodyTemplate.replace("${newArticle-list__content}", mainContent.toString());
@@ -208,12 +193,10 @@ public class BuildService {
 		for (Board board : boards) {
 			// 각 게시판별 게시물수
 
-			bdBodyArticles.append("<div>" + board.name + "게시판 " + articleService.getArticlesCountByBoardId(board.id)
-					+ " 개" + "</div>");
+			bdBodyArticles.append("<div>" + board.name + "게시판 " + articleService.getArticlesCountByBoardId(board.id) + " 개" + "</div>");
 			// 각 게시판별 게시물 조회수
 
-			bdBodyHit.append("<div>" + board.name + "게시판 " + articleService.getBoardArticlesHitCountByBoardId(board.id)
-					+ " 회" + "</div>");
+			bdBodyHit.append("<div>" + board.name + "게시판 " + articleService.getBoardArticlesHitCountByBoardId(board.id) + " 회" + "</div>");
 		}
 		body = body.replace("${article-stat__boardArticlesCount}", bdBodyArticles.toString());
 		body = body.replace("${article-stat__boardArticlesHit}", bdBodyHit.toString());
@@ -244,8 +227,7 @@ public class BuildService {
 		}
 	}
 
-	private void buildArticleListPage(Board board, int itemsInAPage, int pageBoxSize, int totalPage,
-			List<Article> articles, int page) {
+	private void buildArticleListPage(Board board, int itemsInAPage, int pageBoxSize, int totalPage, List<Article> articles, int page) {
 		StringBuilder sb = new StringBuilder();
 
 		// 헤더시작
@@ -280,9 +262,8 @@ public class BuildService {
 			mainContent.append("<div class=\"article-list__cell-id\">" + article.id + "</div>");
 			mainContent.append("<div class=\"article-list__cell-reg-date\">" + article.regDate + "</div>");
 			mainContent.append("<div class=\"article-list__cell-writer\">" + article.extra__memberName + "</div>");
-			mainContent.append("<div class=\"article-list__cell-title\"><a href=\"" + link
-					+ "\"class=\"hover-underline\">" + article.title + "</a></div>");
-			mainContent.append("<div class=\"article-list__cell-hit\">" + article.hit + "</div>");
+			mainContent.append("<div class=\"article-list__cell-title\"><a href=\"" + link + "\"class=\"hover-underline\">" + article.title + "</a></div>");
+			mainContent.append("<div class=\"article-list__cell-hit\">" + article.hitCount + "</div>");
 			mainContent.append("<div class=\"article-list__cell-recommand\">" + recommandCount + "</div>");
 			mainContent.append("</div>");
 
@@ -325,8 +306,7 @@ public class BuildService {
 		boolean pageBoxEndAfterBtnNeedToShow = pageBoxEndAfterPage != pageBoxEndPage;
 
 		if (pageBoxStartBeforeBtnNeedToShow) {
-			pageMenuContent.append("<li><a href=\"" + getArticleListFileName(board, pageBoxStartBeforePage)
-					+ "\" class=\"flex flex-ai-c\">&lt;이전</a></li>");
+			pageMenuContent.append("<li><a href=\"" + getArticleListFileName(board, pageBoxStartBeforePage) + "\" class=\"flex flex-ai-c\">&lt;이전</a></li>");
 		}
 
 		for (int i = pageBoxStartPage; i <= pageBoxEndPage; i++) {
@@ -335,13 +315,11 @@ public class BuildService {
 			if (i == page) {
 				selectedClass = "article-page-menu__link--selected";
 			}
-			pageMenuContent.append("<li><a href=\"" + getArticleListFileName(board, i) + "\" class=\"flex flex-ai-c "
-					+ selectedClass + " \">" + i + "</a></li>");
+			pageMenuContent.append("<li><a href=\"" + getArticleListFileName(board, i) + "\" class=\"flex flex-ai-c " + selectedClass + " \">" + i + "</a></li>");
 		}
 
 		if (pageBoxEndAfterBtnNeedToShow) {
-			pageMenuContent.append("<li><a href=\"" + getArticleListFileName(board, pageBoxEndAfterPage)
-					+ "\" class=\"flex flex-ai-c\">다음 &gt;</a></li>");
+			pageMenuContent.append("<li><a href=\"" + getArticleListFileName(board, pageBoxEndAfterPage) + "\" class=\"flex flex-ai-c\">다음 &gt;</a></li>");
 		}
 
 		String body = bodyTemplate.replace("${article-list__content}", mainContent.toString());
@@ -408,28 +386,21 @@ public class BuildService {
 				body = body.replace("${article-detail__board-name}", article.extra__boardName);
 				body = body.replace("${article-detail__writer}", article.extra__memberName);
 				body = body.replace("${article-detail__reg-date}", article.regDate);
-				body = body.replace("${article-detail__hit}", article.hit + "");
-				body = body.replace("${article-detail__likes-counts}", article.likesCount + "");
+				body = body.replace("${article-detail__hit-count}", article.hitCount + "");
+				body = body.replace("${article-detail__likes-count}", article.likesCount + "");
 				body = body.replace("${article-detail__comments-count}", article.commentsCount + "");
-				
+
 				body = body.replace("${article-detail__body}", article.body);
 
-				body = body.replace("${article-detail__link-list-url}",
-						getArticleListFileName(article.extra__boardCode, 1));
+				body = body.replace("${article-detail__link-list-url}", getArticleListFileName(article.extra__boardCode, 1));
 
-				body = body.replace("${article-detail__link-prev-article-url}",
-						getArticleDetailFileName(prevArticleId));
-				body = body.replace("${article-detail__link-prev-article-title-attr}",
-						prevArticle != null ? prevArticle.title : "");
-				body = body.replace("${article-detail__link-prev-article-class-addi}",
-						prevArticleId == 0 ? "none" : "");
+				body = body.replace("${article-detail__link-prev-article-url}", getArticleDetailFileName(prevArticleId));
+				body = body.replace("${article-detail__link-prev-article-title-attr}", prevArticle != null ? prevArticle.title : "");
+				body = body.replace("${article-detail__link-prev-article-class-addi}", prevArticleId == 0 ? "none" : "");
 
-				body = body.replace("${article-detail__link-next-article-url}",
-						getArticleDetailFileName(nextArticleId));
-				body = body.replace("${article-detail__link-next-article-title-attr}",
-						nextArticle != null ? nextArticle.title : "");
-				body = body.replace("${article-detail__link-next-article-class-addi}",
-						nextArticleId == 0 ? "none" : "");
+				body = body.replace("${article-detail__link-next-article-url}", getArticleDetailFileName(nextArticleId));
+				body = body.replace("${article-detail__link-next-article-title-attr}", nextArticle != null ? nextArticle.title : "");
+				body = body.replace("${article-detail__link-next-article-class-addi}", nextArticleId == 0 ? "none" : "");
 
 				body = body.replace("${site-domain}", "blog.heycong.com");
 				body = body.replace("${file-name}", getArticleDetailFileName(article.id));
@@ -517,8 +488,7 @@ public class BuildService {
 		} else if (pageName.startsWith("article_list_notice")) {
 			return "<i class=\"fas fa-flag\"></i> <span>NOTICE LIST</span>";
 		} else if (pageName.startsWith("article_list_")) {
-			return "<i class=\"fas fa-clipboard-list\"></i> <span>" + pageName.split("_")[2].toUpperCase()
-					+ " LIST</span>";
+			return "<i class=\"fas fa-clipboard-list\"></i> <span>" + pageName.split("_")[2].toUpperCase() + " LIST</span>";
 		} else if (pageName.equals("article_statistics")) {
 			return "<i class=\"fas fa-chart-pie\"></i> <span>STATISTICS</span>";
 		}

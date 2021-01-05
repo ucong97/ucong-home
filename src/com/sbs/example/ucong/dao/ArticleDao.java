@@ -96,7 +96,7 @@ public class ArticleDao {
 		sql.append("body=?,", body);
 		sql.append("memberId=?,", memberId);
 		sql.append("boardId=?,", boardId);
-		sql.append("hit=0");
+		//sql.append("hitCount=0");
 
 		return MysqlUtil.insert(sql);
 
@@ -203,7 +203,7 @@ public class ArticleDao {
 	public int hitCount(int inputedId) {
 		SecSql sql = new SecSql();
 		sql.append("UPDATE article");
-		sql.append("SET hit = hit+1");
+		sql.append("SET hitCount = hitCount+1");
 		sql.append("WHERE id = ?", inputedId);
 
 		return MysqlUtil.update(sql);
@@ -328,7 +328,7 @@ public class ArticleDao {
 
 	public int getArticlesHitCount() {
 		SecSql sql = new SecSql();
-		sql.append("SELECT SUM(hit)");
+		sql.append("SELECT SUM(hitCount)");
 		sql.append("FROM article");
 
 		return MysqlUtil.selectRowIntValue(sql);
@@ -336,7 +336,7 @@ public class ArticleDao {
 
 	public int getBoardArticlesHitCountByBoardId(int boardId) {
 		SecSql sql = new SecSql();
-		sql.append("SELECT SUM(hit)");
+		sql.append("SELECT SUM(hitCount)");
 		sql.append("FROM article");
 		sql.append("WHERE boardId = ?", boardId);
 

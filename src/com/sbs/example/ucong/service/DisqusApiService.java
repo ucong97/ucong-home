@@ -1,6 +1,7 @@
 package com.sbs.example.ucong.service;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import com.sbs.example.ucong.apidto.DisqusApiDataListThread;
@@ -27,6 +28,26 @@ public class DisqusApiService {
 		rs.put("commentsCount", disqusApiDataListThread.response.get(0).posts);
 
 		return rs;
+	}
+
+	public void updateArticlesCounts() {
+List<Article> articles = Container.articleService.getForPrintArticles();
+		
+		for(Article article:articles) {
+			Map<String, Object> disqusArticleData = Container.disqusApiService.getArticleDate(article);
+			
+			if(disqusArticleData != null) {
+				int likesCount = (int)disqusArticleData.get("likesCount");
+				int commentCount = (int)disqusArticleData.get("commentsCount");		
+				
+				Map<String, Object> modifyArgs = new HashMap<>();
+				modifyArgs.put("id", article.id);
+				modifyArgs.put("likesCount", likesCount);
+				modifyArgs.put("commentsCount", commentCount);
+				
+				Container.articleService.modify(modifyArgs);
+			}
+		}
 	}
 
 }

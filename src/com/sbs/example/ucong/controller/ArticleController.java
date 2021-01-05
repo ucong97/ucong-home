@@ -355,7 +355,7 @@ public class ArticleController extends Controller {
 		System.out.printf("작성자 : %s\n", member.name);
 		System.out.printf("제목 : %s\n", article.title);
 		System.out.printf("내용 : %s\n", article.body);
-		System.out.printf("조회수 : %d\n", article.hit);
+		System.out.printf("조회수 : %d\n", article.hitCount);
 		System.out.printf("추천수 : %d\n",recommandCount);
 
 		System.out.println("===============댓글리스트===============");
@@ -382,7 +382,7 @@ public class ArticleController extends Controller {
 		for (Article article : articles) {
 			int recommandCount = articleService.getRecommandCount(article.id);
 			System.out.printf("%s / %d / %s / %s / %s / %s / %d / %d \n",board.name, article.id, article.regDate,
-					article.updateDate, article.extra__memberName, article.title,article.hit,recommandCount);
+					article.updateDate, article.extra__memberName, article.title,article.hitCount,recommandCount);
 		}
 
 	}

@@ -35,7 +35,7 @@ public class GoogleAnalyticsApiService {
 			for (Row row : response.getRowsList()) {
 				String pagePath = row.getDimensionValues(0).getValue();
 				int hit = Integer.parseInt(row.getMetricValues(0).getValue());
-				System.out.printf("pagePath : %s , hit : %d \n",pagePath, hit);
+				//System.out.printf("pagePath : %s , hit : %d \n",pagePath, hit);
 				update(pagePath, hit);
 			}
 		} catch (IOException e) {
