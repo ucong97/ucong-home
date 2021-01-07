@@ -199,7 +199,7 @@ a {
 }
 
 .menu-bar__menu-1>ul>li{
-  width:25%;
+  flex:1 0 0;
   border-bottom:5px solid;
 }
 
@@ -417,7 +417,7 @@ a {
 .newArticle-list>*>div>div{
   text-align:center;
 }
-.newArticle-list>main>div>div:first-child{
+.newArticle-list>.main>div>div:first-child{
   text-align:left;
 }
 .newArticle-list__cell-title {
@@ -437,16 +437,24 @@ a {
 border-top:solid 4px #d9534f;
   background-color:rgba(217,83,79,0.4);
 }
-.newArticle-list>main>div{
+.newArticle-list>.main>div{
   border-top:solid 2px #d9534f;
 }
 .newArticle-list>*>div>div{
   padding:10px;
 }
-.newArticle-list>main>div:last-child{
+.newArticle-list>.main>div:last-child{
   border-bottom:solid 4px #d9534f;
 }
 /*최신글 리스트 끝*/
+
+/*게시물 검색 시작*/
+.article-search>form{
+  display:flex;
+  justify-content:flex-end;
+  padding:10px;
+}
+/*게시물 검색 끝*/
 
 /*게시물리스트 시작*/
 
@@ -514,17 +522,17 @@ border-top:solid 4px #d9534f;
   right:0;  
 }
 
-.article-list>main>div{
+.article-list>.main>div{
   border-top:solid 2px #d9534f;
 }
-.article-list>main>div:last-child{
+.article-list>.main>div:last-child{
   border-bottom:solid 4px #d9534f;
 }
-.article-list>main>div:hover{
+.article-list>.main>div:hover{
   background-color:rgba(217,83,79,0.2);
 }
 
-.article-list>main .article-list__cell-title{
+.article-list>.main .article-list__cell-title{
   text-align:left;
   padding-left:10px;
 }
