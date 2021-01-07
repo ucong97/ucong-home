@@ -1,17 +1,18 @@
 const articleList = [];
 
 $.get(
-  'https://api.github.com/repos/vuejs/vue/commits?per_page=20&sha=master',
+  'article_list.json',
   {},
   function(data){
     data.forEach((row, index)=>{
       
       const article= {
-        id : index+1,
-        regDate:row.commit.author.date,
-        writer:row.commit.author.name,
-        title:row.commit.message,
-        body:row.commit.message
+        id : row.id,
+        regDate:row.regDate,
+        writer:row.extra__memberName,
+        title:row.title,
+        hit_count:row.hitCount,
+		likes_count:row.likesCount
       };
       
       articleList.push(article);
@@ -40,7 +41,7 @@ const articleListBox = new Vue({
         return this.articleList;
       }
 
-      const keys = ['title', 'writer', 'body','regDate'];
+      const keys = ['title', 'writer','regDate'];
 
       return this.articleList.filter((row) => {
         //v6
