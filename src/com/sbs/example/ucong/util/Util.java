@@ -17,12 +17,12 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-import java.util.List;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Map;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sbs.example.ucong.dto.Article;
 
 public class Util {
 
@@ -213,5 +213,27 @@ public class Util {
 			e.printStackTrace();
 		}
 		return rs;
+	}
+
+	public static String getNowDateStr() {
+		return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
+	}
+	
+	public static void copyDir(String sourceDirectoryLocation, String destinationDirectoryLocation) {
+		rmdir(destinationDirectoryLocation);
+
+		try {
+			Files.walk(Paths.get(sourceDirectoryLocation)).forEach(source -> {
+				Path destination = Paths.get(destinationDirectoryLocation,
+						source.toString().substring(sourceDirectoryLocation.length()));
+				try {
+					Files.copy(source, destination);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			});
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 }

@@ -23,6 +23,8 @@ public class BuildService {
 	public void buildSite() {
 		System.out.println("site 폴더생성");
 		Util.mkdirs("site");
+		
+		Util.copyDir("site_template/img", "site/img");
 
 		Util.copy("site_template/part/favicon.ico", "site/favicon.ico");
 		Util.copy("site_template/part/app.css", "site/app.css");
@@ -469,6 +471,24 @@ public class BuildService {
 
 		String pageTitle = getPageTitle(pageName, relObj);
 		head = head.replace("${page-title}", pageTitle);
+		
+		String siteName = "HeyCong";
+		String siteSubject = "개발자의 기술/일상 블로그";
+		String siteDescription = "개발자의 기술/일상 관련 글들을 공유합니다.";
+		String siteKeywords = "HTML, CSS, JAVASCRIPT, JAVA, SPRING, MySQL, 리눅스, 리액트";
+		String siteDomain = "blog.heycong.com";
+		String siteMainUrl = "https://" + siteDomain;
+		String currentDate = Util.getNowDateStr().replace(" ", "T");
+
+		head = head.replace("${site-name}", siteName);
+		head = head.replace("${site-subject}", siteSubject);
+		head = head.replace("${site-description}", siteDescription);
+		head = head.replace("${site-domain}", siteDomain);
+		head = head.replace("${site-domain}", siteDomain);
+		head = head.replace("${current-date}", currentDate);
+		head = head.replace("${site-main-url}", siteMainUrl);
+		head = head.replace("${site-keywords}", siteKeywords);
+	
 
 		return head;
 	}
