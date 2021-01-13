@@ -2,6 +2,9 @@ package com.sbs.example.ucong.dto;
 
 import java.util.Map;
 
+import lombok.Data;
+
+@Data
 public class ArticleReply {
 	private int id;
 	private int memberId;
@@ -16,46 +19,6 @@ public class ArticleReply {
 		this.regDate = (String) articleReplyMap.get("regDate");
 		this.body = (String) articleReplyMap.get("body");
 
-	}
-
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
-
-	public int getMemberId() {
-		return memberId;
-	}
-
-	public void setMemberId(int memberId) {
-		this.memberId = memberId;
-	}
-
-	public int getArticleId() {
-		return articleId;
-	}
-
-	public void setArticleId(int articleId) {
-		this.articleId = articleId;
-	}
-
-	public String getRegDate() {
-		return regDate;
-	}
-
-	public void setRegDate(String regDate) {
-		this.regDate = regDate;
-	}
-
-	public String getBody() {
-		return body;
-	}
-
-	public void setBody(String body) {
-		this.body = body;
 	}
 
 }
