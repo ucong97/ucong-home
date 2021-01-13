@@ -34,11 +34,11 @@ public class MemberController extends Controller {
 			System.out.println("로그인 되어있는 회원이 없습니다.");
 			return;
 		}
-		System.out.printf("== %s 회원님 정보 ==\n",member.name);
-		System.out.printf("번호 : %d\n",member.id);
-		System.out.printf("아이디 : %s\n",member.loginId);
-		System.out.printf("가입날짜 : %s\n",member.regDate);
-		System.out.printf("이름 : %s\n",member.name);
+		System.out.printf("== %s 회원님 정보 ==\n",member.getName());
+		System.out.printf("번호 : %d\n",member.getId());
+		System.out.printf("아이디 : %s\n",member.getLoginId());
+		System.out.printf("가입날짜 : %s\n",member.getRegDate());
+		System.out.printf("이름 : %s\n",member.getName());
 		System.out.printf("회원종류 : %s\n",member.getType());
 	}
 
@@ -105,7 +105,7 @@ public class MemberController extends Controller {
 				continue;
 			}
 
-			if (member.loginPw.equals(loginPw) == false) {
+			if (member.getLoginPw().equals(loginPw) == false) {
 				System.out.println("비밀번호가 일치하지 않습니다.");
 				loginPwFalseCount++;
 				continue;
@@ -117,9 +117,9 @@ public class MemberController extends Controller {
 			return;
 		}
 
-		Container.session.login(member.id);
+		Container.session.login(member.getId());
 
-		System.out.printf("%s 회원님, 로그인 성공!\n", member.name);
+		System.out.printf("%s 회원님, 로그인 성공!\n", member.getName());
 	}
 
 	private void doJoin(String cmd) {

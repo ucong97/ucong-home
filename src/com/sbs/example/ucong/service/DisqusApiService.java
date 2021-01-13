@@ -12,7 +12,7 @@ import com.sbs.example.ucong.util.Util;
 public class DisqusApiService {
 
 	public Map<String, Object> getArticleDate(Article article) {
-		String fileName = Container.buildService.getArticleDetailFileName(article.id);
+		String fileName = Container.buildService.getArticleDetailFileName(article.getId());
 
 		String url = "https://disqus.com/api/3.0/forums/listThreads.json";
 		DisqusApiDataListThread disqusApiDataListThread = (DisqusApiDataListThread) Util.callApiResponseTo(
@@ -41,7 +41,7 @@ List<Article> articles = Container.articleService.getForPrintArticles();
 				int commentCount = (int)disqusArticleData.get("commentsCount");		
 				
 				Map<String, Object> modifyArgs = new HashMap<>();
-				modifyArgs.put("id", article.id);
+				modifyArgs.put("id", article.getId());
 				modifyArgs.put("likesCount", likesCount);
 				modifyArgs.put("commentsCount", commentCount);
 				
