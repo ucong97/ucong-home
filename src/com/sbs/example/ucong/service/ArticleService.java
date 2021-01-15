@@ -9,12 +9,15 @@ import com.sbs.example.ucong.dao.ArticleDao;
 import com.sbs.example.ucong.dto.Article;
 import com.sbs.example.ucong.dto.ArticleReply;
 import com.sbs.example.ucong.dto.Board;
+import com.sbs.example.ucong.dto.Tag;
 
 public class ArticleService {
 	private ArticleDao articleDao;
+	private TagService tagService;
 
 	public ArticleService() {
 		articleDao = Container.articleDao;
+		tagService = Container.tagService;
 	}
 
 	public List<Article> getArticles() {
@@ -159,6 +162,13 @@ public class ArticleService {
 	public void updatePageHits() {
 		articleDao.updatePageHits();
 		
+	}
+
+	public Map<String, List<Tag>> getArticlesByTagMap() {
+		List<Tag> tags = tagService.getTagsByRelTypeCode("article");
+		
+		System.out.println(tags);
+		return null;
 	}
 
 

@@ -8,11 +8,13 @@ import com.sbs.example.ucong.controller.BuildController;
 import com.sbs.example.ucong.controller.MemberController;
 import com.sbs.example.ucong.dao.ArticleDao;
 import com.sbs.example.ucong.dao.MemberDao;
+import com.sbs.example.ucong.dao.TagDao;
 import com.sbs.example.ucong.service.ArticleService;
 import com.sbs.example.ucong.service.BuildService;
 import com.sbs.example.ucong.service.DisqusApiService;
 import com.sbs.example.ucong.service.GoogleAnalyticsApiService;
 import com.sbs.example.ucong.service.MemberService;
+import com.sbs.example.ucong.service.TagService;
 import com.sbs.example.ucong.session.Session;
 
 public class Container {
@@ -30,6 +32,8 @@ public class Container {
 	public static DisqusApiService disqusApiService;
 	public static AppConfig config;
 	public static GoogleAnalyticsApiService googleAnalyticsApiService;
+	public static TagService tagService;
+	public static TagDao tagDao;
 	
 	static {
 		
@@ -38,11 +42,13 @@ public class Container {
 		scanner = new Scanner(System.in);
 		session = new Session();
 		
+		tagDao = new TagDao();
 		articleDao = new ArticleDao();
 		memberDao = new MemberDao();
 		
 		googleAnalyticsApiService = new GoogleAnalyticsApiService();
 		disqusApiService = new DisqusApiService();
+		tagService = new TagService();
 		articleService = new ArticleService();
 		memberService = new MemberService();
 		buildService = new BuildService();

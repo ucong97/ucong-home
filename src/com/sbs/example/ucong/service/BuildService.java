@@ -1,12 +1,12 @@
 package com.sbs.example.ucong.service;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import com.sbs.example.ucong.container.Container;
 import com.sbs.example.ucong.dto.Article;
 import com.sbs.example.ucong.dto.Board;
+import com.sbs.example.ucong.dto.Tag;
 import com.sbs.example.ucong.util.Util;
 
 public class BuildService {
@@ -36,11 +36,19 @@ public class BuildService {
 		loadDataFromGa4Data();
 
 		buildIndexPages();
+		buildArticleTgPage();
 		buildArticleSearchPage();
 		buildArticleDetailPages();
 		buildArticleListPages();
 		buildStatisticsPage();
 
+	}
+
+	private void buildArticleTgPage() {
+		Map<String, List<Tag>> articlesByTagMap = articleService.getArticlesByTagMap();
+		
+		String jsonText = Util.getJsonText(articlesByTagMap);
+		Util.writeFile("site/article_tag.json", jsonText);
 	}
 
 	private void buildArticleSearchPage() {

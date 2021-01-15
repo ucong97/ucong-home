@@ -1,6 +1,6 @@
 # 변수 세팅 필요 시작 #
 SET @articleId = 3;
-SET @hashsStr = '#하이 #호호 ##키키';
+SET @hashsStr = '#하이 #호호 #키키';
 # 변수 세팅 필요 끝 #
 
 # 해시태그 구분자
