@@ -96,7 +96,7 @@ public class ArticleDao {
 		sql.append("body=?,", body);
 		sql.append("memberId=?,", memberId);
 		sql.append("boardId=?,", boardId);
-		//sql.append("hitCount=0");
+		// sql.append("hitCount=0");
 
 		return MysqlUtil.insert(sql);
 
@@ -366,6 +366,33 @@ public class ArticleDao {
 		sql.append("SET AR.hitCount = GA4_PP.hit");
 
 		return MysqlUtil.update(sql);
+	}
+
+	public List<Article> getForPrintArticlesByTag(String tagBody) {
+		List<Article> articles = new ArrayList<>();
+
+		SecSql sql = new SecSql();
+		sql.append("SELECT A.*");
+		sql.append(", M.name AS extra__memberName");
+		sql.append(", B.code AS extra__boardCode");
+		sql.append(", B.name AS extra__boardName");
+		sql.append("FROM article AS A");
+		sql.append("INNER JOIN `member` AS M");
+		sql.append("ON A.memberId=M.id");
+		sql.append("INNER JOIN board AS B");
+		sql.append("ON A.boardId=B.id");
+		sql.append("INNER JOIN tag AS T");
+		sql.append("ON T.relTypeCode = 'article'");
+		sql.append("AND A.id=T.relId");
+		sql.append("WHERE T.body = ? ", tagBody);
+		sql.append("ORDER BY A.id DESC");
+
+		List<Map<String, Object>> articleMapList = MysqlUtil.selectRows(sql);
+		for (Map<String, Object> articleMap : articleMapList) {
+			articles.add(new Article(articleMap));
+
+		}
+		return articles;
 	}
 
 }

@@ -19,16 +19,18 @@ import com.google.analytics.data.v1alpha.RunReportResponse;
 import com.sbs.example.mysqlutil.MysqlUtil;
 import com.sbs.example.ucong.apidto.DisqusApiDataListThread;
 import com.sbs.example.ucong.container.Container;
+import com.sbs.example.ucong.dto.Tag;
 import com.sbs.example.ucong.util.Util;
 
 public class TestRunner {
-	public static class TestDAtaType1{
+	public static class TestDAtaType1 {
 		@JsonIgnoreProperties(ignoreUnknown = true)
-		
+
 		public int age;
 		public String name;
 		public int height;
 	}
+
 	public void run() {
 		// testApi();
 		// testApi2();
@@ -38,16 +40,21 @@ public class TestRunner {
 		// testJackson3();
 		// testJackson4();
 		// testJackson5();
-		//testGoogleCredentials();
-		//testUpdateGoogleAnalyticsApi();
+		// testGoogleCredentials();
+		// testUpdateGoogleAnalyticsApi();
+		// testUpdatePageHitsByGa4Api();
 		MysqlUtil.setDBInfo(Container.config.getDbHost(), Container.config.getDbId(), Container.config.getDbPw(), Container.config.getDbName());
-		
-		testUpdatePageHitsByGa4Api();
+
+		testMakeArticleTagJsonFile();
+	}
+
+	private void testMakeArticleTagJsonFile() {
+		Container.buildService.buildArticleTgPage();
 	}
 
 	private void testUpdatePageHitsByGa4Api() {
 		Container.googleAnalyticsApiService.updatePageHits();
-		
+
 	}
 
 	private void testGoogleCredentials() {
@@ -56,13 +63,10 @@ public class TestRunner {
 	}
 
 	private void testUpdateGoogleAnalyticsApi() {
-		
+
 		String ga4PropertyId = Container.config.getGa4PropertyId();
 		try (AlphaAnalyticsDataClient analyticsData = AlphaAnalyticsDataClient.create()) {
-			RunReportRequest request = RunReportRequest.newBuilder()
-					.setEntity(Entity.newBuilder().setPropertyId(ga4PropertyId))
-					.addDimensions(Dimension.newBuilder().setName("pagePath"))
-					.addMetrics(Metric.newBuilder().setName("activeUsers"))
+			RunReportRequest request = RunReportRequest.newBuilder().setEntity(Entity.newBuilder().setPropertyId(ga4PropertyId)).addDimensions(Dimension.newBuilder().setName("pagePath")).addMetrics(Metric.newBuilder().setName("activeUsers"))
 					.addDateRanges(DateRange.newBuilder().setStartDate("2021-01-01").setEndDate("today")).build();
 
 			// Make the request
@@ -78,32 +82,26 @@ public class TestRunner {
 
 	}
 
-
-
-
 	private void testApi() {
 		String url = "https://disqus.com/api/3.0/forums/listThreads.json";
-		String rs = Util.callApi(url, "api_key="+ Container.config.getDisqusApiKey(),
-				"forum=cong-ssg", "thread:ident=article_detail_1.html");
+		String rs = Util.callApi(url, "api_key=" + Container.config.getDisqusApiKey(), "forum=cong-ssg", "thread:ident=article_detail_1.html");
 
 		System.out.println(rs);
 	}
-	
+
 	private void testApi2() {
 		String url = "https://disqus.com/api/3.0/forums/listThreads.json";
-		Map<String, Object> rs = Util.callApiResponseToMap(url,  "api_key="+ Container.config.getDisqusApiKey(),
-				"forum=cong-ssg", "thread:ident=article_detail_1.html");
+		Map<String, Object> rs = Util.callApiResponseToMap(url, "api_key=" + Container.config.getDisqusApiKey(), "forum=cong-ssg", "thread:ident=article_detail_1.html");
 		List<Map<String, Object>> response = (List<Map<String, Object>>) rs.get("response");
 		System.out.println(rs.get("code"));
 		Map<String, Object> thread = response.get(0);
 		System.out.println((int) thread.get("likes"));
 	}
-	
+
 	private void testApi3() {
 		String url = "https://disqus.com/api/3.0/forums/listThreads.json";
-		DisqusApiDataListThread rs = (DisqusApiDataListThread)Util.callApiResponseTo(DisqusApiDataListThread.class,url,  "api_key="+ Container.config.getDisqusApiKey(),
-				"forum=cong-ssg", "thread:ident=article_detail_1.html");
-	
+		DisqusApiDataListThread rs = (DisqusApiDataListThread) Util.callApiResponseTo(DisqusApiDataListThread.class, url, "api_key=" + Container.config.getDisqusApiKey(), "forum=cong-ssg", "thread:ident=article_detail_1.html");
+
 		System.out.println(rs.response.get(0).likes + rs.response.get(0).posts);
 	}
 
@@ -162,7 +160,7 @@ public class TestRunner {
 		String jsonString = "[{\"age\":22, \"name\":\"홍길동\"},{\"age\":25, \"name\":\"홍길순\"},{\"age\":20, \"name\":\"홍길삼\"}]";
 
 		ObjectMapper ob = new ObjectMapper();
-		List<Map<String,Object>> rs = null;
+		List<Map<String, Object>> rs = null;
 
 		try {
 			rs = ob.readValue(jsonString, List.class);
@@ -175,21 +173,21 @@ public class TestRunner {
 		System.out.println(rs.get(1));
 		System.out.println(rs.get(1).get("age"));
 	}
-	
+
 	private void testJackson5() {
 		String jsonString = "[{\"age\":22, \"name\":\"홍길동\", \"height\":178},{\"age\":23, \"name\":\"홍길순\", \"height\":168},{\"age\":24, \"name\":\"임꺽정\"}]";
 
 		ObjectMapper ob = new ObjectMapper();
 		List<TestDAtaType1> rs = null;
-		
-		
+
 		try {
-			rs = ob.readValue(jsonString, new TypeReference<List<TestDAtaType1>>(){});
+			rs = ob.readValue(jsonString, new TypeReference<List<TestDAtaType1>>() {
+			});
 		} catch (JsonProcessingException e) {
 			e.printStackTrace();
 			return;
 		}
-		
+
 		System.out.println(rs.get(0).height + rs.get(2).height);
 	}
 }

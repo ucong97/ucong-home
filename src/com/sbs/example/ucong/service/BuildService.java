@@ -44,8 +44,8 @@ public class BuildService {
 
 	}
 
-	private void buildArticleTgPage() {
-		Map<String, List<Tag>> articlesByTagMap = articleService.getArticlesByTagMap();
+	public void buildArticleTgPage() {
+		Map<String, List<Article>> articlesByTagMap = articleService.getArticlesByTagMap();
 		
 		String jsonText = Util.getJsonText(articlesByTagMap);
 		Util.writeFile("site/article_tag.json", jsonText);

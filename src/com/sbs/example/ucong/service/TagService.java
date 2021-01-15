@@ -8,13 +8,18 @@ import com.sbs.example.ucong.dto.Tag;
 
 public class TagService {
 	private TagDao tagDao;
-	
+
 	public TagService() {
 		tagDao = Container.tagDao;
 	}
 
-	public List<Tag> getTagsByRelTypeCode(String relTypeCode) {
-		return tagDao.getTagsByRelTypeCode(relTypeCode);
+	public List<Tag> getDedupTagsByRelTypeCode(String relTypeCode) {
+		return tagDao.getDedupTagsByRelTypeCode(relTypeCode);
+	}
+
+	public List<String> getDedupTagBodiesByRelTypeCode(String relTypeCode) {
+		return tagDao.getDedupTagBodiesByRelTypeCode(relTypeCode);
+
 	}
 
 }

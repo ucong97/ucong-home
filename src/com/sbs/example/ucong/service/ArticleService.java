@@ -1,6 +1,7 @@
 package com.sbs.example.ucong.service;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -9,7 +10,6 @@ import com.sbs.example.ucong.dao.ArticleDao;
 import com.sbs.example.ucong.dto.Article;
 import com.sbs.example.ucong.dto.ArticleReply;
 import com.sbs.example.ucong.dto.Board;
-import com.sbs.example.ucong.dto.Tag;
 
 public class ArticleService {
 	private ArticleDao articleDao;
@@ -37,7 +37,7 @@ public class ArticleService {
 		modifyArgs.put("id", id);
 		modifyArgs.put("title", title);
 		modifyArgs.put("body", body);
-		
+
 		return modify(modifyArgs);
 	}
 
@@ -161,15 +161,24 @@ public class ArticleService {
 
 	public void updatePageHits() {
 		articleDao.updatePageHits();
-		
+
 	}
 
-	public Map<String, List<Tag>> getArticlesByTagMap() {
-		List<Tag> tags = tagService.getTagsByRelTypeCode("article");
-		
-		System.out.println(tags);
-		return null;
+	public Map<String, List<Article>> getArticlesByTagMap() {
+		Map<String, List<Article>> map = new LinkedHashMap<>();
+		List<String> tagBodies = tagService.getDedupTagBodiesByRelTypeCode("article");
+
+		for (String tagBody : tagBodies) {
+			List<Article> articles = getForPrintArticlesByTag(tagBody);
+
+			map.put(tagBody, articles);
+		}
+
+		return map;
 	}
 
+	private List<Article> getForPrintArticlesByTag(String tagBody) {
+		return articleDao.getForPrintArticlesByTag(tagBody);
+	}
 
 }
