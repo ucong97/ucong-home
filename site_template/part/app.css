@@ -626,6 +626,12 @@ border-top:solid 4px #d9534f;
 
 /*상세게시물 끝*/
 
+/* vue 시작 */
+[v-cloak] {
+	display:none;
+}
+/* vue 끝 */ 
+
 /* youtube 동영상 삽입 시작 */
 
 .toast-ui-youtube-plugin-wrap {
