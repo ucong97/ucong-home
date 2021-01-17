@@ -24,12 +24,12 @@
 			</header>
 			<div class="main">
 				<div class="flex" v-for="article in filterd">
-					<div class="article-list__cell-id">{{article.getId()}}</div>
-					<div class="article-list__cell-reg-date">{{article.getRegDate()}}</div>
+					<div class="article-list__cell-id">{{article.id}}</div>
+					<div class="article-list__cell-reg-date">{{article.regDate}}</div>
 					<div class="article-list__cell-writer">{{article.writer}}</div>
 					<div class="article-list__cell-title">
-						<a :href="'article_detail_'+article.getId()+'.html'" target="_blank"
-							class="hover-underline">{{article.getTitle()}}</a>
+						<a :href="'article_detail_'+article.id+'.html'" target="_blank"
+							class="hover-underline">{{article.title}}</a>
 					</div>
 					<div class="article-list__cell-hit">{{article.hit_count}}</div>
 					<div class="article-list__cell-recommand">{{article.likes_count}}</div>
