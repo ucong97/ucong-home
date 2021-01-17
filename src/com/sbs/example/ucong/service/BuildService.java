@@ -6,7 +6,6 @@ import java.util.Map;
 import com.sbs.example.ucong.container.Container;
 import com.sbs.example.ucong.dto.Article;
 import com.sbs.example.ucong.dto.Board;
-import com.sbs.example.ucong.dto.Tag;
 import com.sbs.example.ucong.util.Util;
 
 public class BuildService {
@@ -414,6 +413,9 @@ public class BuildService {
 
 				// 헤더추가
 				sb.append(head);
+				
+				String articleBodyForPrint = article.getBody();
+				articleBodyForPrint = articleBodyForPrint.replaceAll("script", "t-script");
 
 				int recommandCount = articleService.getRecommandCount(article.getId());
 
@@ -424,11 +426,11 @@ public class BuildService {
 				body = body.replace("${article-detail__hit-count}", article.getHitCount() + "");
 				body = body.replace("${article-detail__likes-count}", article.getLikesCount() + "");
 				body = body.replace("${article-detail__comments-count}", article.getCommentsCount() + "");
-
-				body = body.replace("${article-detail__body}", article.getBody());
+				
+				body = body.replace("${article-detail__body}", articleBodyForPrint);
 
 				body = body.replace("${article-detail__link-list-url}", getArticleListFileName(article.getExtra__boardCode(), 1));
-
+				
 				body = body.replace("${article-detail__link-prev-article-url}", getArticleDetailFileName(prevArticleId));
 				body = body.replace("${article-detail__link-prev-article-title-attr}", prevArticle != null ? prevArticle.getTitle() : "");
 				body = body.replace("${article-detail__link-prev-article-class-addi}", prevArticleId == 0 ? "none" : "");

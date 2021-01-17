@@ -48,7 +48,7 @@ function ArticleDetail__Body__init() {
 	
 	function Editor__init() {
 	  $('.toast-ui-editor').each(function(index, node) {
-	    var initialValue = $(node).prev().html().trim().replace(/<!--REPLACE:script-->/gi, 'script');
+	    var initialValue = $(node).prev().html().trim().replace(/t-script/gi, 'script');
 
 	    var editor = new toastui.Editor({
 	      el: node,
@@ -63,7 +63,7 @@ function ArticleDetail__Body__init() {
 
 	function EditorViewer__init() {
 	  $('.toast-ui-viewer').each(function(index, node) {
-	    var initialValue = $(node).prev().html().trim().replace(/<!--REPLACE:script-->/gi, 'script');
+	    var initialValue = $(node).prev().html().trim().replace(/t-script/gi, 'script');
 	    var viewer = new toastui.Editor.factory({
 	      el: node,
 	      initialValue: initialValue,
