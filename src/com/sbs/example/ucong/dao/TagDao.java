@@ -54,4 +54,23 @@ public class TagDao {
 		return tagBodies;
 	}
 
+	public List<Tag> getDedupTagsByArticleId(int id) {
+		List<Tag> tags = new ArrayList<>();
+		SecSql sql = new SecSql();
+		
+		sql.append("SELECT *");
+		sql.append("FROM tag AS T");
+		sql.append("WHERE relId = ? ", id);
+		sql.append("GROUP BY T.body");
+		sql.append("ORDER BY T.body ASC");
+
+		List<Map<String, Object>> List = MysqlUtil.selectRows(sql);
+		for (Map<String, Object> map : List) {
+			tags.add(new Tag(map));
+
+		}
+
+		return tags;
+	}
+
 }

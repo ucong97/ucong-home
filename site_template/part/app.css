@@ -626,6 +626,21 @@ border-top:solid 4px #d9534f;
 
 /*상세게시물 끝*/
 
+/*태그바 시작*/
+
+.article-detail__tag{
+  padding:10px;
+  margin-top:10px;
+}
+
+.article-detail__tag > *:not(:first-child){
+  margin-left:20px;
+  padding:2px 10px;
+  border:solid gray 2px;
+  border-radius:10px;
+}
+
+/*태그바 끝*/
 /* vue 시작 */
 [v-cloak] {
 	display:none;

@@ -22,4 +22,9 @@ public class TagService {
 
 	}
 
+	public List<Tag> getDedupTagsByArticleId(int id) {
+		return tagDao.getDedupTagsByArticleId(id);
+	}
+
+	
 }

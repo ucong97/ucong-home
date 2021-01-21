@@ -19,7 +19,6 @@ import com.google.analytics.data.v1alpha.RunReportResponse;
 import com.sbs.example.mysqlutil.MysqlUtil;
 import com.sbs.example.ucong.apidto.DisqusApiDataListThread;
 import com.sbs.example.ucong.container.Container;
-import com.sbs.example.ucong.dto.Tag;
 import com.sbs.example.ucong.util.Util;
 
 public class TestRunner {
@@ -49,7 +48,7 @@ public class TestRunner {
 	}
 
 	private void testMakeArticleTagJsonFile() {
-		Container.buildService.buildArticleTgPage();
+		Container.buildService.buildArticleTagPage();
 	}
 
 	private void testUpdatePageHitsByGa4Api() {

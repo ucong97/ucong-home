@@ -6,6 +6,7 @@ import java.util.Map;
 import com.sbs.example.ucong.container.Container;
 import com.sbs.example.ucong.dto.Article;
 import com.sbs.example.ucong.dto.Board;
+import com.sbs.example.ucong.dto.Tag;
 import com.sbs.example.ucong.util.Util;
 
 public class BuildService {
@@ -22,20 +23,18 @@ public class BuildService {
 	public void buildSite() {
 		System.out.println("site 폴더생성");
 		Util.mkdirs("site");
-		
+
 		Util.copyDir("site_template/img", "site/img");
 
 		Util.copy("site_template/part/favicon.ico", "site/favicon.ico");
 		Util.copy("site_template/part/app.css", "site/app.css");
 		Util.copy("site_template/part/app.js", "site/app.js");
-		
-		
 
 		loadDataFromDisqus();
 		loadDataFromGa4Data();
 
 		buildIndexPages();
-		buildArticleTgPage();
+		buildArticleTagPage();
 		buildArticleSearchPage();
 		buildArticleDetailPages();
 		buildArticleListPages();
@@ -43,9 +42,9 @@ public class BuildService {
 
 	}
 
-	public void buildArticleTgPage() {
+	public void buildArticleTagPage() {
 		Map<String, List<Article>> articlesByTagMap = articleService.getArticlesByTagMap();
-		
+
 		String jsonText = Util.getJsonText(articlesByTagMap);
 		Util.writeFile("site/article_tag.json", jsonText);
 	}
@@ -54,7 +53,7 @@ public class BuildService {
 		List<Article> articles = articleService.getForPrintArticles(0);
 		String jsonText = Util.getJsonText(articles);
 		Util.writeFile("site/article_list.json", jsonText);
-		
+
 		Util.copy("site_template/part/article_search.js", "site/article_search.js");
 		StringBuilder sb = new StringBuilder();
 
@@ -413,7 +412,7 @@ public class BuildService {
 
 				// 헤더추가
 				sb.append(head);
-				
+
 				String articleBodyForPrint = article.getBody();
 				articleBodyForPrint = articleBodyForPrint.replaceAll("script", "t-script");
 
@@ -426,11 +425,23 @@ public class BuildService {
 				body = body.replace("${article-detail__hit-count}", article.getHitCount() + "");
 				body = body.replace("${article-detail__likes-count}", article.getLikesCount() + "");
 				body = body.replace("${article-detail__comments-count}", article.getCommentsCount() + "");
-				
+
 				body = body.replace("${article-detail__body}", articleBodyForPrint);
 
-				body = body.replace("${article-detail__link-list-url}", getArticleListFileName(article.getExtra__boardCode(), 1));
+				List<Tag> tags = Container.tagService.getDedupTagsByArticleId(article.getId());
+
+				StringBuilder tagBodies = new StringBuilder();
+
+				if (tags != null) {
+					for (Tag tag : tags) {
+						tagBodies.append("<div>"+ tag.getBody() +"</div>");
+					}
+				}
 				
+				body = body.replace("${article-detail__tag}", tagBodies);
+				
+				body = body.replace("${article-detail__link-list-url}", getArticleListFileName(article.getExtra__boardCode(), 1));
+
 				body = body.replace("${article-detail__link-prev-article-url}", getArticleDetailFileName(prevArticleId));
 				body = body.replace("${article-detail__link-prev-article-title-attr}", prevArticle != null ? prevArticle.getTitle() : "");
 				body = body.replace("${article-detail__link-prev-article-class-addi}", prevArticleId == 0 ? "none" : "");
@@ -481,7 +492,7 @@ public class BuildService {
 
 		String pageTitle = getPageTitle(pageName, relObj);
 		head = head.replace("${page-title}", pageTitle);
-		
+
 		String siteName = "HeyCong";
 		String siteSubject = "개발자의 기술/일상 블로그";
 		String siteDescription = "개발자의 기술/일상 관련 글들을 공유합니다.";
@@ -489,11 +500,11 @@ public class BuildService {
 		String siteDomain = "blog.heycong.com";
 		String siteMainUrl = "https://" + siteDomain;
 		String currentDate = Util.getNowDateStr().replace(" ", "T");
-		
-		if(relObj instanceof Article) {
-			Article article = (Article)relObj;
+
+		if (relObj instanceof Article) {
+			Article article = (Article) relObj;
 			siteSubject = article.getTitle();
-			siteDescription = article.getBody();		
+			siteDescription = article.getBody();
 			siteDescription = siteDescription.replaceAll("[^\uAC00-\uD7A3xfe0-9a-zA-Z\\s]", "");
 		}
 
@@ -505,7 +516,6 @@ public class BuildService {
 		head = head.replace("${current-date}", currentDate);
 		head = head.replace("${site-main-url}", siteMainUrl);
 		head = head.replace("${site-keywords}", siteKeywords);
-	
 
 		return head;
 	}
@@ -541,7 +551,7 @@ public class BuildService {
 	private String getTitleBarContentByPageName(String pageName) {
 		if (pageName.startsWith("index")) {
 			return "<i class=\"fas fa-home\"></i> <span>HOME</span>";
-		}else if (pageName.equals("article_search")) {
+		} else if (pageName.equals("article_search")) {
 			return "<i class=\"fas fa-search\"></i> <span>ARTICLE SEARCH</span>";
 		} else if (pageName.equals("article_detail")) {
 			return "<i class=\"fas fa-file-alt\"></i> <span>ARTICLE DETAIL</span>";
