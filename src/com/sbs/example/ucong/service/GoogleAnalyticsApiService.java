@@ -27,15 +27,15 @@ public class GoogleAnalyticsApiService {
 			RunReportRequest request = RunReportRequest.newBuilder()
 					.setEntity(Entity.newBuilder().setPropertyId(ga4PropertyId))
 					.addDimensions(Dimension.newBuilder().setName("pagePath"))
-					.addMetrics(Metric.newBuilder().setName("activeUsers"))
-					.addDateRanges(DateRange.newBuilder().setStartDate("2020-12-31").setEndDate("today")).build();
+					.addMetrics(Metric.newBuilder().setName("activeUsers")) //screenPageViews
+					.addDateRanges(DateRange.newBuilder().setStartDate("2020-12-01").setEndDate("today")).setLimit(-1).build();
 
 			RunReportResponse response = analyticsData.runReport(request);
 			
 			for (Row row : response.getRowsList()) {
 				String pagePath = row.getDimensionValues(0).getValue();
 				int hit = Integer.parseInt(row.getMetricValues(0).getValue());
-				//System.out.printf("pagePath : %s , hit : %d \n",pagePath, hit);
+				System.out.printf("pagePath : %s , hit : %d \n",pagePath, hit);
 				update(pagePath, hit);
 			}
 		} catch (IOException e) {

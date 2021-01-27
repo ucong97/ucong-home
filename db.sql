@@ -121,21 +121,12 @@ SET `body` = '# 자바기본문법\r\n```java\r\nint a = 10;\r\nint b = 20;\r\ni
 WHERE id = '2';
 
 # 구글 애널리틱스 4 페이지 경로별 통계 정보
-CREATE TABLE ga4DataPagePath(
-    id INT(10) UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
-    regDate DATETIME NOT NULL,
-    updateDate DATETIME NOT NULL,
-    pagePath CHAR(100) NOT NULL UNIQUE,
-    hit INT(10) UNSIGNED NOT NULL
-);
-
-# 구글 애널리틱스 4 페이지 경로별 통계 정보
 DROP TABLE IF EXISTS ga4DataPagePath;
 CREATE TABLE ga4DataPagePath(
     id INT(10) UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
     regDate DATETIME NOT NULL,
     updateDate DATETIME NOT NULL,
-    pagePath CHAR(100) NOT NULL UNIQUE,
+    pagePath TEXT NOT NULL UNIQUE,
     hit INT(10) UNSIGNED NOT NULL
 );
 

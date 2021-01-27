@@ -41,10 +41,10 @@ public class TestRunner {
 		// testJackson5();
 		// testGoogleCredentials();
 		// testUpdateGoogleAnalyticsApi();
-		// testUpdatePageHitsByGa4Api();
 		MysqlUtil.setDBInfo(Container.config.getDbHost(), Container.config.getDbId(), Container.config.getDbPw(), Container.config.getDbName());
+		testUpdatePageHitsByGa4Api();
 
-		testMakeArticleTagJsonFile();
+		//testMakeArticleTagJsonFile();
 	}
 
 	private void testMakeArticleTagJsonFile() {
