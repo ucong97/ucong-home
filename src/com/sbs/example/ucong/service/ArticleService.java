@@ -180,4 +180,12 @@ public class ArticleService {
 		return articleDao.getForPrintArticlesByTag(tagBody);
 	}
 
+	public List<Article> getForPrintRatestArticles() {
+		return articleDao.getForPrintRatestArticles();
+	}
+
+	public List<Article> getForPrintbestArticles() {
+		return articleDao.getForPrintbestArticles();
+	}
+
 }

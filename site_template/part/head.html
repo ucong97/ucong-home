@@ -14,6 +14,12 @@
 <!-- 제이쿼리 불러오기 -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
+<!-- GSAP 라이브러리-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.5.1/gsap.min.js"></script>
+
+<!-- 스크롤트리거 -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.5.1/ScrollTrigger.min.js"></script>
+
 <!-- 하이라이트 라이브러리 추가, 토스트 UI 에디터에서 사용됨 -->
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.4.1/highlight.min.js"></script>
@@ -50,6 +56,8 @@
 
 <meta http-equiv="x-ua-compatible" content="ie=edge">
 <meta name="viewport" content="width=1200">
+<!-- 반응형 필수 -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 <meta name="apple-mobile-web-app-title" content="${site-name}" />
 <!-- 메타태그정보 -->
 <!-- META -->
@@ -89,50 +97,93 @@
 </head>
 
 <body>
-	<div class="body-content min-height-100vh flex flex-column bg-body">
-
-		<header class="logo-bar con-min-width">
-			<div class="con height-100p flex flex-jc-c">
-				<a href="index.html" class="logo flex flex-ai-c">
-				<img src="https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FEISZT%2FbtqQUYSjRn6%2FCKXcq6dQxJr8vgEls9qJ21%2Fimg.png" alt="">
-				</a>
-			</div>
+	<div class="min-height-100vh flex flex-di-c">
+		<!-- 모바일 탑바 시작-->
+		<header class="mobile-top-bar visible-sm-down flex">
+		  <div class="flex-1-0-0 flex flex-ai-c">
+		    <div class="mobile-top-bar__btn-toggle-side-bar flex-as-c">
+		      <div></div>
+		      <div></div>
+		      <div></div>
+		    </div>
+		  </div>
+		  <div>
+		    <a href="index.html" class="mobile-logo"><img src="https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FbL9fDG%2FbtqWUMFuoNa%2Ffxy7WqGkjwKYuTkaVybark%2Fimg.png" alt=""></a>
+		  </div>
+		  <div class="mobile-search-box flex-1-0-0 flex flex-ai-c flex-jc-e">
+		    <a href="article_search.html"><i class="fas fa-search"></i></a>
+		  </div>
 		</header>
+		<!-- 모바일 탑바 끝-->
+		
+		<!-- 모바일 사이드 바 시작-->
+		<aside class="mobile-side-bar visible-sm-down">
+		  <nav class="mobile-side-bar__menu-box-1">
+		    <ul>
+		      <li><a href="index.html" class="block">HOME</a></li>
+		      <li><a href="about.html" class="block">ABOUT</a></li>
+		      <li><a class="flex flex-ai-c"><span>STUDY</span><i class="fas fa-chevron-right"></i></a>
+		        <ul>
+		          ${tab-bar__menu-box-1__board-menu-content}
+		        </ul>
+		      </li>
+		      <li><a class="flex flex-ai-c"><span>LINK</span><i class="fas fa-chevron-right"></i></i></a>
+		        <ul>
+		          <li><a href="https://github.com/ucong2222" class="block"><span>GITHUB</span></a></li>
+		          <li><a href="https://ucong-9796.tistory.com" class="block"><span>TISTORY</span></a></li>
+		          <li><a href="https://www.youtube.com/channel/UCmDEtsefnMXJTE70BrM0TPg/videos" class="block"><span>YOUTUBE</span></a></li>
+		          <li><a href="https://www.instagram.com/u_cong_97" class="block"><span>INSTAGRAM</span></a></li>
+		          <li><a href="https://www.facebook.com/profile.php?id=100005670960964" class="block"><span>FACEBOOK</span></a></li>
+		        </ul>
+		      </li>
+		      <li><a href="stat.html" class="block"><span>STATISTICS</span></a></li>
+		    </ul>
+		  </nav>
+		</aside>
+		<!-- 모바일 사이드 바 끝-->
 
-		<header class="menu-bar con-min-width">
-			<div class="con">
-				<nav class="menu-bar__menu-1 ">
-					<ul class="flex">
-						<li><a href="index.html" class="block text-align-center"><i
-								class="fas fa-home"></i> <span>HOME</span></a></li>
-						<li><a href="article_search.html" class="block text-align-center"><i
-								class="fas fa-search"></i> <span>SEARCH</span></a></li>
-						<li><a class="block text-align-center"><i
-								class="fas fa-list"></i> <span>ARTICLE</span></a>
-							<ul>${menu-bar__menu-1__board-menu-content}
-							</ul></li>
-						<li><a class="block text-align-center"><i
-								class="fas fa-link"></i> <span>LINK</span></a>
-						<ul>
-								<li><a href="https://ucong-9796.tistory.com/" target="_blank"
-									class="block text-align-center"><i class="fab fa-blogger-b"></i>
-										<span>BLOG</span></a></li>
-								<li><a href="https://github.com/ucong2222" target="_blank"
-									class="block text-align-center"><i class="fab fa-github"></i>
-										<span>GITHUB</span></a></li>
-								<li><a href="https://www.youtube.com/channel/UCmDEtsefnMXJTE70BrM0TPg/videos?view_as=subscriber" target="_blank"
-									class="block text-align-center"><i class="fab fa-youtube"></i>
-										<span>YOUTUBE</span></a></li>
-							</ul></li>
-						<li><a href="stat.html" class="block text-align-center"><i
-								class="fas fa-chart-pie"></i> <span>STATISTICS</span></a></li>
-					</ul>
-				</nav>
-			</div>
+		<!-- 로고바 시작 -->
+		<header class="logo-bar con-min-width visible-md-up">
+		  <div class="con height-100p flex flex-jc-c">
+		    <a href="#" class="logo flex flex-ai-c">
+		      <img src="https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FbL9fDG%2FbtqWUMFuoNa%2Ffxy7WqGkjwKYuTkaVybark%2Fimg.png" alt="">
+		    </a>
+		  </div>
 		</header>
+		<!-- 로고바 끝 -->
+		<!-- 탑바 시작 -->
+		<header class="top-bar con-min-width visible-md-up">
+		  <div class="con height-100p flex flex-jc-sb">
+		    <nav class="top-bar__menu-box-1">
+		      <ul class="flex">
+		        <li><a href="index.html" class="block"><span>Home</span></a></li>
+		        <li><a href="about.html" class="block"><span>About</span></a></li>
+		        <li><a class="flex flex-ai-c"><span>Study</span><i class="fas fa-angle-down"></i></a>
+		          <ul>
+		            ${tab-bar__menu-box-1__board-menu-content}
+		          </ul>
+		        </li>
+		        <li><a class="flex flex-ai-c"><span>Link</span><i class="fas fa-angle-down"></i></a>
+		          <ul>
+		            <li><a href="https://github.com/ucong2222" class="block"><span>GITHUB</span></a></li>
+		            <li><a href="https://ucong-9796.tistory.com" class="block"><span>TISTORY</span></a></li>
+		            <li><a href="https://www.youtube.com/channel/UCmDEtsefnMXJTE70BrM0TPg/videos" class="block"><span>YOUTUBE</span></a></li>
+		            <li><a href="https://www.instagram.com/u_cong_97" class="block"><span>INSTAGRAM</span></a></li>
+		            <li><a href="https://www.facebook.com/profile.php?id=100005670960964" class="block"><span>FACEBOOK</span></a></li>
+		          </ul>
+		        </li>
+		        <li><a href="stat.html" class="block"><span>Statistics</span></a></li>
+		      </ul>
+		    </nav>
+		    <div class="top-bar__search-box">
+		      <div class="height-100p flex flex-jc-c flex-ai-c">
+		        <a href="article_search.html"><i class="fas fa-search"></i></a>
+		      </div>
+		    </div>
+		  </div>
+		</header>
+		
+		<!-- 탑바 끝 -->
 
 
 		<main class="flex-grow-1">
-			<section class="title-bar con-min-width">
-				<h1 class="con">${title-bar__content}</h1>
-			</section>

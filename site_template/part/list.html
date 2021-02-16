@@ -1,24 +1,16 @@
-<section class="section-1 con-min-width">
-	<div class="con article-list-box bg-white bd-body-box bd-box">
-		<div class="article-list">
-			<header>
-				<div class="flex">
-					<div class="article-list__cell-id">번호</div>
-					<div class="article-list__cell-reg-date">날짜</div>
-					<div class="article-list__cell-writer">작성자</div>
-					<div class="article-list__cell-title">제목</div>
-					<div class="article-list__cell-hit">조회수</div>
-					<div class="article-list__cell-recommand">추천수</div>
-				</div>
-			</header>
-			<div class="main">
-			${article-list__content}
-			</div>
-		</div>
+<div class="con-min-width">
+	<h4 class="con title-bar">
+		<span>${board-name} / 전체글</span> <span>${board-totalArticleCount}</span>
+	</h4>
+</div>
+
+<div class="con-min-width">
+	<div class="con article-list-box">
+		<div class="article-list">${article-list__content}</div>
 		<div class="article-page-menu">
 			<ul class="flex flex-jc-c">
 			${article-page-menu__content}
 			</ul>
 		</div>
 	</div>
-</section>
+</div>

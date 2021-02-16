@@ -395,4 +395,53 @@ public class ArticleDao {
 		return articles;
 	}
 
+	public List<Article> getForPrintRatestArticles() {
+		List<Article> articles = new ArrayList<>();
+
+		SecSql sql = new SecSql();
+		sql.append("SELECT A.*");
+		sql.append(", M.name AS extra__memberName");
+		sql.append(", B.code AS extra__boardCode");
+		sql.append(", B.name AS extra__boardName");
+		sql.append("FROM article AS A");
+		sql.append("INNER JOIN `member` AS M");
+		sql.append("ON A.memberId=M.id");
+		sql.append("INNER JOIN board AS B");
+		sql.append("ON A.boardId=B.id");
+
+		sql.append("ORDER BY A.id DESC");
+		sql.append("LIMIT 5");
+
+		List<Map<String, Object>> articleMapList = MysqlUtil.selectRows(sql);
+		for (Map<String, Object> articleMap : articleMapList) {
+			articles.add(new Article(articleMap));
+
+		}
+		return articles;
+	}
+
+	public List<Article> getForPrintbestArticles() {
+		List<Article> articles = new ArrayList<>();
+
+		SecSql sql = new SecSql();
+		sql.append("SELECT A.*");
+		sql.append(", M.name AS extra__memberName");
+		sql.append(", B.code AS extra__boardCode");
+		sql.append(", B.name AS extra__boardName");
+		sql.append("FROM article AS A");
+		sql.append("INNER JOIN `member` AS M");
+		sql.append("ON A.memberId=M.id");
+		sql.append("INNER JOIN board AS B");
+		sql.append("ON A.boardId=B.id");
+		sql.append("ORDER BY A.hitCount DESC");
+		sql.append("LIMIT 5");
+
+		List<Map<String, Object>> articleMapList = MysqlUtil.selectRows(sql);
+		for (Map<String, Object> articleMap : articleMapList) {
+			articles.add(new Article(articleMap));
+
+		}
+		return articles;
+	}
+
 }

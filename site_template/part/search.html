@@ -4,41 +4,60 @@
 <!-- 개발버전, 도움되는 콘솔 경고를 포함. -->
 <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 
-<section class="section-1 con-min-width" id="article-list-wrap" v-cloak>
-	<div class="con article-list-box bg-white bd-body-box bd-box">
-		<div class="article-search">
-			<form class="block">
-				<input @input="searchKeywordInputed" v-model="searchKeyword"
-					type="text" placeholder="검색어">
-			</form>
-		</div>
-		<div class="article-list">
-			<header>
-				<div class="flex">
-					<div class="article-list__cell-id">번호</div>
-					<div class="article-list__cell-reg-date">날짜</div>
-					<div class="article-list__cell-writer">작성자</div>
-					<div class="article-list__cell-title">제목</div>
-					<div class="article-list__cell-hit">조회수</div>
-					<div class="article-list__cell-recommand">추천수</div>
-				</div>
-			</header>
-			<div class="main">
-				<div class="flex" v-for="article in filterd">
-					<div class="article-list__cell-id">{{article.id}}</div>
-					<div class="article-list__cell-reg-date">{{article.regDate}}</div>
-					<div class="article-list__cell-writer">{{article.writer}}</div>
-					<div class="article-list__cell-title">
-						<a :href="'article_detail_'+article.id+'.html'" target="_blank"
-							class="hover-underline">{{article.title}}</a>
-					</div>
-					<div class="article-list__cell-hit">{{article.hit_count}}</div>
-					<div class="article-list__cell-recommand">{{article.likes_count}}</div>
-				</div>
 
-			</div>
-		</div>
-	</div>
-</section>
+   <div v-cloak class="con-min-width" id="article-list-wrap">
+      <h4 class="con title-bar search__title-bar flex">
+        <span>SEARCH / 전체글</span>
+        <span>${articlesCount}</span>
+        <div class="search-box">
+          <form class="block">
+            <input @input="searchKeywordInputed" v-model="searchKeyword" type="text" placeholder="검색어">
+          </form>
+        </div>
+      </h4>
+      <div class="con search-list-box">
+        <div class="search-list search-list-pc visible-md-up">
+          <header>
+            <div class="flex">
+              <div class="search-list__cell-id">번호</div>
+              <div class="search-list__cell-reg-date">날짜</div>
+              <div class="search-list__cell-writer">작성자</div>
+              <div class="search-list__cell-title">제목</div>
+              <div class="search-list__cell-hit">조회수</div>
+              <div class="search-list__cell-recommand">추천수</div>
+            </div>
+          </header>
+          <div class="main">
+            <div class="flex" v-for="article in filterd">
+              <div class="search-list__cell-id">{{article.id}}</div>
+              <div class="search-list__cell-reg-date">{{article.regDate}}</div>
+              <div class="search-list__cell-writer">{{article.writer}}</div>
+              <div class="search-list__cell-title"><a :href="'article_'+article.id+'.html'" target="_blank" class="hover-underline">{{article.title}}</a></div>
+              <div class="search-list__cell-hit">{{article.hit_count}}</div>
+              <div class="search-list__cell-recommand">{{article.likes_count}}</div>
+            </div>
+          </div>
+        </div>
+        <div class="search-list search-list-mobile visible-sm-down">
+          <div class="main">
+            <div v-for="article in filterd">
+              <div class="flex">
+                <div class="search-list__cell-id-mobile">{{article.id}}</div>
+                <div class="search-list__cell-title-mobile"><a :href="'article_'+article.id+'.html'" target="_blank" class="hover-underline">{{article.title}}</a></div>
+              </div>
+              <div class="flex">
+                <div class="search-list__cell-writer-mobile">{{article.writer}}</div>
+                <span>ㆍ</span>
+                <div class="search-list__cell-reg-date-mobile">{{article.regDate}}</div>
+              </div>
+              <div class="flex">
+                <div class="search-list__cell-hit-mobile"><i class="far fa-eye"></i> {{article.hit_count}}</div>
+                <div class="search-list__cell-recommand-mobile"><i class="far fa-heart"></i> {{article.likes_count}}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 
 <script src="article_search.js"></script>
