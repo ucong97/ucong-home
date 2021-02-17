@@ -1,26 +1,3 @@
-// 스크롤 트리거 플러그인 활성화
-gsap.registerPlugin(ScrollTrigger);
-
-const tl1 = gsap.timeline({
-  scrollTrigger: {
-    trigger: ".home-content__section-3",
-    start: "top 100%-=100",
-    end: "bottom 100%",
-    scrub: true
-  }
-});
-
-tl1.from(".home-content__about-box-1 > img:first-child", {
-  x: -500,
-  opacity: 0
-});
-
-tl1.from(".home-content__about-box-2 > img:last-child", {
-  x: 500,
-  opacity: 0
-});
-
-
 function MobileTopBar__init() {
   $(".mobile-top-bar__btn-toggle-side-bar").click(function () {
     let $this = $(this);
