@@ -223,8 +223,6 @@ public class BuildService {
 		bdBodyArticles.deleteCharAt(bdBodyArticles.lastIndexOf(","));
 		bdBodyHit.deleteCharAt(bdBodyHit.lastIndexOf(","));
 		
-		System.out.println(bdBodyArticles.toString());
-		
 		body = body.replace("${article-stat__boardArticlesCount}", bdBodyArticles.toString());
 		body = body.replace("${article-stat__boardArticlesHit}", bdBodyHit.toString());
 		sb.append(body);
