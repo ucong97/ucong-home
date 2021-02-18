@@ -215,15 +215,13 @@ public class BuildService {
 		List<Board> boards = articleService.getBoards();
 		for (Board board : boards) {
 			// 각 게시판별 게시물수
-
 			bdBodyArticles.append(articleService.getArticlesCountByBoardId(board.getId()) +",");
 			// 각 게시판별 게시물 조회수
-
-			bdBodyHit.append("<div>" + board.getName() + "게시판 "
-					+ articleService.getBoardArticlesHitCountByBoardId(board.getId()) + " 회" + "</div>");
+			bdBodyHit.append(articleService.getBoardArticlesHitCountByBoardId(board.getId()) +",");
 		}
 		
 		bdBodyArticles.deleteCharAt(bdBodyArticles.lastIndexOf(","));
+		bdBodyHit.deleteCharAt(bdBodyHit.lastIndexOf(","));
 		
 		System.out.println(bdBodyArticles.toString());
 		
