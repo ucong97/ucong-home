@@ -3,6 +3,8 @@ package com.sbs.example.ucong.service;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
+
 import com.sbs.example.ucong.container.Container;
 import com.sbs.example.ucong.dto.Article;
 import com.sbs.example.ucong.dto.Board;
@@ -57,7 +59,6 @@ public class BuildService {
 
 		String filePath = "site/about.html";
 		Util.writeFile(filePath, sb.toString());
-		System.out.println(filePath + " 생성");
 	}
 
 	public void buildArticleTagPage() {
@@ -88,7 +89,6 @@ public class BuildService {
 
 		String filePath = "site/article_search.html";
 		Util.writeFile(filePath, sb.toString());
-		System.out.println(filePath + " 생성");
 	}
 
 	private void loadDataFromGa4Data() {
@@ -166,7 +166,8 @@ public class BuildService {
 					"<div class=\"article-list__cell-writer\">" + bestArticle.getExtra__memberName() + "</div>");
 			mainContent.append("<span>ㆍ</span>");
 			mainContent.append("<div class=\"article-list__cell-board-name\"><a href=\"article_list_"
-					+ bestArticle.getExtra__boardCode() + "_1.html\">" + bestArticle.getExtra__boardName() + "</a></div>");
+					+ bestArticle.getExtra__boardCode() + "_1.html\">" + bestArticle.getExtra__boardName()
+					+ "</a></div>");
 			mainContent.append("<span>ㆍ</span>");
 			mainContent.append("<div class=\"article-list__cell-reg-date\">" + bestArticle.getRegDate() + "</div>");
 			mainContent.append("</div>");
@@ -204,12 +205,10 @@ public class BuildService {
 
 		sb.append(head);
 
-		// 회원수
-		String body = bodyTemplate.replace("${article-stat__totalMembersCount}", memberService.getMembersCount() + "명");
 		// 전체 게시물수
-		body = body.replace("${article-stat__totalArticlesCount}", "총 " + articleService.getArticlesCount() + " 개");
+		String body = bodyTemplate.replace("${article-stat__totalArticlesCount}", articleService.getArticlesCount() + " 개");
 		// 전체 게시물 조회수
-		body = body.replace("${article-stat__totalArticlesHit}", "총 " + articleService.getArticlesHitCount() + " 회");
+		body = body.replace("${article-stat__totalArticlesHit}", articleService.getArticlesHitCount() + " 회");
 
 		StringBuilder bdBodyArticles = new StringBuilder();
 		StringBuilder bdBodyHit = new StringBuilder();
@@ -217,13 +216,17 @@ public class BuildService {
 		for (Board board : boards) {
 			// 각 게시판별 게시물수
 
-			bdBodyArticles.append("<div>" + board.getName() + "게시판 "
-					+ articleService.getArticlesCountByBoardId(board.getId()) + " 개" + "</div>");
+			bdBodyArticles.append(articleService.getArticlesCountByBoardId(board.getId()) +",");
 			// 각 게시판별 게시물 조회수
 
 			bdBodyHit.append("<div>" + board.getName() + "게시판 "
 					+ articleService.getBoardArticlesHitCountByBoardId(board.getId()) + " 회" + "</div>");
 		}
+		
+		bdBodyArticles.deleteCharAt(bdBodyArticles.lastIndexOf(","));
+		
+		System.out.println(bdBodyArticles.toString());
+		
 		body = body.replace("${article-stat__boardArticlesCount}", bdBodyArticles.toString());
 		body = body.replace("${article-stat__boardArticlesHit}", bdBodyHit.toString());
 		sb.append(body);
@@ -478,7 +481,6 @@ public class BuildService {
 				String fileName = getArticleDetailFileName(article.getId());
 				String filePath = "site/" + fileName;
 				Util.writeFileContents(filePath, sb.toString());
-				System.out.println(fileName + "생성");
 			}
 		}
 

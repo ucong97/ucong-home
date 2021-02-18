@@ -1,36 +1,95 @@
-<section class="article-stat-box con-min-width">
-    <div class="article-stat con">
-      <div class="article-stat__menu flex flex-jc-c">
-        <div class="article-stat__menu-totalMembersCount flex flex-jc-c flex-ai-c">회원수</div>
-        <div class="article-stat__menu-totalArticlesCount flex flex-jc-c flex-ai-c">전체 게시물 수 </div>
-        <div class="article-stat__menu-totalArticlesHit flex flex-jc-c flex-ai-c">전체게시물 조회수</div>
-        <div class="article-stat__menu-boardArticlesCount flex flex-jc-c flex-ai-c">각게시판별 게시물 수</div>
-        <div class="article-stat__menu-boardArticlesHit flex flex-jc-c flex-ai-c">각 게시판별 게시물 조회수</div>
-      </div>
-      <div class="article-stat__content bd-body-box none flex-jc-c">
-        <div class="article-stat__content-totalMembersCount"><img src="https://cdn.pixabay.com/photo/2017/02/25/23/52/connections-2099068_960_720.png" alt=""><div>${article-stat__totalMembersCount}</div></div>
-        <div class="article-stat__content-totalArticlesCount"><img src="https://cdn.pixabay.com/photo/2016/08/17/16/29/man-1600958_960_720.png" alt=""><div>${article-stat__totalArticlesCount}</div></div>
-        <div class="article-stat__content-totalArticlesHit"><img src="https://cdn.pixabay.com/photo/2016/08/18/08/58/woman-1602365_960_720.png" alt=""><div>${article-stat__totalArticlesHit}</div></div>
-        <div class="article-stat__content-boardArticlesCount"><img src="https://cdn.pixabay.com/photo/2016/08/17/16/35/businessman-1600975_960_720.png" alt="">
-          <div>
-            ${article-stat__boardArticlesCount}
-          </div>
+<div class="con-min-width stat-content">
+    <div class="con">
+      <div class="stat-content__articles-count">
+        <div class="stat-content__title">게시물수 통계</div>
+        <div class="chart-container">
+          <div class="stat-content__total-count">Total : ${article-stat__totalArticlesCount}</div>
+          <canvas id="pie-chart-1"></canvas>
         </div>
-        <div class="article-stat__content-boardArticlesHit">
-          <img src="https://cdn.pixabay.com/photo/2016/08/18/08/55/presentation-1602360_960_720.png" alt="">
-          <div>
+      </div>
 
-         ${article-stat__boardArticlesHit}
-
-          </div>
+      <div class="stat-content__hits-count">
+        <div class="stat-content__title">조회수 통계</div>
+        <div class="chart-container">
+          <div class="stat-content__total-count">Total : ${article-stat__totalArticlesHit}</div>
+          <canvas id="pie-chart-2"></canvas>
         </div>
       </div>
     </div>
-  </section>
-  <section class="con-min-width">
-        <div class="article-stat__info con">
-        <h1>
-          내용을 확인하려면 메뉴판을 클릭해주세요.
-        </h1>
-      </div>
-   </section>
+</div>
+
+<script>
+var data = {
+  datasets: [
+    {
+      data: [300, 50, 100, 700],
+      backgroundColor: ["#F5A0A0", "#FAD291", "#70D2B4", "#5ABEFF"]
+    }
+  ],
+  labels: ["JAVA", "MYSQL", "HTML/CSS", "개발일지"]
+};
+
+var targetLink = [
+  "http://www.google.com",
+  "http://www.daum.net",
+  "http://www.apple.com",
+  "http://www.apple.com"
+];
+
+$(document).ready(function () {
+  var canvas = document.getElementById("pie-chart-1");
+  var ctx = canvas.getContext("2d");
+  var myNewChart = new Chart(ctx, {
+    type: "doughnut",
+    data: data
+  });
+
+  canvas.onclick = function (evt) {
+    var activePoints = myNewChart.getElementsAtEvent(evt);
+    if (activePoints[0]) {
+      var chartData = activePoints[0]["_chart"].config.data;
+      var idx = activePoints[0]["_index"];
+
+      var target = targetLink[idx];
+      window.open(target, "_blank");
+    }
+  };
+});
+
+var data2 = {
+  datasets: [
+    {
+      data: [12, 80, 70, 44],
+      backgroundColor: ["#F5A0A0", "#FAD291", "#70D2B4", "#5ABEFF"]
+    }
+  ],
+  labels: ["JAVA", "MYSQL", "HTML/CSS", "개발일지"]
+};
+
+var targetLink = [
+  "http://www.google.com",
+  "http://www.daum.net",
+  "http://www.apple.com",
+  "http://www.apple.com"
+];
+
+$(document).ready(function () {
+  var canvas = document.getElementById("pie-chart-2");
+  var ctx = canvas.getContext("2d");
+  var myNewChart = new Chart(ctx, {
+    type: "doughnut",
+    data: data2
+  });
+
+  canvas.onclick = function (evt) {
+    var activePoints = myNewChart.getElementsAtEvent(evt);
+    if (activePoints[0]) {
+      var chartData = activePoints[0]["_chart"].config.data;
+      var idx = activePoints[0]["_index"];
+
+      var target = targetLink[idx];
+      window.open(target, "_blank");
+    }
+  };
+});
+</script>
