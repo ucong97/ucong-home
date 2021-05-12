@@ -43,7 +43,7 @@
             <div v-for="article in filterd">
               <div class="flex">
                 <div class="search-list__cell-id-mobile">{{article.id}}</div>
-                <div class="search-list__cell-title-mobile"><a :href="'article_'+article.id+'.html'" target="_blank" class="hover-underline">{{article.title}}</a></div>
+                <div class="search-list__cell-title-mobile"><a :href="'article_detail_'+article.id+'.html'" class="hover-underline">{{article.title}}</a></div>
               </div>
               <div class="flex">
                 <div class="search-list__cell-writer-mobile">{{article.writer}}</div>

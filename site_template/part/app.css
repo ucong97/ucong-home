@@ -443,7 +443,7 @@ a {
 .home-content__section-1 {
   height:350px;
   background-position:center;
-  background-image:url(https://cdn.pixabay.com/photo/2015/09/09/16/40/girl-931776_960_720.jpg);
+  background-image:url(img/index/section1.jpg);
   background-size:100%;
   background-attachment:sc;
 }
@@ -451,7 +451,7 @@ a {
 @media (min-width: 701px) {
   .home-content__section-1 {
   height:500px;
-  background-image:url(https://cdn.pixabay.com/photo/2015/09/09/16/40/girl-931776_960_720.jpg);
+  background-image:url(img/index/section1.jpg);
   background-position:center;
   background-repeat:no-repeat;
   background-attachment:fixed;
