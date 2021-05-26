@@ -237,8 +237,8 @@ public class BuildService {
 	private void buildArticleListPages() {
 		List<Board> boards = articleService.getBoards();
 
-		int itemsInAPage = 10;
-		int pageBoxSize = 10;
+		int itemsInAPage = 5;
+		int pageBoxSize = 5;
 
 		for (Board board : boards) {
 			List<Article> articles = articleService.getForPrintArticles(board.getId());
